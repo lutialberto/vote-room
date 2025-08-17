@@ -9,7 +9,7 @@ export type ButtonAppProps = TouchableOpacityProps & {
 };
 
 export function ButtonApp({ style, label, labelStyle, type = 'primary', ...otherProps }: ButtonAppProps) {
-  return <TouchableOpacity style={[styles.container, style]} {...otherProps}>
+  return <TouchableOpacity style={[styles.container, type === 'secondary' && styles.secondaryButton, style]} {...otherProps}>
     <ThemedText style={labelStyle}>{label}</ThemedText>
   </TouchableOpacity>
 }
@@ -24,5 +24,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#0186FF',
     marginHorizontal: 'auto'
+  },
+  secondaryButton: {
+    backgroundColor: '#34C759',
   },
 });
