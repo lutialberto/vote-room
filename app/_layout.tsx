@@ -30,8 +30,8 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="[roomId]/inviteUsers" options={{ headerShown: false }} />
-        <Stack.Screen name="[roomId]/shareRoom" options={{ headerShown: false }} />
+        <Stack.Screen name="[roomId]/inviteUsers/index" options={{ headerShown: false }} />
+        <Stack.Screen name="[roomId]/shareRoom/index" options={{ headerShown: false }} />
         {/* <Stack.Screen name="[roomId]/roomUsers" options={{ headerShown: false }} /> */}
         <Stack.Screen name="+not-found" />
       </Stack>
