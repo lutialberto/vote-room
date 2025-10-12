@@ -1,118 +1,101 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useForm } from "react-hook-form";
-import InputTextApp from "@/components/InputTextApp";
 import { useState } from "react";
-import { RadioButtonApp } from "@/components/RadioButtonApp";
-import { TouchableOpacity, View } from "react-native";
-
-type UserInvitationType =
-  | "userId"
-  | "userName"
-  | "userEmail"
-  | "invitationListId"
-  | "invitationListName";
-type UserInvitation = {
-  type?: UserInvitationType;
-  value?: string;
-};
-const userInvitations = [
-  {
-    code: "userId",
-    label: "Código usuario",
-    hint: "Escribe el còdigo de usuario",
-  },
-  {
-    code: "userName",
-    label: "Nombre usuario",
-    hint: "Escribe el nombre de usuario",
-  },
-  {
-    code: "userEmail",
-    label: "Mail usuario",
-    hint: "Escribe el mail del usuario",
-  },
-  {
-    code: "invitationListId",
-    label: "Código lista de usuarios",
-    hint: "Escribe el còdigo de una sala de tu propiedad o de una de tus listas de invitados guardados",
-  },
-  {
-    code: "invitationListName",
-    label: "Nombre lista de usuarios",
-    hint: "Escribe el nombre de una sala de tu propiedad o de una de tus listas de invitados guardados",
-  },
-];
+import {
+  ScrollView,
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import InviteUserTypeSelector from "@/modules/rooms/inviteUsers/components/InviteUserTypeSelector";
+import InviteUserForm from "@/modules/rooms/inviteUsers/components/InviteUserForm";
+import InviteUserPendingList from "@/modules/rooms/inviteUsers/components/InviteUserPendingList";
+import { PendingInvitation } from "@/modules/rooms/inviteUsers/models/PendingInvitation";
+import { UserInvitationType } from "@/modules/rooms/inviteUsers/models/UserInvitationType";
+import { UserInvitation } from "@/modules/rooms/inviteUsers/models/UserInvitation";
 
 export default function InviteUsers() {
-  const [invitationType, setInvitationType] = useState(userInvitations[0].code);
-  const {
-    handleSubmit,
-    reset,
-    control,
-    formState: { errors },
-  } = useForm<UserInvitation>({
-    defaultValues: {
-      type: userInvitations[0].code as UserInvitationType,
-      value: undefined,
-    },
-  });
-  const { hint } = userInvitations.find((e) => e.code === invitationType) || {};
+  const [pendingInvitations, setPendingInvitations] = useState<
+    PendingInvitation[]
+  >([]);
+  const [selectedType, setSelectedType] =
+    useState<UserInvitationType>("userId");
 
   const onSubmit = (data: UserInvitation) => {
-    reset();
-    // TODO: falta definir que hacer con los datos
+    if (data.value) {
+      const newInvitation: PendingInvitation = {
+        id: Date.now().toString(),
+        type: selectedType,
+        value: data.value,
+        timestamp: new Date(),
+      };
+      setPendingInvitations((prev) => [...prev, newInvitation]);
+    }
+  };
+
+  const onInvitationTypeChange = (type: UserInvitationType) => {
+    setSelectedType(type);
+  };
+
+  const removeInvitation = (id: string) => {
+    setPendingInvitations((prev) => prev.filter((inv) => inv.id !== id));
   };
 
   return (
-    <ThemedView style={{ paddingHorizontal: 8, flex: 1 }}>
-      <ThemedText style={{ textAlign: "center" }}>
-        Selecciona una de las opciones disponibles, escribe en el campo inferior
-        y presiona el + para invitar
-      </ThemedText>
-      <ThemedView
-        style={{
-          gap: 10,
-          paddingBottom: 10,
-          flex: 1,
-          justifyContent: "flex-end",
-        }}
-      >
-        <RadioButtonApp
-          options={userInvitations.map(({ code, label }) => ({
-            label,
-            selected: invitationType === code,
-            onPress: () => setInvitationType(code),
-          }))}
-        />
-        <ThemedText style={{ textAlign: "center" }}>{hint}</ThemedText>
-        <View style={{ flexDirection: "row", marginHorizontal: 10 }}>
-          <InputTextApp
-            containerStyle={{ flex: 1 }}
-            inputControl={{
-              control,
-              name: "value",
-            }}
-            textInputProps={{
-              placeholder: "Ingresar...",
-            }}
-            label={""}
-            errorMessage={errors.value?.message}
-          />
-          <TouchableOpacity
-            onPress={handleSubmit(onSubmit)}
-            style={{
-              alignSelf: "center",
-              justifyContent: "center",
-              padding: 10,
-            }}
-          >
-            <ThemedText type="title" style={{ color: "#0186FF" }}>
-              +
+    <SafeAreaView style={{ flex: 1 }}>
+      <ThemedView style={styles.container}>
+        <KeyboardAvoidingView
+          style={{ flex: 1, justifyContent: "flex-end" }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+        >
+          <View style={styles.header}>
+            <ThemedText type="title" style={styles.title}>
+              Invitar usuarios
             </ThemedText>
-          </TouchableOpacity>
-        </View>
+            <ThemedText style={styles.subtitle}>
+              Selecciona cómo quieres invitar usuarios a tu sala
+            </ThemedText>
+          </View>
+
+          <InviteUserTypeSelector
+            selectedInvitationType={selectedType}
+            handleSelectedOption={onInvitationTypeChange}
+          />
+
+          <InviteUserPendingList
+            pendingInvitations={pendingInvitations}
+            removeInvitation={removeInvitation}
+          />
+          <InviteUserForm handleSubmitForm={onSubmit} />
+        </KeyboardAvoidingView>
       </ThemedView>
-    </ThemedView>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingHorizontal: 16,
+  },
+  header: {
+    alignItems: "center",
+    paddingHorizontal: 20,
+    marginBottom: 10,
+  },
+  title: {
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  subtitle: {
+    textAlign: "center",
+    opacity: 0.7,
+    lineHeight: 20,
+    paddingHorizontal: 16,
+  },
+});

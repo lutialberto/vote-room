@@ -4,7 +4,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, router } from "expo-router";
 import * as Sharing from "expo-sharing";
 import { Alert, Share, View, StyleSheet } from "react-native";
 
@@ -32,12 +32,26 @@ export default function ShareRoom() {
     }
   };
 
+  const onInviteUsers = () => {
+    router.push(`/${roomId}/inviteUsers`);
+  };
+
   return (
     <ThemedView style={styles.container}>
       <View style={styles.codeContainer}>
         <Ionicons name="key" size={24} color="#666" style={styles.keyIcon} />
         <ThemedText type="title">{roomId}</ThemedText>
       </View>
+
+      <View style={styles.section}>
+        <ThemedText type="subtitle">👥 Invitar usuarios específicos</ThemedText>
+        <ThemedText style={styles.description}>
+          Invita usuarios por nombre, email o código
+        </ThemedText>
+        <ButtonApp label="👥 Invitar usuarios" onPress={onInviteUsers} />
+      </View>
+
+      <HorizontalDivider />
 
       <View style={styles.section}>
         <ThemedText type="subtitle">📱 Compartir en redes sociales</ThemedText>
