@@ -1,15 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useState } from "react";
-import {
-  ScrollView,
-  View,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
 import InviteUserTypeSelector from "@/modules/rooms/inviteUsers/components/InviteUserTypeSelector";
 import InviteUserForm from "@/modules/rooms/inviteUsers/components/InviteUserForm";
 import InviteUserPendingList from "@/modules/rooms/inviteUsers/components/InviteUserPendingList";
@@ -45,35 +37,33 @@ export default function InviteUsers() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ThemedView style={styles.container}>
-        <KeyboardAvoidingView
-          style={{ flex: 1, justifyContent: "flex-end" }}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
-        >
-          <View style={styles.header}>
-            <ThemedText type="title" style={styles.title}>
-              Invitar usuarios
-            </ThemedText>
-            <ThemedText style={styles.subtitle}>
-              Selecciona cómo quieres invitar usuarios a tu sala
-            </ThemedText>
-          </View>
+    <ThemedView style={styles.container}>
+      <KeyboardAvoidingView
+        style={{ flex: 1, justifyContent: "flex-end" }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      >
+        <View style={styles.header}>
+          <ThemedText type="title" style={styles.title}>
+            Invitar usuarios
+          </ThemedText>
+          <ThemedText style={styles.subtitle}>
+            Selecciona cómo quieres invitar usuarios a tu sala
+          </ThemedText>
+        </View>
 
-          <InviteUserTypeSelector
-            selectedInvitationType={selectedType}
-            handleSelectedOption={onInvitationTypeChange}
-          />
+        <InviteUserTypeSelector
+          selectedInvitationType={selectedType}
+          handleSelectedOption={onInvitationTypeChange}
+        />
 
-          <InviteUserPendingList
-            pendingInvitations={pendingInvitations}
-            removeInvitation={removeInvitation}
-          />
-          <InviteUserForm handleSubmitForm={onSubmit} />
-        </KeyboardAvoidingView>
-      </ThemedView>
-    </SafeAreaView>
+        <InviteUserPendingList
+          pendingInvitations={pendingInvitations}
+          removeInvitation={removeInvitation}
+        />
+        <InviteUserForm handleSubmitForm={onSubmit} />
+      </KeyboardAvoidingView>
+    </ThemedView>
   );
 }
 
