@@ -1,20 +1,22 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { Ionicons } from "@expo/vector-icons";
-import { Room, RoomStatus } from '@/models/Room';
-import { router } from 'expo-router';
+import { Room, RoomStatus } from "@/models/Room";
+import { router } from "expo-router";
 
 const statusConfig: Record<RoomStatus, { color: string; text: string }> = {
-  active: { color: '#34C759', text: 'Activa' },
-  paused: { color: '#FF9500', text: 'Pausada' },
-  finished: { color: '#8E8E93', text: 'Finalizada' },
+  active: { color: "#34C759", text: "Activa" },
+  paused: { color: "#FF9500", text: "Pausada" },
+  finished: { color: "#8E8E93", text: "Finalizada" },
 };
 
-export default function RoomCardItem (room: Room) {
-  const roomStatusConfig = room.status ? statusConfig[room.status] : {
-    color: '#8E8E93',
-    text: 'Inactiva'
-  };
+export default function RoomCardItem(room: Room) {
+  const roomStatusConfig = room.status
+    ? statusConfig[room.status]
+    : {
+        color: "#8E8E93",
+        text: "Inactiva",
+      };
 
   const navigateToRoom = (roomCode: string) => {
     router.push(`/${roomCode}/shareRoom`);
@@ -32,9 +34,14 @@ export default function RoomCardItem (room: Room) {
           <ThemedText style={styles.roomTitle}>{room.label}</ThemedText>
           <ThemedText style={styles.roomCode}>#{room.code}</ThemedText>
         </View>
-        
+
         <View style={styles.statusContainer}>
-          <View style={[styles.statusDot, { backgroundColor: roomStatusConfig.color }]} />
+          <View
+            style={[
+              styles.statusDot,
+              { backgroundColor: roomStatusConfig.color },
+            ]}
+          />
           <ThemedText style={styles.statusText}>
             {roomStatusConfig.text}
           </ThemedText>
@@ -46,27 +53,24 @@ export default function RoomCardItem (room: Room) {
       </ThemedText>
 
       <View style={styles.cardFooter}>
-        <View style={[styles.row,{gap: 12}]}>
+        <View style={[styles.row, { gap: 12 }]}>
           <View style={styles.memberInfo}>
             <Ionicons name="people" size={16} color="#666" />
             <ThemedText style={styles.memberCount}>
               {room.memberCount} miembros
             </ThemedText>
           </View>
-          
+
           <View style={styles.roleInfo}>
             <Ionicons
-              name="airplane" 
-              size={16} 
-              color={room.isOwner ? "#FFD700" : "#666"} 
+              name="airplane"
+              size={16}
+              color={room.isOwner ? "#FFD700" : "#666"}
             />
-            <ThemedText 
-              style={[
-                styles.roleText,
-                room.isOwner && styles.ownerText
-              ]}
+            <ThemedText
+              style={[styles.roleText, room.isOwner && styles.ownerText]}
             >
-              {room.isOwner ? 'Propietario' : 'Miembro'}
+              {room.isOwner ? "Propietario" : "Miembro"}
             </ThemedText>
           </View>
         </View>
@@ -84,10 +88,10 @@ export default function RoomCardItem (room: Room) {
 
 const styles = StyleSheet.create({
   roomCard: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 12,
     padding: 16,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -97,9 +101,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     marginBottom: 12,
   },
   roomInfo: {
@@ -107,23 +111,23 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 4,
   },
   roomTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     flex: 1,
   },
   roomCode: {
     fontSize: 14,
-    color: '#007AFF',
-    fontWeight: '500',
+    color: "#007AFF",
+    fontWeight: "500",
   },
   statusContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
   statusDot: {
@@ -133,7 +137,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   roomDescription: {
     fontSize: 14,
@@ -142,13 +146,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cardFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   memberInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
   memberCount: {
@@ -156,8 +160,8 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   roleInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
   roleText: {
@@ -165,12 +169,12 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   ownerText: {
-    color: '#FFD700',
-    fontWeight: '600',
+    color: "#FFD700",
+    fontWeight: "600",
   },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
   lastActivity: {

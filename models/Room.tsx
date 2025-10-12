@@ -1,4 +1,3 @@
-
 export type Room = {
   code: string;
   label: string;
@@ -10,4 +9,4 @@ export type Room = {
   hasUnreadVotes?: boolean;
 };
 
-export type RoomStatus = 'active' | 'paused' | 'finished';
+export type RoomStatus = "active" | "paused" | "finished";
