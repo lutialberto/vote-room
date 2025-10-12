@@ -42,7 +42,6 @@ export default function RootLayout() {
           name="[roomId]/shareRoom/index"
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen name="[roomId]/roomUsers" options={{ headerShown: false }} /> */}
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
