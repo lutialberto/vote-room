@@ -49,7 +49,7 @@ export default function MyRooms() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.code}
-        renderItem={({ item }) => <RoomCardItem {...item} />}
+        renderItem={({ item }) => <RoomCardItem room={item} />}
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         ListHeaderComponent={
           <RoomStats

@@ -10,7 +10,7 @@ const statusConfig: Record<RoomStatus, { color: string; text: string }> = {
   finished: { color: "#8E8E93", text: "Finalizada" },
 };
 
-export default function RoomCardItem(room: Room) {
+export default function RoomCardItem({ room }: { room: Room }) {
   const roomStatusConfig = room.status
     ? statusConfig[room.status]
     : {
