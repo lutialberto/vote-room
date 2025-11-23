@@ -65,12 +65,15 @@ export default function RoomCardItem(room: Room) {
             <Ionicons
               name="airplane"
               size={16}
-              color={room.isOwner ? "#FFD700" : "#666"}
+              color={room.owner === "owner" ? "#FFD700" : "#666"}
             />
             <ThemedText
-              style={[styles.roleText, room.isOwner && styles.ownerText]}
+              style={[
+                styles.roleText,
+                room.owner === "owner" && styles.ownerText,
+              ]}
             >
-              {room.isOwner ? "Propietario" : "Miembro"}
+              {room.owner === "owner" ? "Propietario" : "Miembro"}
             </ThemedText>
           </View>
         </View>

@@ -2,10 +2,11 @@ export type Room = {
   code: string;
   label: string;
   description: string;
-  isOwner?: boolean;
+  owner: string;
+  isPrivate: boolean;
   memberCount?: number;
   lastActivity?: string;
-  status?: RoomStatus;
+  status: RoomStatus;
   hasUnreadVotes?: boolean;
 };
 

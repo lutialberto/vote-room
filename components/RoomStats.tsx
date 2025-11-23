@@ -10,7 +10,7 @@ export type RoomStat = {
 
 export const ROOM_STATS: Record<RoomStatNames, RoomStat> = {
   owner: {
-    criteria: (r: Room) => r.isOwner,
+    criteria: (r: Room) => r.owner === "owner",
     label: "Propias",
   },
   active: {
