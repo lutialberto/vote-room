@@ -5,8 +5,8 @@ import { StyleSheet, View, RefreshControl, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import RoomCardItem from "@/components/RoomCardItem";
 import { Room } from "../../models/Room";
-import { fetchRooms } from "../../services/room/roomService";
 import RoomStats, { ROOM_STATS, RoomStatNames } from "@/components/RoomStats";
+import { fetchRoomsByUser } from "@/services/roomMember/roomMemberService";
 
 export default function MyRooms() {
   const [refreshing, setRefreshing] = useState(false);
@@ -21,7 +21,7 @@ export default function MyRooms() {
 
   useEffect(() => {
     const fetchRooms2 = () => {
-      fetchRooms().then((res) => setRooms(res));
+      fetchRoomsByUser(1).then((res) => setRooms(res));
     };
 
     fetchRooms2();
@@ -29,7 +29,7 @@ export default function MyRooms() {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    fetchRooms().then((res) => {
+    fetchRoomsByUser(1).then((res) => {
       setRooms(res);
       setRefreshing(false);
     });

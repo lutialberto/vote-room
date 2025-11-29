@@ -33,6 +33,7 @@ export const roomsMockResponse: Room[] = [
     lastActivity: "hace 3d",
     status: "finished",
     hasUnreadVotes: false,
+    key: "PARTY123",
   },
   {
     code: "TRIP",
@@ -55,6 +56,7 @@ export const roomsMockResponse: Room[] = [
     lastActivity: "hace 2d",
     status: "active",
     hasUnreadVotes: false,
+    key: "BOOKCLUB123",
   },
   {
     code: "GAMENIGHT",

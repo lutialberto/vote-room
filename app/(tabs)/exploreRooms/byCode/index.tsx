@@ -1,19 +1,115 @@
-import { ThemedText } from "@/components/ThemedText";
+import { router } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
-import { StyleSheet } from "react-native";
+import SearchRoomByCodeForm from "@/modules/rooms/exploreRooms/components/SearchRoomByCodeForm";
+import SearchRoomByCodeFormKey from "@/modules/rooms/exploreRooms/components/SearchRoomByCodeFormKey";
+import SearchInstructions from "@/modules/rooms/exploreRooms/components/SearchRoomByCodeInstructions";
+import SearchRoomByCodeResults from "@/modules/rooms/exploreRooms/components/SearchRoomByCodeResults";
+import { SearchRoomByCodeState } from "@/modules/rooms/exploreRooms/models/SearchRoomByCodeState";
+import { getRoomByCode } from "@/services/room/roomService";
+import { useState } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
+import { joinRoom } from "@/services/roomMember/roomMemberService";
 
 export default function ByCodeTab() {
+  const [state, setState] = useState<SearchRoomByCodeState>({
+    state: "idle",
+  });
+
+  const handleSearch = async (roomCode: string) => {
+    setState((prev) => ({
+      ...prev,
+      state: "searching",
+    }));
+    getRoomByCode(roomCode.toUpperCase())
+      .then((room) => {
+        console.log({ room, roomCode });
+        if (room) {
+          setState({ state: "found", room });
+        } else {
+          setState({ state: "not-found" });
+        }
+      })
+      .catch((error) => {
+        setState({ state: "not-found" });
+      });
+  };
+
+  const handleJoinRoom = () => {
+    if (state.state !== "found") return;
+    if (state.room.isPrivate) {
+      setState({ ...state, state: "request-key" });
+    } else {
+      joinRoom(state.room.code, 1)
+        .then(() => {
+          handleNewSearch();
+          router.push(`/${state.room.code}/shareRoom`);
+        })
+        .catch(() => {
+          setState({ state: "error" });
+        });
+    }
+  };
+
+  const handleNewSearch = () => {
+    setState({ state: "idle" });
+  };
+
+  const handleSubmitKey = (key: string) => {
+    if (state.state !== "request-key" || state.room.isPrivate === false) return;
+    if (state.room.key === key) {
+      handleNewSearch();
+      router.push(`/${state.room.code}/shareRoom`);
+    } else {
+      setState((prev) => ({
+        ...prev,
+        keyErrorMessage: "Clave incorrecta. Inténtalo de nuevo.",
+      }));
+    }
+  };
+
   return (
-    <ThemedView style={styles.tabContainer}>
-      <ThemedText>Buscar por código</ThemedText>
-    </ThemedView>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ThemedView style={{ flex: 1 }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={styles.content}
+          keyboardShouldPersistTaps="handled"
+        >
+          <SearchRoomByCodeResults
+            state={state}
+            onJoinRoom={handleJoinRoom}
+            onNewSearch={handleNewSearch}
+          />
+
+          {state.state === "idle" && <SearchInstructions />}
+          {!["found", "request-key"].includes(state.state) && (
+            <SearchRoomByCodeForm
+              isSearching={state.state === "searching"}
+              onSearch={handleSearch}
+            />
+          )}
+          {state.state === "request-key" && (
+            <SearchRoomByCodeFormKey
+              onSubmit={handleSubmitKey}
+              errorMessage={state.keyErrorMessage}
+            />
+          )}
+        </ScrollView>
+      </ThemedView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  tabContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  content: {
+    paddingHorizontal: 16,
   },
 });
