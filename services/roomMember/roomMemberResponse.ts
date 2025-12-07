@@ -30,7 +30,7 @@ export let roomMembersMockResponse: RoomMember[] = [
   {
     id: 6,
     roomCode: "PARTY",
-    userId: 1,
+    userId: 2,
   },
   {
     id: 7,

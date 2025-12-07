@@ -14,8 +14,10 @@ import {
   StyleSheet,
 } from "react-native";
 import { joinRoom } from "@/services/roomMember/roomMemberService";
+import { useUser } from "@/contexts/UserContext";
 
 export default function ByCodeTab() {
+  const { currentUser } = useUser();
   const [state, setState] = useState<SearchRoomByCodeState>({
     state: "idle",
   });
@@ -44,7 +46,7 @@ export default function ByCodeTab() {
     if (state.room.isPrivate) {
       setState({ ...state, state: "request-key" });
     } else {
-      joinRoom(state.room.code, 1)
+      joinRoom(state.room.code, currentUser.id)
         .then(() => {
           handleNewSearch();
           router.push(`/${state.room.code}/shareRoom`);
@@ -62,8 +64,17 @@ export default function ByCodeTab() {
   const handleSubmitKey = (key: string) => {
     if (state.state !== "request-key" || state.room.isPrivate === false) return;
     if (state.room.key === key) {
-      handleNewSearch();
-      router.push(`/${state.room.code}/shareRoom`);
+      joinRoom(state.room.code, currentUser.id, key)
+        .then(() => {
+          handleNewSearch();
+          router.push(`/${state.room.code}/shareRoom`);
+        })
+        .catch((error) => {
+          setState((prev) => ({
+            ...prev,
+            keyErrorMessage: "Error al unirse a la sala.",
+          }));
+        });
     } else {
       setState((prev) => ({
         ...prev,

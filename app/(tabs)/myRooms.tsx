@@ -7,8 +7,10 @@ import RoomCardItem from "@/components/RoomCardItem";
 import { Room } from "../../models/Room";
 import RoomStats, { ROOM_STATS, RoomStatNames } from "@/components/RoomStats";
 import { fetchRoomsByUser } from "@/services/roomMember/roomMemberService";
+import { useUser } from "@/contexts/UserContext";
 
 export default function MyRooms() {
+  const { currentUser } = useUser();
   const [refreshing, setRefreshing] = useState(false);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [selectedStats, setSelectedStats] = useState<RoomStatNames | undefined>(
@@ -21,15 +23,15 @@ export default function MyRooms() {
 
   useEffect(() => {
     const fetchRooms2 = () => {
-      fetchRoomsByUser(1).then((res) => setRooms(res));
+      fetchRoomsByUser(currentUser.id).then((res) => setRooms(res));
     };
 
     fetchRooms2();
-  }, []);
+  }, [currentUser.id]);
 
   const onRefresh = async () => {
     setRefreshing(true);
-    fetchRoomsByUser(1).then((res) => {
+    fetchRoomsByUser(currentUser.id).then((res) => {
       setRooms(res);
       setRefreshing(false);
     });

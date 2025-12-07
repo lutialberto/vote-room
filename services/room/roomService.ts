@@ -16,7 +16,7 @@ import { roomServiceInstance } from "./roomServiceImpl";
 export const fetchRooms = (): Promise<Room[]> =>
   roomServiceInstance.fetchRooms();
 
-export const getRoomByCode = (code: string): Promise<Room> =>
+export const getRoomByCode = (code: string): Promise<Room | null> =>
   roomServiceInstance.getRoomByCode(code);
 
 export const createRoom = (roomData: CreateRoomData): Promise<Room> =>

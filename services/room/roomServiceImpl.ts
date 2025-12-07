@@ -9,12 +9,9 @@ export class RoomServiceImpl {
     return [...this.rooms];
   }
 
-  async getRoomByCode(code: string): Promise<Room> {
-    const room = this.rooms.find((room) => room.code === code);
-    if (!room) {
-      throw new Error("Room not found");
-    }
-    return { ...room };
+  async getRoomByCode(code: string): Promise<Room | null> {
+    const room = this.rooms.find((r) => r.code === code);
+    return room ? { ...room } : null;
   }
 
   async createRoom(roomData: CreateRoomData): Promise<Room> {
