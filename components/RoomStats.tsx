@@ -1,16 +1,18 @@
 import { ThemedText } from "@/components/ThemedText";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Room } from "@/models/Room";
+import { User } from "@/models/User";
+import { useUser } from "@/contexts/UserContext";
 
 export type RoomStatNames = "owner" | "active" | "unread";
 export type RoomStat = {
-  criteria: (r: Room) => boolean | undefined;
+  criteria: (r: Room, user: User) => boolean | undefined;
   label: string;
 };
 
 export const ROOM_STATS: Record<RoomStatNames, RoomStat> = {
   owner: {
-    criteria: (r: Room) => r.owner === "owner",
+    criteria: (r: Room, user: User) => r.ownerUserId === user.id,
     label: "Propias",
   },
   active: {
@@ -32,6 +34,8 @@ export default function RoomStats({
   handleSelectedStatsItemPress: (item: RoomStatNames) => void;
   selectedStats: RoomStatNames | undefined;
 }) {
+  const { currentUser } = useUser();
+
   return (
     <View style={styles.statsContainer}>
       {Object.values(ROOM_STATS).map((stat, index) => {
@@ -46,7 +50,7 @@ export default function RoomStats({
             ]}
           >
             <ThemedText style={styles.statNumber}>
-              {rooms.filter(stat.criteria).length}
+              {rooms.filter((r) => stat.criteria(r, currentUser)).length}
             </ThemedText>
             <ThemedText style={styles.statLabel}>{stat.label}</ThemedText>
           </TouchableOpacity>

@@ -18,7 +18,9 @@ export default function MyRooms() {
   );
 
   const roomsBySelectedStat = selectedStats
-    ? rooms.filter((room) => ROOM_STATS[selectedStats].criteria(room))
+    ? rooms.filter((room) =>
+        ROOM_STATS[selectedStats].criteria(room, currentUser)
+      )
     : rooms;
 
   useEffect(() => {

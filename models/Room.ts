@@ -2,7 +2,7 @@ export type BaseRoom = {
   code: string;
   label: string;
   description: string;
-  owner: string;
+  ownerUserId: number;
   memberCount?: number;
   lastActivity?: string;
   status: RoomStatus;

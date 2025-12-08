@@ -3,6 +3,7 @@ import { ThemedText } from "./ThemedText";
 import { Ionicons } from "@expo/vector-icons";
 import { Room, RoomStatus } from "@/models/Room";
 import { router } from "expo-router";
+import { useUser } from "@/contexts/UserContext";
 
 const statusConfig: Record<RoomStatus, { color: string; text: string }> = {
   active: { color: "#34C759", text: "Activa" },
@@ -11,6 +12,7 @@ const statusConfig: Record<RoomStatus, { color: string; text: string }> = {
 };
 
 export default function RoomCardItem({ room }: { room: Room }) {
+  const { currentUser } = useUser();
   const roomStatusConfig = room.status
     ? statusConfig[room.status]
     : {
@@ -65,15 +67,15 @@ export default function RoomCardItem({ room }: { room: Room }) {
             <Ionicons
               name="airplane"
               size={16}
-              color={room.owner === "owner" ? "#FFD700" : "#666"}
+              color={room.ownerUserId === currentUser.id ? "#FFD700" : "#666"}
             />
             <ThemedText
               style={[
                 styles.roleText,
-                room.owner === "owner" && styles.ownerText,
+                room.ownerUserId === currentUser.id && styles.ownerText,
               ]}
             >
-              {room.owner === "owner" ? "Propietario" : "Miembro"}
+              {room.ownerUserId === currentUser.id ? "Propietario" : "Miembro"}
             </ThemedText>
           </View>
         </View>
