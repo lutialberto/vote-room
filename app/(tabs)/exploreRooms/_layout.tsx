@@ -3,10 +3,18 @@ import { Ionicons } from "@expo/vector-icons";
 import ByCodeTab from "./byCode";
 import InvitationsTab from "./invitations";
 import PublicRoomsTab from "./public";
+import { useUser } from "@/contexts/UserContext";
+import { usePendingRoomInvitationRequest } from "@/modules/rooms/exploreRooms/invitations/hooks/usePendingRoomInvitationRequest";
+import { View } from "react-native";
+import { TabBadgeApp } from "@/components/TabBadgeApp";
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function ExploreRooms() {
+  const { currentUser } = useUser();
+  const { data } = usePendingRoomInvitationRequest(currentUser?.id);
+  const invitationsCount = data?.length || 0;
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -56,9 +64,11 @@ export default function ExploreRooms() {
         options={{
           tabBarLabel: "Invitaciones",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="mail" size={18} color={color} />
+            <>
+              <Ionicons name="mail" size={18} color={color} />
+              <TabBadgeApp visible={invitationsCount > 0} />
+            </>
           ),
-          // TODO: Agregar badge cuando haya invitaciones pendientes
         }}
       />
     </Tab.Navigator>
