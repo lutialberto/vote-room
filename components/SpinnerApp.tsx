@@ -5,7 +5,7 @@ export function SpinnerApp(props: {
   visible: boolean;
   children?: React.ReactNode;
 }) {
-  const primaryColor = useThemeColor({}, "primary");
+  const { primary: primaryColor } = useThemeColor();
   return (
     <>
       {props.children}

@@ -8,9 +8,11 @@ import { IconApp } from "./IconApp";
 import { CardApp } from "./CardApp";
 
 export default function RoomCardItem({ room }: { room: Room }) {
-  const greenColor = useThemeColor({}, "green");
-  const orangeColor = useThemeColor({}, "orange");
-  const grayColor = useThemeColor({}, "gray");
+  const {
+    green: greenColor,
+    orange: orangeColor,
+    gray: grayColor,
+  } = useThemeColor();
 
   const { currentUser } = useUser();
 

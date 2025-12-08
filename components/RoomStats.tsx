@@ -37,7 +37,7 @@ export default function RoomStats({
   selectedStats: RoomStatNames | undefined;
 }) {
   const { currentUser } = useUser();
-  const primaryColor = useThemeColor({}, "primary");
+  const { primary: primaryColor } = useThemeColor();
 
   return (
     <CardApp style={styles.statsContainer}>

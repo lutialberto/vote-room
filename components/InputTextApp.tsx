@@ -58,7 +58,7 @@ export default function InputTextApp<T extends FieldValues>({
     field.value,
     maxMultivalue
   );
-  const primaryColor = useThemeColor({}, "primary");
+  const { primary: primaryColor } = useThemeColor();
 
   const removeValue = (index: number) => {
     let values = field.value;

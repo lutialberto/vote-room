@@ -6,6 +6,7 @@ import { UserInvitationType } from "../models/UserInvitationType";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "@/components/IconApp";
 import { CardApp } from "@/components/CardApp";
+import { ColorScheme } from "@/constants/Colors";
 
 export default function InviteUserTypeSelector({
   selectedInvitationType,
@@ -14,7 +15,8 @@ export default function InviteUserTypeSelector({
   selectedInvitationType: UserInvitationType;
   handleSelectedOption: (type: UserInvitationType) => void;
 }) {
-  const primaryColor = useThemeColor({}, "primary");
+  const colors = useThemeColor();
+  const styles = getStyles(colors);
   const selectedOption = USER_INVITATIONS[selectedInvitationType];
   return (
     <>
@@ -32,10 +34,7 @@ export default function InviteUserTypeSelector({
       </View>
 
       {selectedOption && (
-        <CardApp
-          type="withShadow"
-          style={[styles.hintContainer, { borderLeftColor: primaryColor }]}
-        >
+        <CardApp type="withShadow" style={styles.hintContainer}>
           <IconApp
             name={selectedOption.icon}
             size={20}
@@ -48,24 +47,26 @@ export default function InviteUserTypeSelector({
   );
 }
 
-const styles = StyleSheet.create({
-  optionsContainer: {
-    marginBottom: 24,
-  },
-  hintContainer: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    marginBottom: 24,
-    borderLeftWidth: 4,
-  },
-  hintIcon: {
-    marginRight: 12,
-    marginTop: 2,
-  },
-  hint: {
-    flex: 1,
-    opacity: 0.8,
-    lineHeight: 18,
-    fontSize: 14,
-  },
-});
+const getStyles = (colors: ColorScheme) =>
+  StyleSheet.create({
+    optionsContainer: {
+      marginBottom: 24,
+    },
+    hintContainer: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      marginBottom: 24,
+      borderLeftWidth: 4,
+      borderLeftColor: colors.primary,
+    },
+    hintIcon: {
+      marginRight: 12,
+      marginTop: 2,
+    },
+    hint: {
+      flex: 1,
+      opacity: 0.8,
+      lineHeight: 18,
+      fontSize: 14,
+    },
+  });

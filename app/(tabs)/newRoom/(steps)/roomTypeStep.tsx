@@ -19,6 +19,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "@/components/IconApp";
 import { NewStepMainIcon } from "@/modules/rooms/newSteps/components/NewStepMainIcon";
 import { CardApp } from "@/components/CardApp";
+import { ColorScheme } from "@/constants/Colors";
 
 type FormData = {
   tags: string[];
@@ -27,8 +28,9 @@ type FormData = {
 };
 
 export default function RoomTypeStep() {
-  const primaryColor = useThemeColor({}, "primary");
-  const borderColor = useThemeColor({}, "border");
+  const colors = useThemeColor();
+  // const { primary: primaryColor, border: borderColor } = useThemeColor();
+  const styles = getStyles(colors);
 
   const {
     handleSubmit,
@@ -137,19 +139,17 @@ export default function RoomTypeStep() {
                       <Switch
                         value={value}
                         onValueChange={onChange}
-                        trackColor={{ false: borderColor, true: primaryColor }}
+                        trackColor={{
+                          false: colors.border,
+                          true: colors.primary,
+                        }}
                         thumbColor={"white"}
                       />
                     )}
                   />
                 </CardApp>
                 {isEvent && (
-                  <View
-                    style={[
-                      styles.eventInfo,
-                      { backgroundColor: primaryColor + "20" },
-                    ]}
-                  >
+                  <View style={styles.eventInfo}>
                     <IconApp
                       name="information-circle"
                       size={16}
@@ -179,70 +179,72 @@ export default function RoomTypeStep() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 10,
-  },
-  keyboardContainer: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 40,
-  },
-  header: {
-    alignItems: "center",
-    marginBottom: 32,
-    gap: 12,
-  },
-  title: {
-    textAlign: "center",
-  },
-  subtitle: {
-    textAlign: "center",
-  },
-  formContainer: {
-    gap: 24,
-    marginBottom: 24,
-  },
-  section: {
-    gap: 12,
-  },
-  switchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  switchInfo: {
-    flex: 1,
-    marginRight: 16,
-  },
-  switchLabel: {
-    fontSize: 16,
-    fontWeight: "500",
-    marginBottom: 4,
-  },
-  switchDescription: {
-    fontSize: 14,
-    opacity: 0.7,
-  },
-  eventInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    borderRadius: 8,
-    padding: 12,
-    marginTop: 8,
-  },
-  eventText: {
-    fontSize: 14,
-    flex: 1,
-  },
-  buttonContainer: {
-    alignItems: "center",
-    gap: 10,
-  },
-  hint: {
-    textAlign: "center",
-  },
-});
+const getStyles = (colors: ColorScheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingHorizontal: 10,
+    },
+    keyboardContainer: {
+      flex: 1,
+    },
+    scrollContent: {
+      paddingBottom: 40,
+    },
+    header: {
+      alignItems: "center",
+      marginBottom: 32,
+      gap: 12,
+    },
+    title: {
+      textAlign: "center",
+    },
+    subtitle: {
+      textAlign: "center",
+    },
+    formContainer: {
+      gap: 24,
+      marginBottom: 24,
+    },
+    section: {
+      gap: 12,
+    },
+    switchContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    switchInfo: {
+      flex: 1,
+      marginRight: 16,
+    },
+    switchLabel: {
+      fontSize: 16,
+      fontWeight: "500",
+      marginBottom: 4,
+    },
+    switchDescription: {
+      fontSize: 14,
+      opacity: 0.7,
+    },
+    eventInfo: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+      borderRadius: 8,
+      padding: 12,
+      marginTop: 8,
+      backgroundColor: colors.primary + "20",
+    },
+    eventText: {
+      fontSize: 14,
+      flex: 1,
+    },
+    buttonContainer: {
+      alignItems: "center",
+      gap: 10,
+    },
+    hint: {
+      textAlign: "center",
+    },
+  });

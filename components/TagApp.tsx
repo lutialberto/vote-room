@@ -1,11 +1,13 @@
 import { StyleSheet, View } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ColorScheme } from "@/constants/Colors";
 
 export function TagApp(props: { tag: string }) {
-  const color = useThemeColor({}, "primary");
+  const colors = useThemeColor();
+  const styles = getStyles(colors);
   return (
-    <View style={[styles.tag, { backgroundColor: color + "20" }]}>
+    <View style={styles.tag}>
       <ThemedText colorName="primary" style={styles.tagText}>
         #{props.tag}
       </ThemedText>
@@ -13,13 +15,15 @@ export function TagApp(props: { tag: string }) {
   );
 }
 
-const styles = StyleSheet.create({
-  tag: {
-    borderRadius: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-  },
-  tagText: {
-    fontSize: 12,
-  },
-});
+const getStyles = (colors: ColorScheme) =>
+  StyleSheet.create({
+    tag: {
+      borderRadius: 16,
+      paddingHorizontal: 12,
+      paddingVertical: 4,
+      backgroundColor: colors.primary + "20",
+    },
+    tagText: {
+      fontSize: 12,
+    },
+  });

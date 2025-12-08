@@ -4,6 +4,7 @@ import HorizontalDivider from "@/components/divider/HorizontalDivider";
 import { IconApp } from "@/components/IconApp";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { ColorScheme } from "@/constants/Colors";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import * as Clipboard from "expo-clipboard";
 import { useLocalSearchParams, router } from "expo-router";
@@ -11,7 +12,8 @@ import { Alert, Share, View, StyleSheet } from "react-native";
 
 export default function ShareRoom() {
   const { roomId } = useLocalSearchParams<{ roomId: string }>();
-  const borderColor = useThemeColor({}, "border");
+  const colors = useThemeColor();
+  const styles = getStyles(colors);
 
   const onCopyToClipboard = async () => {
     await Clipboard.setStringAsync(roomId);
@@ -40,7 +42,7 @@ export default function ShareRoom() {
 
   return (
     <ThemedView style={styles.container}>
-      <CardApp style={[styles.codeContainer, { borderColor: borderColor }]}>
+      <CardApp style={styles.codeContainer}>
         <IconApp name="key" size={24} style={styles.keyIcon} />
         <ThemedText type="title">{roomId}</ThemedText>
       </CardApp>
@@ -80,36 +82,38 @@ export default function ShareRoom() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    paddingVertical: 24,
-    flex: 1,
-    justifyContent: "center",
-  },
-  codeContainer: {
-    marginBottom: 32,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
-    borderWidth: 2,
-  },
-  keyIcon: {
-    marginRight: 12,
-  },
-  roomCode: {
-    fontSize: 28,
-    fontWeight: "bold",
-    letterSpacing: 2,
-  },
-  section: {
-    marginBottom: 24,
-    gap: 16,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  description: {
-    opacity: 0.7,
-    lineHeight: 20,
-  },
-});
+const getStyles = (colors: ColorScheme) =>
+  StyleSheet.create({
+    container: {
+      paddingHorizontal: 20,
+      paddingVertical: 24,
+      flex: 1,
+      justifyContent: "center",
+    },
+    codeContainer: {
+      marginBottom: 32,
+      alignItems: "center",
+      flexDirection: "row",
+      justifyContent: "center",
+      borderWidth: 2,
+      borderColor: colors.border,
+    },
+    keyIcon: {
+      marginRight: 12,
+    },
+    roomCode: {
+      fontSize: 28,
+      fontWeight: "bold",
+      letterSpacing: 2,
+    },
+    section: {
+      marginBottom: 24,
+      gap: 16,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    description: {
+      opacity: 0.7,
+      lineHeight: 20,
+    },
+  });

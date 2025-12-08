@@ -1,5 +1,6 @@
 import { IconApp } from "@/components/IconApp";
 import { ThemedText } from "@/components/ThemedText";
+import { ColorScheme } from "@/constants/Colors";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
@@ -32,7 +33,8 @@ const INSTRUCTIONS: {
 ];
 
 export default function SearchRoomByCodeInstructions() {
-  const orangeColor = useThemeColor({}, "orange");
+  const colors = useThemeColor();
+  const styles = getStyles(colors);
 
   return (
     <View style={styles.container}>
@@ -54,12 +56,7 @@ export default function SearchRoomByCodeInstructions() {
         ))}
       </View>
 
-      <View
-        style={[
-          styles.tip,
-          { borderLeftColor: orangeColor, backgroundColor: orangeColor + "20" },
-        ]}
-      >
+      <View style={styles.tip}>
         <IconApp
           name="bulb"
           size={16}
@@ -76,40 +73,43 @@ export default function SearchRoomByCodeInstructions() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 32,
-    paddingHorizontal: 4,
-  },
-  title: {
-    marginBottom: 20,
-  },
-  instructionsList: {
-    gap: 16,
-    marginBottom: 24,
-  },
-  instructionItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-  icon: {
-    marginTop: 2,
-  },
-  tip: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    borderRadius: 12,
-    padding: 16,
-    borderLeftWidth: 4,
-    gap: 12,
-  },
-  tipIcon: {
-    marginTop: 2,
-  },
-  tipText: {
-    flex: 1,
-    lineHeight: 18,
-    fontSize: 14,
-  },
-});
+const getStyles = (colors: ColorScheme) =>
+  StyleSheet.create({
+    container: {
+      marginTop: 32,
+      paddingHorizontal: 4,
+    },
+    title: {
+      marginBottom: 20,
+    },
+    instructionsList: {
+      gap: 16,
+      marginBottom: 24,
+    },
+    instructionItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12,
+    },
+    icon: {
+      marginTop: 2,
+    },
+    tip: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      borderRadius: 12,
+      padding: 16,
+      borderLeftWidth: 4,
+      gap: 12,
+      borderLeftColor: colors.orange,
+      backgroundColor: colors.orange + "20",
+    },
+    tipIcon: {
+      marginTop: 2,
+    },
+    tipText: {
+      flex: 1,
+      lineHeight: 18,
+      fontSize: 14,
+    },
+  });

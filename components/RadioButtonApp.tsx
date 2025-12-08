@@ -21,7 +21,7 @@ export function RadioButtonApp({
   options,
   containerStyle,
 }: RadioButtonAppProps) {
-  const primaryColor = useThemeColor({}, "primary");
+  const { primary: primaryColor } = useThemeColor();
   return (
     <View style={[styles.container, containerStyle]}>
       {options.map((option) => (

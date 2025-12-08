@@ -6,7 +6,7 @@ import { View } from "react-native";
 export function NewStepMainIcon(props: {
   name: keyof typeof Ionicons.glyphMap;
 }) {
-  const color = useThemeColor({}, "primary");
+  const { primary: color } = useThemeColor();
   return (
     <View
       style={{ backgroundColor: color + "20", borderRadius: 50, padding: 20 }}

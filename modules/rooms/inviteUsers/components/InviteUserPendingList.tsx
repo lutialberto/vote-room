@@ -6,6 +6,7 @@ import { ButtonApp } from "@/components/ButtonApp";
 import { IconApp } from "@/components/IconApp";
 import { CardApp } from "@/components/CardApp";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ColorScheme } from "@/constants/Colors";
 
 export default function InviteUserPendingList({
   pendingInvitations,
@@ -14,7 +15,9 @@ export default function InviteUserPendingList({
   pendingInvitations: PendingInvitation[];
   removeInvitation: (id: string) => void;
 }) {
-  const primaryColor = useThemeColor({}, "primary");
+  const colors = useThemeColor();
+  const styles = getStyles(colors);
+
   return (
     <>
       <View style={styles.pendingHeader}>
@@ -44,10 +47,7 @@ export default function InviteUserPendingList({
             </View>
             <TouchableOpacity
               onPress={() => removeInvitation(item.id)}
-              style={[
-                styles.removeButton,
-                { backgroundColor: primaryColor + "20" },
-              ]}
+              style={styles.removeButton}
             >
               <IconApp name="close" size={20} colorName="primary" />
             </TouchableOpacity>
@@ -67,39 +67,41 @@ export default function InviteUserPendingList({
   );
 }
 
-const styles = StyleSheet.create({
-  pendingHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 16,
-    gap: 8,
-  },
-  invitationsList: {
-    gap: 12,
-    marginBottom: 20,
-  },
-  invitationItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  invitationInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-    gap: 12,
-  },
-  invitationText: {
-    flex: 1,
-  },
-  removeButton: {
-    padding: 8,
-    borderRadius: 20,
-  },
-  sendAllButton: {
-    margin: 16,
-  },
-});
+const getStyles = (colors: ColorScheme) =>
+  StyleSheet.create({
+    pendingHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 16,
+      gap: 8,
+    },
+    invitationsList: {
+      gap: 12,
+      marginBottom: 20,
+    },
+    invitationItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginVertical: 8,
+      marginHorizontal: 16,
+    },
+    invitationInfo: {
+      flexDirection: "row",
+      alignItems: "center",
+      flex: 1,
+      gap: 12,
+    },
+    invitationText: {
+      flex: 1,
+    },
+    removeButton: {
+      padding: 8,
+      borderRadius: 20,
+      backgroundColor: colors.primary + "20",
+    },
+    sendAllButton: {
+      margin: 16,
+    },
+  });

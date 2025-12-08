@@ -8,12 +8,12 @@ export function IconApp(props: {
   color?: string;
   style?: any;
 }) {
-  const fontColor = useThemeColor({}, props.colorName ?? "icon");
+  const colors = useThemeColor();
   return (
     <Ionicons
       name={props.name}
       size={props.size}
-      color={props.color ?? fontColor}
+      color={props.color ?? colors[props.colorName ?? "icon"]}
       style={props.style}
     />
   );

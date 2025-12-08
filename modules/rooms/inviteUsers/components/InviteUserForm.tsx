@@ -4,14 +4,16 @@ import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { UserInvitation } from "../models/UserInvitation";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "@/components/IconApp";
+import { ColorScheme } from "@/constants/Colors";
 
 export default function InviteUserForm({
   handleSubmitForm,
 }: {
   handleSubmitForm: (data: UserInvitation) => void;
 }) {
-  const primaryColor = useThemeColor({}, "primary");
-  const borderColor = useThemeColor({}, "border");
+  const colors = useThemeColor();
+  const styles = getStyles(colors);
+
   const {
     handleSubmit,
     reset,
@@ -29,7 +31,7 @@ export default function InviteUserForm({
   };
 
   return (
-    <View style={[styles.inputSection, { borderTopColor: borderColor }]}>
+    <View style={styles.inputSection}>
       <View style={styles.inputContainer}>
         <InputTextApp
           containerStyle={styles.input}
@@ -47,10 +49,7 @@ export default function InviteUserForm({
         />
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
-          style={[
-            styles.addButton,
-            { shadowColor: primaryColor, backgroundColor: primaryColor },
-          ]}
+          style={styles.addButton}
         >
           <IconApp name="add" size={24} color="white" />
         </TouchableOpacity>
@@ -59,32 +58,36 @@ export default function InviteUserForm({
   );
 }
 
-const styles = StyleSheet.create({
-  inputSection: {
-    borderTopWidth: 1,
-    paddingVertical: 16,
-    paddingBottom: 24,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-    gap: 12,
-  },
-  input: {
-    flex: 1,
-  },
-  addButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowOffset: {
-      width: 0,
-      height: 2,
+const getStyles = (colors: ColorScheme) =>
+  StyleSheet.create({
+    inputSection: {
+      borderTopWidth: 1,
+      paddingVertical: 16,
+      paddingBottom: 24,
+      borderTopColor: colors.border,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-});
+    inputContainer: {
+      flexDirection: "row",
+      alignItems: "flex-end",
+      gap: 12,
+    },
+    input: {
+      flex: 1,
+    },
+    addButton: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      justifyContent: "center",
+      alignItems: "center",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+      shadowColor: colors.primary,
+      backgroundColor: colors.primary,
+    },
+  });

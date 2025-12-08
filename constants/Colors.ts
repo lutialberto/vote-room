@@ -26,7 +26,7 @@ const commonColors = {
   border,
 };
 
-interface ColorScheme {
+export interface ColorScheme {
   primary: string;
   secondary: string;
   cancel: string;

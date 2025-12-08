@@ -15,10 +15,12 @@ export default function ExploreRooms() {
   const { data } = usePendingRoomInvitationRequest(currentUser?.id);
   const invitationsCount = data?.length || 0;
 
-  const primaryColor = useThemeColor({}, "primary");
-  const iconColor = useThemeColor({}, "icon");
-  const borderColor = useThemeColor({}, "border");
-  const backgroundColor = useThemeColor({}, "background");
+  const {
+    primary: primaryColor,
+    icon: iconColor,
+    border: borderColor,
+    background: backgroundColor,
+  } = useThemeColor();
 
   return (
     <Tab.Navigator

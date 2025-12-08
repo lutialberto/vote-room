@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ColorScheme } from "@/constants/Colors";
 
 export type OptionsButtonAppProps = {
   options: {
@@ -21,22 +22,22 @@ export function OptionsButtonApp({
   options,
   containerStyle,
 }: OptionsButtonAppProps) {
-  const primaryColor = useThemeColor({}, "primary");
+  const colors = useThemeColor();
+  const styles = getStyles(colors);
+
   return (
-    <View
-      style={[styles.container, containerStyle, { borderColor: primaryColor }]}
-    >
+    <View style={[styles.container, containerStyle]}>
       {options.map((option, index) => (
         <TouchableOpacity key={option.label} onPress={option.onPress}>
           <ThemedText
             style={[
               index > 0
-                ? { borderLeftWidth: 1, borderColor: primaryColor }
+                ? { borderLeftWidth: 1, borderColor: colors.primary }
                 : null,
-              { padding: 10, backgroundColor: primaryColor },
+              { padding: 10, backgroundColor: colors.primary },
               !option.selected
                 ? {
-                    color: primaryColor,
+                    color: colors.primary,
                     backgroundColor: "white",
                   }
                 : null,
@@ -50,11 +51,13 @@ export function OptionsButtonApp({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    borderWidth: 1,
-    borderRadius: 8,
-    overflow: "hidden",
-  },
-});
+const getStyles = (colors: ColorScheme) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      borderWidth: 1,
+      borderRadius: 8,
+      overflow: "hidden",
+      borderColor: colors.primary,
+    },
+  });

@@ -6,6 +6,7 @@ import {
 } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ColorScheme } from "@/constants/Colors";
 
 export type ButtonAppProps = TouchableOpacityProps & {
   type?: "primary" | "secondary" | "cancel";
@@ -20,16 +21,14 @@ export function ButtonApp({
   type = "primary",
   ...otherProps
 }: ButtonAppProps) {
-  const primaryColor = useThemeColor({}, "primary");
-  const secondaryColor = useThemeColor({}, "secondary");
-  const cancelColor = useThemeColor({}, "cancel");
+  const colors = useThemeColor();
+  const styles = getStyles(colors);
   return (
     <TouchableOpacity
       style={[
         styles.container,
-        { backgroundColor: primaryColor },
-        type === "secondary" && { backgroundColor: secondaryColor },
-        type === "cancel" && { backgroundColor: cancelColor },
+        type === "secondary" && { backgroundColor: colors.secondary },
+        type === "cancel" && { backgroundColor: colors.cancel },
         style,
       ]}
       {...otherProps}
@@ -39,14 +38,16 @@ export function ButtonApp({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 24,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    flexDirection: "row",
-    marginHorizontal: "auto",
-  },
-});
+const getStyles = (colors: ColorScheme) =>
+  StyleSheet.create({
+    container: {
+      justifyContent: "center",
+      alignItems: "center",
+      borderRadius: 24,
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+      flexDirection: "row",
+      marginHorizontal: "auto",
+      backgroundColor: colors.primary,
+    },
+  });
