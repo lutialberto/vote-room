@@ -1,9 +1,11 @@
 import { ThemedText } from "@/components/ThemedText";
 import { RadioButtonApp } from "@/components/RadioButtonApp";
 import { View, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { USER_INVITATIONS } from "../constants/userInvitations";
 import { UserInvitationType } from "../models/UserInvitationType";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { IconApp } from "@/components/IconApp";
+import { CardApp } from "@/components/CardApp";
 
 export default function InviteUserTypeSelector({
   selectedInvitationType,
@@ -12,8 +14,8 @@ export default function InviteUserTypeSelector({
   selectedInvitationType: UserInvitationType;
   handleSelectedOption: (type: UserInvitationType) => void;
 }) {
+  const primaryColor = useThemeColor({}, "primary");
   const selectedOption = USER_INVITATIONS[selectedInvitationType];
-
   return (
     <>
       <View style={styles.optionsContainer}>
@@ -30,15 +32,17 @@ export default function InviteUserTypeSelector({
       </View>
 
       {selectedOption && (
-        <View style={styles.hintContainer}>
-          <Ionicons
+        <CardApp
+          type="withShadow"
+          style={[styles.hintContainer, { borderLeftColor: primaryColor }]}
+        >
+          <IconApp
             name={selectedOption.icon}
             size={20}
-            color="#666"
             style={styles.hintIcon}
           />
           <ThemedText style={styles.hint}>{selectedOption.hint}</ThemedText>
-        </View>
+        </CardApp>
       )}
     </>
   );
@@ -51,12 +55,8 @@ const styles = StyleSheet.create({
   hintContainer: {
     flexDirection: "row",
     alignItems: "flex-start",
-    backgroundColor: "#f8f9fa",
-    borderRadius: 12,
-    padding: 16,
     marginBottom: 24,
     borderLeftWidth: 4,
-    borderLeftColor: "#0186FF",
   },
   hintIcon: {
     marginRight: 12,

@@ -1,4 +1,6 @@
+import { IconApp } from "@/components/IconApp";
 import { ThemedText } from "@/components/ThemedText";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
 
@@ -30,6 +32,8 @@ const INSTRUCTIONS: {
 ];
 
 export default function SearchRoomByCodeInstructions() {
+  const orangeColor = useThemeColor({}, "orange");
+
   return (
     <View style={styles.container}>
       <ThemedText type="subtitle" style={styles.title}>
@@ -39,10 +43,10 @@ export default function SearchRoomByCodeInstructions() {
       <View style={styles.instructionsList}>
         {INSTRUCTIONS.map((instruction) => (
           <View key={instruction.name} style={styles.instructionItem}>
-            <Ionicons
+            <IconApp
               name={instruction.icon}
               size={20}
-              color="#0186FF"
+              colorName="primary"
               style={styles.icon}
             />
             <ThemedText style={{ width: "90%" }}>{instruction.text}</ThemedText>
@@ -50,16 +54,21 @@ export default function SearchRoomByCodeInstructions() {
         ))}
       </View>
 
-      <View style={styles.tip}>
-        <Ionicons
+      <View
+        style={[
+          styles.tip,
+          { borderLeftColor: orangeColor, backgroundColor: orangeColor + "20" },
+        ]}
+      >
+        <IconApp
           name="bulb"
           size={16}
-          color="#ff9500"
+          colorName="orange"
           style={styles.tipIcon}
         />
         <ThemedText style={styles.tipText}>
-          <ThemedText style={styles.tipLabel}>Tip:</ThemedText> Si tienes el
-          enlace de una sala, ábrelo directamente desde tu navegador o app de
+          <ThemedText colorName="orange">Tip:</ThemedText> Si tienes el enlace
+          de una sala, ábrelo directamente desde tu navegador o app de
           mensajería
         </ThemedText>
       </View>
@@ -90,11 +99,9 @@ const styles = StyleSheet.create({
   tip: {
     flexDirection: "row",
     alignItems: "flex-start",
-    backgroundColor: "#fff8e1",
     borderRadius: 12,
     padding: 16,
     borderLeftWidth: 4,
-    borderLeftColor: "#ff9500",
     gap: 12,
   },
   tipIcon: {
@@ -104,9 +111,5 @@ const styles = StyleSheet.create({
     flex: 1,
     lineHeight: 18,
     fontSize: 14,
-  },
-  tipLabel: {
-    fontWeight: "600",
-    color: "#ff9500",
   },
 });

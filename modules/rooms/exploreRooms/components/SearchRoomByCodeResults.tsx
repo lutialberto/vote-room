@@ -1,11 +1,8 @@
 import { ButtonApp } from "@/components/ButtonApp";
 import { ThemedText } from "@/components/ThemedText";
-import { Room } from "@/models/Room";
 import { StyleSheet, View } from "react-native";
-import {
-  SearchRoomByCodeState,
-  SearchState,
-} from "../models/SearchRoomByCodeState";
+import { SearchRoomByCodeState } from "../models/SearchRoomByCodeState";
+import { CardApp } from "@/components/CardApp";
 
 export default function SearchRoomByCodeResults({
   state,
@@ -19,7 +16,7 @@ export default function SearchRoomByCodeResults({
   if (state.state === "idle") return null;
 
   return (
-    <View style={styles.card}>
+    <CardApp type="withShadow" style={styles.card}>
       {state.state === "found" || state.state === "request-key" ? (
         <>
           <ThemedText type="title">{state.room.label}</ThemedText>
@@ -57,15 +54,12 @@ export default function SearchRoomByCodeResults({
           No se encontró ninguna sala con ese código.
         </ThemedText>
       )}
-    </View>
+    </CardApp>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: "#f0f0f0",
     marginVertical: 16,
   },
 });

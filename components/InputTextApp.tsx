@@ -13,7 +13,8 @@ import {
   UseControllerProps,
 } from "react-hook-form";
 import { useState } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { IconApp } from "./IconApp";
 
 const MAX_DEFAULT_MULTIVALUE = 5;
 
@@ -57,6 +58,7 @@ export default function InputTextApp<T extends FieldValues>({
     field.value,
     maxMultivalue
   );
+  const primaryColor = useThemeColor({}, "primary");
 
   const removeValue = (index: number) => {
     let values = field.value;
@@ -141,7 +143,7 @@ export default function InputTextApp<T extends FieldValues>({
           {field.value.map((v: string, index: number) => (
             <TouchableOpacity
               style={{
-                borderColor: "#0186FF",
+                borderColor: primaryColor,
                 borderWidth: 1,
                 borderRadius: 15,
                 paddingHorizontal: 8,
@@ -153,14 +155,8 @@ export default function InputTextApp<T extends FieldValues>({
               key={v}
               onPress={() => removeValue(index)}
             >
-              <ThemedText
-                style={{
-                  color: "#0186FF",
-                }}
-              >
-                {v}
-              </ThemedText>
-              <MaterialIcons name="close" size={16} color="#0186FF" />
+              <ThemedText colorName="primary">{v}</ThemedText>
+              <IconApp name="close" size={16} colorName="primary" />
             </TouchableOpacity>
           ))}
         </ThemedView>

@@ -3,6 +3,8 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Room } from "@/models/Room";
 import { User } from "@/models/User";
 import { useUser } from "@/contexts/UserContext";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { CardApp } from "./CardApp";
 
 export type RoomStatNames = "owner" | "active" | "unread";
 export type RoomStat = {
@@ -35,9 +37,10 @@ export default function RoomStats({
   selectedStats: RoomStatNames | undefined;
 }) {
   const { currentUser } = useUser();
+  const primaryColor = useThemeColor({}, "primary");
 
   return (
-    <View style={styles.statsContainer}>
+    <CardApp style={styles.statsContainer}>
       {Object.values(ROOM_STATS).map((stat, index) => {
         const statKey = Object.keys(ROOM_STATS)[index] as RoomStatNames;
         return (
@@ -46,30 +49,28 @@ export default function RoomStats({
             onPress={() => handleSelectedStatsItemPress(statKey)}
             style={[
               styles.statItem,
-              selectedStats === statKey && styles.statItemSelected,
+              selectedStats === statKey && {
+                backgroundColor: primaryColor + "20",
+              },
             ]}
           >
-            <ThemedText style={styles.statNumber}>
+            <ThemedText colorName="primary" style={styles.statNumber}>
               {rooms.filter((r) => stat.criteria(r, currentUser)).length}
             </ThemedText>
             <ThemedText style={styles.statLabel}>{stat.label}</ThemedText>
           </TouchableOpacity>
         );
       })}
-    </View>
+    </CardApp>
   );
 }
 
 const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: "row",
-    backgroundColor: "#f8f9fa",
-    borderRadius: 12,
+    padding: 0,
     marginBottom: 24,
     justifyContent: "space-around",
-  },
-  statItemSelected: {
-    backgroundColor: "#e0f0ff",
   },
   statItem: {
     alignItems: "center",
@@ -79,7 +80,6 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#007AFF",
   },
   statLabel: {
     opacity: 0.7,

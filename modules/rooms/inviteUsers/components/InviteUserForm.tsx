@@ -1,14 +1,17 @@
 import { useForm } from "react-hook-form";
 import InputTextApp from "@/components/InputTextApp";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { UserInvitation } from "../models/UserInvitation";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { IconApp } from "@/components/IconApp";
 
 export default function InviteUserForm({
   handleSubmitForm,
 }: {
   handleSubmitForm: (data: UserInvitation) => void;
 }) {
+  const primaryColor = useThemeColor({}, "primary");
+  const borderColor = useThemeColor({}, "border");
   const {
     handleSubmit,
     reset,
@@ -26,7 +29,7 @@ export default function InviteUserForm({
   };
 
   return (
-    <View style={styles.inputSection}>
+    <View style={[styles.inputSection, { borderTopColor: borderColor }]}>
       <View style={styles.inputContainer}>
         <InputTextApp
           containerStyle={styles.input}
@@ -44,9 +47,12 @@ export default function InviteUserForm({
         />
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
-          style={styles.addButton}
+          style={[
+            styles.addButton,
+            { shadowColor: primaryColor, backgroundColor: primaryColor },
+          ]}
         >
-          <Ionicons name="add" size={24} color="white" />
+          <IconApp name="add" size={24} color="white" />
         </TouchableOpacity>
       </View>
     </View>
@@ -55,9 +61,7 @@ export default function InviteUserForm({
 
 const styles = StyleSheet.create({
   inputSection: {
-    backgroundColor: "#fff",
     borderTopWidth: 1,
-    borderTopColor: "#e0e0e0",
     paddingVertical: 16,
     paddingBottom: 24,
   },
@@ -70,13 +74,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   addButton: {
-    backgroundColor: "#0186FF",
     width: 48,
     height: 48,
     borderRadius: 24,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#0186FF",
     shadowOffset: {
       width: 0,
       height: 2,

@@ -13,8 +13,8 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import FormStepCard from "@/components/FormStepCard";
+import { NewStepMainIcon } from "@/modules/rooms/newSteps/components/NewStepMainIcon";
 
 type FormData = {
   name: string;
@@ -51,9 +51,7 @@ export default function RoomNameStep() {
             keyboardShouldPersistTaps="handled"
           >
             <View style={styles.header}>
-              <View style={styles.iconContainer}>
-                <Ionicons name="people" size={48} color="#007AFF" />
-              </View>
+              <NewStepMainIcon name="people" />
               <ThemedText type="title" style={styles.title}>
                 🗳️ Crea tu Sala de Votación
               </ThemedText>
@@ -141,11 +139,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 32,
     gap: 12,
-  },
-  iconContainer: {
-    backgroundColor: "#f0f9ff",
-    borderRadius: 50,
-    padding: 20,
   },
   title: {
     textAlign: "center",

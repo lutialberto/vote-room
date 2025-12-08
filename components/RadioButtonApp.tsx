@@ -6,6 +6,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { ThemedText } from "./ThemedText";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export type RadioButtonAppProps = {
   options: {
@@ -20,6 +21,7 @@ export function RadioButtonApp({
   options,
   containerStyle,
 }: RadioButtonAppProps) {
+  const primaryColor = useThemeColor({}, "primary");
   return (
     <View style={[styles.container, containerStyle]}>
       {options.map((option) => (
@@ -29,7 +31,10 @@ export function RadioButtonApp({
           style={styles.optionContainer}
         >
           <View
-            style={[styles.icon, option.selected ? styles.iconSelected : null]}
+            style={[
+              styles.icon,
+              option.selected ? { backgroundColor: primaryColor } : null,
+            ]}
           ></View>
           <ThemedText type="defaultSemiBold">{option.label}</ThemedText>
         </TouchableOpacity>
@@ -53,8 +58,5 @@ const styles = StyleSheet.create({
     width: 15,
     borderRadius: "100%",
     borderWidth: 2,
-  },
-  iconSelected: {
-    backgroundColor: "#0186FF",
   },
 });

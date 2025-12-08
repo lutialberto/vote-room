@@ -2,12 +2,13 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useEffect, useState } from "react";
 import { StyleSheet, View, RefreshControl, FlatList } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import RoomCardItem from "@/components/RoomCardItem";
 import { Room } from "../../models/Room";
 import RoomStats, { ROOM_STATS, RoomStatNames } from "@/components/RoomStats";
 import { fetchRoomsByUser } from "@/services/roomMember/roomMemberService";
 import { useUser } from "@/contexts/UserContext";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { IconApp } from "@/components/IconApp";
 
 export default function MyRooms() {
   const { currentUser } = useUser();
@@ -16,6 +17,7 @@ export default function MyRooms() {
   const [selectedStats, setSelectedStats] = useState<RoomStatNames | undefined>(
     undefined
   );
+  const primaryColor = useThemeColor({}, "primary");
 
   const roomsBySelectedStat = selectedStats
     ? rooms.filter((room) =>
@@ -68,12 +70,12 @@ export default function MyRooms() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor="#007AFF"
+            tintColor={primaryColor}
           />
         }
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <Ionicons name="home-outline" size={80} color="#ccc" />
+            <IconApp name="home-outline" size={80} />
             <ThemedText>No tienes salas aún</ThemedText>
             <ThemedText style={styles.emptyDescription}>
               Crea una nueva sala o únete a una existente para comenzar

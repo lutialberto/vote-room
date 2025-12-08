@@ -5,19 +5,20 @@ import {
   ScrollView,
   StyleSheet,
   Switch,
-  TextInput,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import InputTextApp from "@/components/InputTextApp";
 import { ButtonApp } from "@/components/ButtonApp";
-import { Ionicons } from "@expo/vector-icons";
 import FormStepCard from "@/components/FormStepCard";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { IconApp } from "@/components/IconApp";
+import { NewStepMainIcon } from "@/modules/rooms/newSteps/components/NewStepMainIcon";
+import { CardApp } from "@/components/CardApp";
 
 type FormData = {
   tags: string[];
@@ -26,6 +27,9 @@ type FormData = {
 };
 
 export default function RoomTypeStep() {
+  const primaryColor = useThemeColor({}, "primary");
+  const borderColor = useThemeColor({}, "border");
+
   const {
     handleSubmit,
     watch,
@@ -59,9 +63,7 @@ export default function RoomTypeStep() {
             keyboardShouldPersistTaps="handled"
           >
             <View style={styles.header}>
-              <View style={styles.iconContainer}>
-                <Ionicons name="pricetags" size={48} color="#007AFF" />
-              </View>
+              <NewStepMainIcon name="pricetags" />
               <ThemedText type="title" style={styles.title}>
                 🏷️ Configura tu Sala
               </ThemedText>
@@ -119,7 +121,7 @@ export default function RoomTypeStep() {
 
               <View style={styles.section}>
                 <ThemedText type="title">📅 Configuración especial</ThemedText>
-                <View style={styles.switchContainer}>
+                <CardApp style={styles.switchContainer}>
                   <View style={styles.switchInfo}>
                     <ThemedText style={styles.switchLabel}>
                       Evento especial
@@ -135,20 +137,25 @@ export default function RoomTypeStep() {
                       <Switch
                         value={value}
                         onValueChange={onChange}
-                        trackColor={{ false: "#e0e0e0", true: "#007AFF" }}
-                        thumbColor={value ? "#fff" : "#f4f3f4"}
+                        trackColor={{ false: borderColor, true: primaryColor }}
+                        thumbColor={"white"}
                       />
                     )}
                   />
-                </View>
+                </CardApp>
                 {isEvent && (
-                  <View style={styles.eventInfo}>
-                    <Ionicons
+                  <View
+                    style={[
+                      styles.eventInfo,
+                      { backgroundColor: primaryColor + "20" },
+                    ]}
+                  >
+                    <IconApp
                       name="information-circle"
                       size={16}
-                      color="#007AFF"
+                      colorName="primary"
                     />
-                    <ThemedText style={styles.eventText}>
+                    <ThemedText colorName="primary" style={styles.eventText}>
                       Los eventos aparecerán destacados en las búsquedas
                     </ThemedText>
                   </View>
@@ -188,11 +195,6 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     gap: 12,
   },
-  iconContainer: {
-    backgroundColor: "#f0f9ff",
-    borderRadius: 50,
-    padding: 20,
-  },
   title: {
     textAlign: "center",
   },
@@ -210,9 +212,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#f8f9fa",
-    borderRadius: 12,
-    padding: 16,
   },
   switchInfo: {
     flex: 1,
@@ -231,14 +230,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: "#e3f2fd",
     borderRadius: 8,
     padding: 12,
     marginTop: 8,
   },
   eventText: {
     fontSize: 14,
-    color: "#1976d2",
     flex: 1,
   },
   buttonContainer: {

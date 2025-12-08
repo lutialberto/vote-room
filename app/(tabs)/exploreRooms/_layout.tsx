@@ -1,12 +1,12 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { Ionicons } from "@expo/vector-icons";
 import ByCodeTab from "./byCode";
 import InvitationsTab from "./invitations";
 import PublicRoomsTab from "./public";
 import { useUser } from "@/contexts/UserContext";
 import { usePendingRoomInvitationRequest } from "@/modules/rooms/exploreRooms/invitations/hooks/usePendingRoomInvitationRequest";
-import { View } from "react-native";
 import { TabBadgeApp } from "@/components/TabBadgeApp";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { IconApp } from "@/components/IconApp";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -15,13 +15,18 @@ export default function ExploreRooms() {
   const { data } = usePendingRoomInvitationRequest(currentUser?.id);
   const invitationsCount = data?.length || 0;
 
+  const primaryColor = useThemeColor({}, "primary");
+  const iconColor = useThemeColor({}, "icon");
+  const borderColor = useThemeColor({}, "border");
+  const backgroundColor = useThemeColor({}, "background");
+
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: "#0186FF",
-        tabBarInactiveTintColor: "#666",
+        tabBarActiveTintColor: primaryColor,
+        tabBarInactiveTintColor: iconColor,
         tabBarIndicatorStyle: {
-          backgroundColor: "#0186FF",
+          backgroundColor: primaryColor,
           height: 3,
         },
         tabBarLabelStyle: {
@@ -30,11 +35,11 @@ export default function ExploreRooms() {
           textTransform: "none",
         },
         tabBarStyle: {
-          backgroundColor: "#fff",
+          backgroundColor: backgroundColor,
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 1,
-          borderBottomColor: "#e0e0e0",
+          borderBottomColor: borderColor,
         },
       }}
     >
@@ -44,7 +49,7 @@ export default function ExploreRooms() {
         options={{
           tabBarLabel: "Por Código",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="keypad" size={18} color={color} />
+            <IconApp name="keypad" size={18} color={color} />
           ),
         }}
       />
@@ -54,7 +59,7 @@ export default function ExploreRooms() {
         options={{
           tabBarLabel: "Públicas",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="globe" size={18} color={color} />
+            <IconApp name="globe" size={18} color={color} />
           ),
         }}
       />
@@ -65,7 +70,7 @@ export default function ExploreRooms() {
           tabBarLabel: "Invitaciones",
           tabBarIcon: ({ color }) => (
             <>
-              <Ionicons name="mail" size={18} color={color} />
+              <IconApp name="mail" size={18} color={color} />
               <TabBadgeApp visible={invitationsCount > 0} />
             </>
           ),

@@ -1,15 +1,17 @@
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { StyleSheet, ActivityIndicator, View } from "react-native";
 
 export function SpinnerApp(props: {
   visible: boolean;
   children?: React.ReactNode;
 }) {
+  const primaryColor = useThemeColor({}, "primary");
   return (
     <>
       {props.children}
       {props.visible && (
         <View style={styles.spinnerOverlay}>
-          <ActivityIndicator size="large" color="#0186FF" />
+          <ActivityIndicator size="large" color={primaryColor} />
         </View>
       )}
     </>

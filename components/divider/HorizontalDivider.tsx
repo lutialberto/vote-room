@@ -1,12 +1,15 @@
 import { ThemedText } from "@/components/ThemedText";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { View, StyleSheet } from "react-native";
 
 export default function HorizontalDivider() {
+  const lineColor = useThemeColor({}, "border");
+
   return (
     <View style={styles.divider}>
-      <View style={styles.line} />
+      <View style={[styles.line, { backgroundColor: lineColor }]} />
       <ThemedText style={styles.orText}>o</ThemedText>
-      <View style={styles.line} />
+      <View style={[styles.line, { backgroundColor: lineColor }]} />
     </View>
   );
 }
@@ -20,7 +23,6 @@ const styles = StyleSheet.create({
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: "#e0e0e0",
   },
   orText: {
     marginHorizontal: 16,

@@ -1,10 +1,11 @@
 import { ThemedText } from "@/components/ThemedText";
 import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { PendingInvitation } from "../models/PendingInvitation";
-import { UserInvitationType } from "../models/UserInvitationType";
 import { USER_INVITATIONS } from "../constants/userInvitations";
 import { ButtonApp } from "@/components/ButtonApp";
+import { IconApp } from "@/components/IconApp";
+import { CardApp } from "@/components/CardApp";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export default function InviteUserPendingList({
   pendingInvitations,
@@ -13,10 +14,11 @@ export default function InviteUserPendingList({
   pendingInvitations: PendingInvitation[];
   removeInvitation: (id: string) => void;
 }) {
+  const primaryColor = useThemeColor({}, "primary");
   return (
     <>
       <View style={styles.pendingHeader}>
-        <Ionicons name="send" size={20} color="#0186FF" />
+        <IconApp name="send" size={20} colorName="primary" />
         <ThemedText type="subtitle">
           Invitaciones pendientes ({pendingInvitations.length})
         </ThemedText>
@@ -32,13 +34,9 @@ export default function InviteUserPendingList({
           </ThemedText>
         )}
         renderItem={({ item }) => (
-          <View style={styles.invitationItem}>
+          <CardApp type="withShadow" style={styles.invitationItem}>
             <View style={styles.invitationInfo}>
-              <Ionicons
-                name={USER_INVITATIONS[item.type].icon}
-                size={20}
-                color="#666"
-              />
+              <IconApp name={USER_INVITATIONS[item.type].icon} size={20} />
               <View style={styles.invitationText}>
                 <ThemedText>{USER_INVITATIONS[item.type].label}</ThemedText>
                 <ThemedText type="defaultSemiBold">{item.value}</ThemedText>
@@ -46,11 +44,14 @@ export default function InviteUserPendingList({
             </View>
             <TouchableOpacity
               onPress={() => removeInvitation(item.id)}
-              style={styles.removeButton}
+              style={[
+                styles.removeButton,
+                { backgroundColor: primaryColor + "20" },
+              ]}
             >
-              <Ionicons name="close" size={20} color="#0186FF" />
+              <IconApp name="close" size={20} colorName="primary" />
             </TouchableOpacity>
-          </View>
+          </CardApp>
         )}
       />
       {pendingInvitations.length > 0 ? (
@@ -82,9 +83,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#f8f9fa",
-    borderRadius: 12,
-    padding: 16,
+    marginVertical: 8,
+    marginHorizontal: 16,
   },
   invitationInfo: {
     flexDirection: "row",
@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
   removeButton: {
     padding: 8,
     borderRadius: 20,
-    backgroundColor: "#e9ecef",
   },
   sendAllButton: {
     margin: 16,

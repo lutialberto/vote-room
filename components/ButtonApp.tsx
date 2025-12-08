@@ -5,6 +5,7 @@ import {
   TouchableOpacityProps,
 } from "react-native";
 import { ThemedText } from "./ThemedText";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export type ButtonAppProps = TouchableOpacityProps & {
   type?: "primary" | "secondary" | "cancel";
@@ -19,12 +20,16 @@ export function ButtonApp({
   type = "primary",
   ...otherProps
 }: ButtonAppProps) {
+  const primaryColor = useThemeColor({}, "primary");
+  const secondaryColor = useThemeColor({}, "secondary");
+  const cancelColor = useThemeColor({}, "cancel");
   return (
     <TouchableOpacity
       style={[
         styles.container,
-        type === "secondary" && styles.secondaryButton,
-        type === "cancel" && styles.cancelButton,
+        { backgroundColor: primaryColor },
+        type === "secondary" && { backgroundColor: secondaryColor },
+        type === "cancel" && { backgroundColor: cancelColor },
         style,
       ]}
       {...otherProps}
@@ -42,13 +47,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     flexDirection: "row",
-    backgroundColor: "#0186FF",
     marginHorizontal: "auto",
-  },
-  secondaryButton: {
-    backgroundColor: "#34C759",
-  },
-  cancelButton: {
-    backgroundColor: "#FF3B30",
   },
 });

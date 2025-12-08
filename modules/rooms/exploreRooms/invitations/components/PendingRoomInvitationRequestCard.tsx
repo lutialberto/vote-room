@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     gap: 12,
     elevation: 2,
-    shadowColor: "#000",
+    shadowColor: "black",
     shadowOffset: {
       width: 0,
       height: 1,

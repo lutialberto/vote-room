@@ -1,15 +1,17 @@
 import { ButtonApp } from "@/components/ButtonApp";
+import { CardApp } from "@/components/CardApp";
 import HorizontalDivider from "@/components/divider/HorizontalDivider";
+import { IconApp } from "@/components/IconApp";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { Ionicons } from "@expo/vector-icons";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import * as Clipboard from "expo-clipboard";
 import { useLocalSearchParams, router } from "expo-router";
-import * as Sharing from "expo-sharing";
 import { Alert, Share, View, StyleSheet } from "react-native";
 
 export default function ShareRoom() {
   const { roomId } = useLocalSearchParams<{ roomId: string }>();
+  const borderColor = useThemeColor({}, "border");
 
   const onCopyToClipboard = async () => {
     await Clipboard.setStringAsync(roomId);
@@ -38,10 +40,10 @@ export default function ShareRoom() {
 
   return (
     <ThemedView style={styles.container}>
-      <View style={styles.codeContainer}>
-        <Ionicons name="key" size={24} color="#666" style={styles.keyIcon} />
+      <CardApp style={[styles.codeContainer, { borderColor: borderColor }]}>
+        <IconApp name="key" size={24} style={styles.keyIcon} />
         <ThemedText type="title">{roomId}</ThemedText>
-      </View>
+      </CardApp>
 
       <View style={styles.section}>
         <ThemedText type="subtitle">👥 Invitar usuarios específicos</ThemedText>
@@ -86,15 +88,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   codeContainer: {
-    backgroundColor: "#f5f5f5",
-    borderRadius: 16,
-    padding: 20,
     marginBottom: 32,
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
     borderWidth: 2,
-    borderColor: "#e0e0e0",
   },
   keyIcon: {
     marginRight: 12,

@@ -1,10 +1,9 @@
 import { Tabs } from "expo-router";
-import React from "react";
 import { Platform, useColorScheme } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
+import { IconApp } from "@/components/IconApp";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -30,7 +29,7 @@ export default function TabLayout() {
         options={{
           title: "Explorar Salas",
           tabBarIcon: ({ color }) => (
-            <Ionicons size={28} name="search" color={color} />
+            <IconApp size={28} name="search" color={color} />
           ),
         }}
       />
@@ -39,7 +38,7 @@ export default function TabLayout() {
         options={{
           title: "Nueva Sala",
           tabBarIcon: ({ color }) => (
-            <Ionicons size={28} name="add-circle" color={color} />
+            <IconApp size={28} name="add-circle" color={color} />
           ),
         }}
       />
@@ -48,7 +47,7 @@ export default function TabLayout() {
         options={{
           title: "Mis Salas",
           tabBarIcon: ({ color }) => (
-            <Ionicons size={28} name="people" color={color} />
+            <IconApp size={28} name="people" color={color} />
           ),
         }}
       />

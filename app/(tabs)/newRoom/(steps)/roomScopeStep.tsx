@@ -1,19 +1,15 @@
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  Switch,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ButtonApp } from "@/components/ButtonApp";
 import { OptionsButtonApp } from "@/components/OptionsButtonApp";
 import { router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 import FormStepCard from "@/components/FormStepCard";
+import { IconApp } from "@/components/IconApp";
+import { NewStepMainIcon } from "@/modules/rooms/newSteps/components/NewStepMainIcon";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { CardApp } from "@/components/CardApp";
 
 const userTypes = [
   {
@@ -39,6 +35,7 @@ const userTypes = [
 export default function RoomScopeStep() {
   const [isPublic, setIsPublic] = useState(true);
   const [userType, setUserType] = useState(userTypes[0].code);
+  const borderColor = useThemeColor({}, "border");
 
   const scopeOptions = [
     { label: "Publica", selected: isPublic, onPress: () => setIsPublic(true) },
@@ -69,9 +66,7 @@ export default function RoomScopeStep() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <View style={styles.iconContainer}>
-            <Ionicons name="settings" size={48} color="#007AFF" />
-          </View>
+          <NewStepMainIcon name="settings" />
           <ThemedText type="title" style={styles.title}>
             🔧 Configuración Final
           </ThemedText>
@@ -91,11 +86,11 @@ export default function RoomScopeStep() {
           </ThemedText>
           <OptionsButtonApp options={scopeOptions} />
 
-          <View style={styles.infoCard}>
-            <Ionicons
+          <CardApp style={styles.infoCard}>
+            <IconApp
               name={isPublic ? "eye" : "eye-off"}
               size={24}
-              color={isPublic ? "#34C759" : "#FF9500"}
+              colorName={isPublic ? "green" : "orange"}
               style={styles.infoIcon}
             />
             <View style={styles.infoContent}>
@@ -119,7 +114,7 @@ export default function RoomScopeStep() {
                 </>
               )}
             </View>
-          </View>
+          </CardApp>
         </View>
 
         <View style={styles.section}>
@@ -128,11 +123,11 @@ export default function RoomScopeStep() {
           </ThemedText>
           <OptionsButtonApp options={userTypeOptions} />
 
-          <View style={styles.infoCard}>
-            <Ionicons
+          <CardApp style={styles.infoCard}>
+            <IconApp
               name={selectedUserType?.icon || "person-outline"}
               size={24}
-              color="#007AFF"
+              colorName="primary"
               style={styles.infoIcon}
             />
             <View style={styles.infoContent}>
@@ -143,31 +138,31 @@ export default function RoomScopeStep() {
                 {selectedUserType?.description}
               </ThemedText>
             </View>
-          </View>
+          </CardApp>
         </View>
 
         <View style={styles.summaryContainer}>
           <ThemedText type="defaultSemiBold" style={styles.summaryTitle}>
             📋 Resumen
           </ThemedText>
-          <View style={styles.summaryCard}>
+          <CardApp style={styles.summaryCard}>
             <View style={styles.summaryRow}>
               <ThemedText>Tipo</ThemedText>
-              <ThemedText style={styles.summaryValue}>
+              <ThemedText colorName="primary">
                 {isPublic ? "Pública" : "Privada"}
               </ThemedText>
             </View>
             <View style={styles.summaryRow}>
               <ThemedText>Acceso</ThemedText>
-              <ThemedText style={styles.summaryValue}>
+              <ThemedText colorName="primary">
                 {selectedUserType?.label}
               </ThemedText>
             </View>
-          </View>
+          </CardApp>
         </View>
       </ScrollView>
 
-      <View style={styles.buttonContainer}>
+      <View style={[styles.buttonContainer, { borderTopColor: borderColor }]}>
         <ButtonApp label="🎉 Crear Sala" onPress={onConfirm} type="secondary" />
         <ThemedText type="hint">
           ✅ ¡Listo! Tu sala estará disponible inmediatamente
@@ -191,11 +186,6 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     gap: 12,
   },
-  iconContainer: {
-    backgroundColor: "#f0f9ff",
-    borderRadius: 50,
-    padding: 20,
-  },
   title: {
     textAlign: "center",
   },
@@ -203,25 +193,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     opacity: 0.7,
   },
-  instructionsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#f8f9fa",
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 24,
-  },
-  stepIndicator: {
-    backgroundColor: "#007AFF",
-    borderRadius: 20,
-    width: 32,
-    height: 32,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 12,
-  },
   stepNumber: {
-    color: "#fff",
+    color: "white",
     fontWeight: "bold",
     fontSize: 16,
   },
@@ -240,7 +213,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   infoCard: {
-    backgroundColor: "#f8f9fa",
     borderRadius: 12,
     padding: 16,
     flexDirection: "row",
@@ -263,9 +235,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   summaryCard: {
-    backgroundColor: "#e3f2fd",
-    borderRadius: 12,
-    padding: 16,
     gap: 12,
   },
   summaryRow: {
@@ -273,17 +242,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  summaryValue: {
-    color: "#1976d2",
-  },
   buttonContainer: {
     paddingHorizontal: 20,
     paddingVertical: 16,
     alignItems: "center",
     gap: 10,
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     borderTopWidth: 1,
-    borderTopColor: "#e0e0e0",
   },
   hint: {
     fontSize: 12,
