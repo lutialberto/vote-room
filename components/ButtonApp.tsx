@@ -1,9 +1,13 @@
-import { StyleSheet, TextStyle, TouchableOpacity } from "react-native";
-import { TouchableOpacityProps } from "react-native-gesture-handler";
+import {
+  StyleSheet,
+  TextStyle,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from "react-native";
 import { ThemedText } from "./ThemedText";
 
 export type ButtonAppProps = TouchableOpacityProps & {
-  type?: "primary" | "secondary";
+  type?: "primary" | "secondary" | "cancel";
   label: string;
   labelStyle?: TextStyle;
 };
@@ -20,6 +24,7 @@ export function ButtonApp({
       style={[
         styles.container,
         type === "secondary" && styles.secondaryButton,
+        type === "cancel" && styles.cancelButton,
         style,
       ]}
       {...otherProps}
@@ -42,5 +47,8 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     backgroundColor: "#34C759",
+  },
+  cancelButton: {
+    backgroundColor: "#FF3B30",
   },
 });
