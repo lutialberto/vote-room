@@ -3,15 +3,18 @@ import {
   TextStyle,
   TouchableOpacity,
   TouchableOpacityProps,
+  View,
 } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ColorScheme } from "@/constants/Colors";
+import { IconApp, IconName } from "./IconApp";
 
 export type ButtonAppProps = TouchableOpacityProps & {
   type?: "primary" | "secondary" | "cancel";
   label: string;
   labelStyle?: TextStyle;
+  icon?: IconName;
 };
 
 export function ButtonApp({
@@ -33,7 +36,16 @@ export function ButtonApp({
       ]}
       {...otherProps}
     >
-      <ThemedText style={labelStyle}>{label}</ThemedText>
+      <View style={{ gap: 8, flexDirection: "row", alignItems: "center" }}>
+        {otherProps.icon && (
+          <IconApp
+            name={otherProps.icon}
+            size={labelStyle?.fontSize ?? 16}
+            color={labelStyle?.color?.toString() ?? colors.text}
+          />
+        )}
+        <ThemedText style={labelStyle}>{label}</ThemedText>
+      </View>
     </TouchableOpacity>
   );
 }
