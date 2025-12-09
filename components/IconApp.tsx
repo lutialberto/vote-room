@@ -1,8 +1,10 @@
 import { ColorName, useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
 
+export type IconName = keyof typeof Ionicons.glyphMap;
+
 export function IconApp(props: {
-  name: keyof typeof Ionicons.glyphMap;
+  name: IconName;
   size: number;
   colorName?: ColorName;
   color?: string;

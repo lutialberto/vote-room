@@ -1,13 +1,12 @@
-import { IconApp } from "@/components/IconApp";
+import { IconApp, IconName } from "@/components/IconApp";
 import { ThemedText } from "@/components/ThemedText";
 import { ColorScheme } from "@/constants/Colors";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { Ionicons } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
 
 const INSTRUCTIONS: {
   name: string;
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: IconName;
   text: string;
 }[] = [
   {

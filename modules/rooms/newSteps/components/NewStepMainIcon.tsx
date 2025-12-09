@@ -1,11 +1,8 @@
-import { IconApp } from "@/components/IconApp";
+import { IconApp, IconName } from "@/components/IconApp";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { Ionicons } from "@expo/vector-icons";
 import { View } from "react-native";
 
-export function NewStepMainIcon(props: {
-  name: keyof typeof Ionicons.glyphMap;
-}) {
+export function NewStepMainIcon(props: { name: IconName }) {
   const { primary: color } = useThemeColor();
   return (
     <View

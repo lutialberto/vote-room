@@ -1,5 +1,5 @@
-import { Ionicons } from "@expo/vector-icons";
 import { UserInvitationType } from "../models/UserInvitationType";
+import { IconName } from "@/components/IconApp";
 
 export const USER_INVITATIONS: Record<
   UserInvitationType,
@@ -7,7 +7,7 @@ export const USER_INVITATIONS: Record<
     code: UserInvitationType;
     label: string;
     hint: string;
-    icon: keyof typeof Ionicons.glyphMap;
+    icon: IconName;
   }
 > = {
   userId: {
