@@ -1,37 +1,48 @@
 import { roomsMockResponse } from "./roomResponse";
-import { Room, BaseRoom, CreateRoomData } from "../../models/Room";
+import { Room, CreateRoomData, PublicRoomType } from "../../models/Room";
+import { successPromiseBehavior } from "../serviceUtilsImpl";
 
 // Implementación del servicio con estado en memoria
 export class RoomServiceImpl {
   private rooms: Room[] = [...roomsMockResponse];
 
   async fetchRooms(): Promise<Room[]> {
-    return [...this.rooms];
+    return successPromiseBehavior(() => [...this.rooms]);
   }
 
+  fetchPublicRooms = async (): Promise<PublicRoomType[]> =>
+    successPromiseBehavior<PublicRoomType[]>(
+      () =>
+        [...this.rooms.filter((room) => !room.isPrivate)] as PublicRoomType[]
+    );
+
   async getRoomByCode(code: string): Promise<Room | null> {
-    const room = this.rooms.find((r) => r.code === code);
-    return room ? { ...room } : null;
+    return successPromiseBehavior(() => {
+      const room = this.rooms.find((r) => r.code === code);
+      return room ? { ...room } : null;
+    });
   }
 
   async createRoom(roomData: CreateRoomData): Promise<Room> {
-    const baseData = {
-      ...roomData,
-      code: this.generateRoomCode(),
-      memberCount: 1,
-      lastActivity: "ahora" as const,
-    };
+    return successPromiseBehavior(() => {
+      const baseData = {
+        ...roomData,
+        code: this.generateRoomCode(),
+        memberCount: 1,
+        lastActivity: "ahora" as const,
+      };
 
-    const newRoom: Room = roomData.isPrivate
-      ? {
-          ...baseData,
-          isPrivate: true,
-          key: roomData.key || this.generateKey(),
-        }
-      : { ...baseData, isPrivate: false };
+      const newRoom: Room = roomData.isPrivate
+        ? {
+            ...baseData,
+            isPrivate: true,
+            key: roomData.key || this.generateKey(),
+          }
+        : { ...baseData, isPrivate: false };
 
-    this.rooms.push(newRoom);
-    return { ...newRoom };
+      this.rooms.push(newRoom);
+      return { ...newRoom };
+    });
   }
 
   private generateRoomCode(): string {

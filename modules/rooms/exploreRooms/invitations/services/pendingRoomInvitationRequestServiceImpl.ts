@@ -1,5 +1,6 @@
 import { pendingRoomInvitationRequestMockResponse } from "./pendingRoomInvitationRequestResponse";
 import { PendingRoomInvitationRequest } from "../models/PendingRoomInvitationRequest";
+import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
 
 export class PendingRoomInvitationRequestServiceImpl {
   private pendingRoomInvitationRequests: PendingRoomInvitationRequest[] = [
@@ -9,41 +10,33 @@ export class PendingRoomInvitationRequestServiceImpl {
   async fetchPendingRoomInvitationRequests(
     userId: number
   ): Promise<PendingRoomInvitationRequest[]> {
-    return new Promise<PendingRoomInvitationRequest[]>((resolve) => {
-      setTimeout(() => {
-        resolve(
-          this.pendingRoomInvitationRequests.filter(
-            (invitation) =>
-              invitation.invitedUserId === userId && !invitation.confirmed
-          )
-        );
-      }, 500);
-    });
+    return successPromiseBehavior(() =>
+      this.pendingRoomInvitationRequests.filter(
+        (invitation) =>
+          invitation.invitedUserId === userId && !invitation.confirmed
+      )
+    );
   }
 
   async rejectPendingRoomInvitationRequest(id: number): Promise<void> {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        this.pendingRoomInvitationRequests =
-          this.pendingRoomInvitationRequests.filter(
-            (invitation) => invitation.id !== id
-          );
-        resolve();
-      }, 500);
+    return successPromiseBehavior(() => {
+      this.pendingRoomInvitationRequests =
+        this.pendingRoomInvitationRequests.filter(
+          (invitation) => invitation.id !== id
+        );
     });
   }
 
   async acceptPendingRoomInvitationRequest(id: number): Promise<void> {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        this.pendingRoomInvitationRequests =
-          this.pendingRoomInvitationRequests.map((invitation) =>
-            invitation.id === id
-              ? { ...invitation, confirmed: true }
-              : invitation
-          );
-        resolve();
-      }, 500);
+    return successPromiseBehavior(() => {
+      this.pendingRoomInvitationRequests =
+        this.pendingRoomInvitationRequests.map((invitation) =>
+          invitation.id === id ? { ...invitation, confirmed: true } : invitation
+        );
+      this.pendingRoomInvitationRequests =
+        this.pendingRoomInvitationRequests.map((invitation) =>
+          invitation.id === id ? { ...invitation, confirmed: true } : invitation
+        );
     });
   }
 }
