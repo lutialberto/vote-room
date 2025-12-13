@@ -20,6 +20,10 @@ export type PublicRoomType = BaseRoom & {
   isPrivate: false;
 };
 
+export type PublicRoomTypeFilter = Partial<
+  Pick<PublicRoomType, "code" | "label" | "ownerName" | "tags">
+>;
+
 export type Room = PrivateRoomType | PublicRoomType;
 
 export type RoomStatus = "active" | "paused" | "finished";

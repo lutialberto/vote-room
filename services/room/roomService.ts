@@ -1,4 +1,9 @@
-import { CreateRoomData, PublicRoomType, Room } from "../../models/Room";
+import {
+  CreateRoomData,
+  PublicRoomType,
+  PublicRoomTypeFilter,
+  Room,
+} from "../../models/Room";
 import { roomServiceInstance } from "./roomServiceImpl";
 
 /**
@@ -13,8 +18,11 @@ import { roomServiceInstance } from "./roomServiceImpl";
  */
 
 // Funciones públicas del servicio
-export const fetchPublicRooms = (userId: number): Promise<PublicRoomType[]> =>
-  roomServiceInstance.fetchPublicRooms(userId);
+export const fetchPublicRooms = (
+  userId: number,
+  filter: PublicRoomTypeFilter
+): Promise<PublicRoomType[]> =>
+  roomServiceInstance.fetchPublicRooms(userId, filter);
 
 export const fetchRooms = (): Promise<Room[]> =>
   roomServiceInstance.fetchRooms();
