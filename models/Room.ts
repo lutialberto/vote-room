@@ -2,11 +2,13 @@ export type BaseRoom = {
   code: string;
   label: string;
   description: string;
+  ownerName: string;
   ownerUserId: number;
   memberCount?: number;
   lastActivity?: string;
   status: RoomStatus;
   hasUnreadVotes?: boolean;
+  tags?: string[];
 };
 
 export type PrivateRoomType = BaseRoom & {
