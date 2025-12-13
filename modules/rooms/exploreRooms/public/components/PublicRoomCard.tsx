@@ -25,10 +25,7 @@ export default function PublicRoomCard({
   onJoin,
 }: PublicRoomCardProps) {
   return (
-    <CardApp
-      type="withShadow"
-      style={{ gap: 8, marginVertical: 4, marginHorizontal: 8, padding: 8 }}
-    >
+    <CardApp type="withShadow" style={{ gap: 8, padding: 8 }}>
       <View>
         <ThemedText type="subtitle">{roomName}</ThemedText>
         <View
