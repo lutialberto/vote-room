@@ -126,7 +126,10 @@ export default function InputTextApp<T extends FieldValues>({
           type === "multiline" && {
             borderWidth: 1,
             borderRadius: 2,
-            height: 100,
+            height: textInputProps.numberOfLines
+              ? textInputProps.numberOfLines * 24
+              : 100,
+            borderBottomWidth: 1,
           },
           textInputProps.style,
         ]}
