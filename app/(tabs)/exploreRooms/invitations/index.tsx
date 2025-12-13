@@ -2,6 +2,7 @@ import { SpinnerApp } from "@/components/SpinnerApp";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useUser } from "@/contexts/UserContext";
+import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { PendingRoomInvitationRequestCard } from "@/modules/rooms/exploreRooms/invitations/components/PendingRoomInvitationRequestCard";
 import { usePendingRoomInvitationRequest } from "@/modules/rooms/exploreRooms/invitations/hooks/usePendingRoomInvitationRequest";
 import {
@@ -9,7 +10,6 @@ import {
   rejectPendingRoomInvitationRequest,
 } from "@/modules/rooms/exploreRooms/invitations/services/pendingRoomInvitationRequestService";
 import { router } from "expo-router";
-import { useState } from "react";
 import { Alert, FlatList, StyleSheet } from "react-native";
 
 export default function InvitationsTab() {
@@ -21,28 +21,29 @@ export default function InvitationsTab() {
     refetch,
     removeDataItem,
   } = usePendingRoomInvitationRequest(currentUser?.id);
-  const [isWaiting, setIsWaiting] = useState<boolean>(false);
-
-  function handleAccept(id: number) {
-    if (isWaiting) return;
-
-    setIsWaiting(true);
-    acceptPendingRoomInvitationRequest(id)
-      .then(() => {
+  const { isWaiting: isWaitingAccept, execPromise: handleAccept } =
+    useWaitingApp<{
+      id: number;
+    }>({
+      functionToWait: ({ id }) => acceptPendingRoomInvitationRequest(id),
+      success: ({ id }) => {
         removeDataItem(id);
-        setIsWaiting(false);
-
         const item = data.find((invitation) => invitation.id === id);
         router.push(`/${item?.roomCode}/shareRoom`);
-      })
-      .catch(() => {
-        Alert.alert("Error", "No se pudo aceptar la invitación.");
-        setIsWaiting(false);
-      });
-  }
+      },
+    });
+  const { isWaiting: isWaitingReject, execPromise: handleRejectConfirmed } =
+    useWaitingApp<{
+      id: number;
+    }>({
+      functionToWait: ({ id }) => rejectPendingRoomInvitationRequest(id),
+      success: ({ id }) => {
+        removeDataItem(id);
+      },
+    });
 
   function handleReject(id: number) {
-    if (isWaiting) return;
+    if (isWaitingReject) return;
 
     Alert.alert(
       "Rechazar Invitación",
@@ -54,29 +55,16 @@ export default function InvitationsTab() {
         },
         {
           text: "Rechazar",
-          onPress: () => handleRejectConfirmed(id),
+          onPress: () => handleRejectConfirmed({ id }),
           style: "destructive",
         },
       ]
     );
   }
 
-  function handleRejectConfirmed(id: number) {
-    setIsWaiting(true);
-    rejectPendingRoomInvitationRequest(id)
-      .then(() => {
-        removeDataItem(id);
-        setIsWaiting(false);
-      })
-      .catch(() => {
-        Alert.alert("Error", "No se pudo rechazar la invitación.");
-        setIsWaiting(false);
-      });
-  }
-
   return (
     <ThemedView style={styles.tabContainer}>
-      <SpinnerApp visible={isWaiting}>
+      <SpinnerApp visible={isWaitingAccept || isWaitingReject}>
         <FlatList
           keyExtractor={(item) => item.id.toString()}
           refreshing={isLoadingData}
@@ -93,7 +81,7 @@ export default function InvitationsTab() {
           renderItem={({ item }) => (
             <PendingRoomInvitationRequestCard
               invitationDate={item.invitationDate}
-              onAccept={() => handleAccept(item.id)}
+              onAccept={() => handleAccept({ id: item.id })}
               onReject={() => handleReject(item.id)}
               roomDescription={item.roomDescription}
               roomName={item.roomName}
