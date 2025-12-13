@@ -20,7 +20,7 @@ const MAX_DEFAULT_MULTIVALUE = 5;
 
 export type InputTextAppProps<T extends FieldValues> = {
   inputControl: UseControllerProps<T>;
-  label: string;
+  label?: string;
   errorMessage?: string;
   containerStyle?: StyleProp<ViewStyle>;
   textInputProps?: TextInputProps;
@@ -75,7 +75,7 @@ export default function InputTextApp<T extends FieldValues>({
           justifyContent: "space-between",
         }}
       >
-        <ThemedText type="inputLabel">{label}</ThemedText>
+        {label && <ThemedText type="inputLabel">{label}</ThemedText>}
         {focus && maxLength && (
           <ThemedText style={{ fontSize: 12 }}>
             {field.value.length}/{maxLength}
