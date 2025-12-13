@@ -12,7 +12,7 @@ import { IconApp, IconName } from "./IconApp";
 
 export type ButtonAppProps = TouchableOpacityProps & {
   type?: "primary" | "secondary" | "cancel";
-  label: string;
+  label?: string;
   labelStyle?: TextStyle;
   icon?: IconName;
 };
@@ -44,7 +44,7 @@ export function ButtonApp({
             color={labelStyle?.color?.toString() ?? colors.text}
           />
         )}
-        <ThemedText style={labelStyle}>{label}</ThemedText>
+        {label && <ThemedText style={labelStyle}>{label}</ThemedText>}
       </View>
     </TouchableOpacity>
   );
