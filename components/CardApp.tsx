@@ -16,7 +16,6 @@ export function CardApp(props: {
       style={[
         styles.container,
         props.type === "withShadow" && styles.withShadow,
-        ,
         props.style,
       ]}
     >
@@ -41,5 +40,6 @@ const getStyles = (colors: ColorScheme) =>
       shadowOpacity: 0.1,
       shadowRadius: 3.84,
       elevation: 5,
+      margin: 4,
     },
   });
