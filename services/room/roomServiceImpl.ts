@@ -1,20 +1,28 @@
 import { roomsMockResponse } from "./roomResponse";
 import { Room, CreateRoomData, PublicRoomType } from "../../models/Room";
 import { successPromiseBehavior } from "../serviceUtilsImpl";
+import { roomMemberServiceInstance } from "../roomMember/roomMemberServiceImpl";
 
 // Implementación del servicio con estado en memoria
 export class RoomServiceImpl {
   private rooms: Room[] = [...roomsMockResponse];
 
   async fetchRooms(): Promise<Room[]> {
-    return successPromiseBehavior(() => [...this.rooms]);
+    return successPromiseBehavior(this.getInstantRooms);
   }
 
-  fetchPublicRooms = async (): Promise<PublicRoomType[]> =>
-    successPromiseBehavior<PublicRoomType[]>(
-      () =>
-        [...this.rooms.filter((room) => !room.isPrivate)] as PublicRoomType[]
-    );
+  getInstantRooms(): Room[] {
+    return [...this.rooms];
+  }
+
+  fetchPublicRooms = async (userId: number): Promise<PublicRoomType[]> =>
+    successPromiseBehavior<PublicRoomType[]>(() => {
+      const userRooms = roomMemberServiceInstance.getInstantRoomsByUser(userId);
+      const userRoomCodes = userRooms.map((room) => room.code);
+      return this.rooms.filter(
+        (room) => !room.isPrivate && !userRoomCodes.includes(room.code)
+      ) as PublicRoomType[];
+    });
 
   async getRoomByCode(code: string): Promise<Room | null> {
     return successPromiseBehavior(() => {

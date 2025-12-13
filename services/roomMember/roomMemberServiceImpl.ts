@@ -1,25 +1,28 @@
 import { roomMembersMockResponse } from "./roomMemberResponse";
 import { Room } from "../../models/Room";
 import { RoomMember } from "../../models/RoomMember";
-import { fetchRooms, getRoomByCode } from "../room/roomService";
+import { getRoomByCode } from "../room/roomService";
 import { successPromiseBehavior } from "../serviceUtilsImpl";
+import { roomServiceInstance } from "../room/roomServiceImpl";
 
 export class RoomMemberServiceImpl {
   private roomMembers: RoomMember[] = [...roomMembersMockResponse];
 
   async fetchRoomsByUser(userId: number): Promise<Room[]> {
-    return successPromiseBehavior(async () => {
-      const userRoomCodes = this.roomMembers
-        .filter((roomMember) => roomMember.userId === userId)
-        .map((roomMember) => roomMember.roomCode);
+    return successPromiseBehavior(() => this.getInstantRoomsByUser(userId));
+  }
 
-      const allRooms = await fetchRooms();
-      const userRooms = allRooms.filter((room) =>
-        userRoomCodes.includes(room.code)
-      );
+  getInstantRoomsByUser(userId: number) {
+    const userRoomCodes = this.roomMembers
+      .filter((roomMember) => roomMember.userId === userId)
+      .map((roomMember) => roomMember.roomCode);
 
-      return userRooms;
-    });
+    const allRooms = roomServiceInstance.getInstantRooms();
+    const userRooms = allRooms.filter((room) =>
+      userRoomCodes.includes(room.code)
+    );
+
+    return userRooms;
   }
 
   async joinRoom(code: string, userId: number, key?: string): Promise<void> {
