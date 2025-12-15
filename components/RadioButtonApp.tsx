@@ -8,18 +8,22 @@ import {
 import { ThemedText } from "./ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
+export type RadioButtonAppOption = {
+  label: string;
+  selected: boolean;
+  value: string;
+};
+
 export type RadioButtonAppProps = {
-  options: {
-    label: string;
-    onPress: () => void;
-    selected: boolean;
-  }[];
+  options: RadioButtonAppOption[];
+  onPress: (value: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
 };
 
 export function RadioButtonApp({
   options,
   containerStyle,
+  onPress,
 }: RadioButtonAppProps) {
   const { primary: primaryColor } = useThemeColor();
   return (
@@ -27,7 +31,7 @@ export function RadioButtonApp({
       {options.map((option) => (
         <TouchableOpacity
           key={option.label}
-          onPress={option.onPress}
+          onPress={() => onPress(option.value)}
           style={styles.optionContainer}
         >
           <View

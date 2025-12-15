@@ -26,10 +26,11 @@ export default function InviteUserTypeSelector({
             ({ code, label, icon }) => ({
               label,
               selected: selectedOption.code === code,
-              onPress: () => handleSelectedOption(code),
+              value: code,
               icon,
             })
           )}
+          onPress={(code) => handleSelectedOption(code as UserInvitationType)}
         />
       </View>
 
