@@ -25,7 +25,7 @@ export function RadioButtonApp({
   containerStyle,
   onPress,
 }: RadioButtonAppProps) {
-  const { primary: primaryColor } = useThemeColor();
+  const colors = useThemeColor();
   return (
     <View style={[styles.container, containerStyle]}>
       {options.map((option) => (
@@ -37,7 +37,8 @@ export function RadioButtonApp({
           <View
             style={[
               styles.icon,
-              option.selected ? { backgroundColor: primaryColor } : null,
+              { borderColor: colors.primary },
+              option.selected ? { backgroundColor: colors.primary } : null,
             ]}
           ></View>
           <ThemedText type="defaultSemiBold">{option.label}</ThemedText>
