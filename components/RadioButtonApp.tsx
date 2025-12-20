@@ -37,7 +37,7 @@ export function RadioButtonApp({
           <View
             style={[
               styles.icon,
-              { borderColor: colors.primary },
+              { borderColor: colors.border },
               option.selected ? { backgroundColor: colors.primary } : null,
             ]}
           ></View>

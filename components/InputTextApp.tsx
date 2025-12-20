@@ -58,7 +58,7 @@ export default function InputTextApp<T extends FieldValues>({
     field.value,
     maxMultivalue
   );
-  const { primary: primaryColor } = useThemeColor();
+  const colors = useThemeColor();
 
   const removeValue = (index: number) => {
     let values = field.value;
@@ -130,6 +130,7 @@ export default function InputTextApp<T extends FieldValues>({
               ? textInputProps.numberOfLines * 24
               : 100,
             borderBottomWidth: 1,
+            borderColor: colors.border,
           },
           textInputProps.style,
         ]}
@@ -146,7 +147,7 @@ export default function InputTextApp<T extends FieldValues>({
           {field.value.map((v: string, index: number) => (
             <TouchableOpacity
               style={{
-                borderColor: primaryColor,
+                borderColor: colors.primary,
                 borderWidth: 1,
                 borderRadius: 15,
                 paddingHorizontal: 8,
