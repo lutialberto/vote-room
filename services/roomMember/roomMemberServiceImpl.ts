@@ -25,7 +25,11 @@ export class RoomMemberServiceImpl {
     return userRooms;
   }
 
-  async joinRoom(code: string, userId: number, key?: string): Promise<void> {
+  async joinRoom(
+    code: string,
+    userId: number,
+    key?: string
+  ): Promise<{ roomCode: string }> {
     return successPromiseBehavior(async () => {
       const room = await getRoomByCode(code);
       if (!room) {
@@ -49,7 +53,7 @@ export class RoomMemberServiceImpl {
         userId,
       };
       this.roomMembers.push(newRoomMember);
-    });
+    }).then(() => ({ roomCode: code }));
   }
 
   private getNextId(): number {

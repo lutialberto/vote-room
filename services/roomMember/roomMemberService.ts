@@ -19,4 +19,5 @@ export const joinRoom = (
   code: string,
   userId: number,
   key?: string
-): Promise<void> => roomMemberServiceInstance.joinRoom(code, userId, key);
+): Promise<{ roomCode: string }> =>
+  roomMemberServiceInstance.joinRoom(code, userId, key);

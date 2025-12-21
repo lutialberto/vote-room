@@ -18,16 +18,20 @@ export class PendingRoomInvitationRequestServiceImpl {
     );
   }
 
-  async rejectPendingRoomInvitationRequest(id: number): Promise<void> {
+  async rejectPendingRoomInvitationRequest(
+    id: number
+  ): Promise<{ id: number }> {
     return successPromiseBehavior(() => {
       this.pendingRoomInvitationRequests =
         this.pendingRoomInvitationRequests.filter(
           (invitation) => invitation.id !== id
         );
-    });
+    }).then(() => ({ id }));
   }
 
-  async acceptPendingRoomInvitationRequest(id: number): Promise<void> {
+  async acceptPendingRoomInvitationRequest(
+    id: number
+  ): Promise<{ id: number }> {
     return successPromiseBehavior(() => {
       this.pendingRoomInvitationRequests =
         this.pendingRoomInvitationRequests.map((invitation) =>
@@ -37,7 +41,7 @@ export class PendingRoomInvitationRequestServiceImpl {
         this.pendingRoomInvitationRequests.map((invitation) =>
           invitation.id === id ? { ...invitation, confirmed: true } : invitation
         );
-    });
+    }).then(() => ({ id }));
   }
 }
 

@@ -9,13 +9,17 @@ export function fetchPendingRoomInvitations(
   );
 }
 
-export function rejectPendingRoomInvitationRequest(id: number): Promise<void> {
+export function rejectPendingRoomInvitationRequest(
+  id: number
+): Promise<{ id: number }> {
   return pendingRoomInvitationRequestServiceInstance.rejectPendingRoomInvitationRequest(
     id
   );
 }
 
-export function acceptPendingRoomInvitationRequest(id: number): Promise<void> {
+export function acceptPendingRoomInvitationRequest(
+  id: number
+): Promise<{ id: number }> {
   return pendingRoomInvitationRequestServiceInstance.acceptPendingRoomInvitationRequest(
     id
   );
