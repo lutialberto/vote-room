@@ -43,6 +43,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="newVoting/index"
+        options={{
+          title: "Nueva Votación",
+          tabBarIcon: ({ color }) => (
+            <IconApp size={28} name="bar-chart-outline" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="myRooms"
         options={{
           title: "Mis Salas",
