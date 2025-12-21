@@ -22,9 +22,14 @@ export default function InvitationsTab() {
     removeDataItem,
   } = usePendingRoomInvitationRequest(currentUser?.id);
   const { isWaiting: isWaitingAccept, execPromise: handleAccept } =
-    useWaitingApp<{
-      id: number;
-    }>({
+    useWaitingApp<
+      {
+        id: number;
+      },
+      {
+        id: number;
+      }
+    >({
       functionToWait: ({ id }) => acceptPendingRoomInvitationRequest(id),
       success: ({ id }) => {
         removeDataItem(id);
@@ -33,9 +38,14 @@ export default function InvitationsTab() {
       },
     });
   const { isWaiting: isWaitingReject, execPromise: handleRejectConfirmed } =
-    useWaitingApp<{
-      id: number;
-    }>({
+    useWaitingApp<
+      {
+        id: number;
+      },
+      {
+        id: number;
+      }
+    >({
       functionToWait: ({ id }) => rejectPendingRoomInvitationRequest(id),
       success: ({ id }) => {
         removeDataItem(id);

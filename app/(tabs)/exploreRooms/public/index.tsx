@@ -25,10 +25,15 @@ export default function PublicRoomsTab() {
     () => fetchPublicRooms(currentUser.id, filter),
     [currentUser.id, filter]
   );
-  const { isWaiting, execPromise: handleJoinRoom } = useWaitingApp<{
-    roomCode: string;
-    userId: number;
-  }>({
+  const { isWaiting, execPromise: handleJoinRoom } = useWaitingApp<
+    {
+      roomCode: string;
+      userId: number;
+    },
+    {
+      roomCode: string;
+    }
+  >({
     functionToWait: ({ roomCode, userId }) => joinRoom(roomCode, userId),
     success: ({ roomCode }) => {
       refetch();

@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Alert } from "react-native";
 
-export function useWaitingApp<T>({
+export function useWaitingApp<T, K>({
   functionToWait,
   success,
   failure,
 }: {
-  functionToWait: (arg: T) => Promise<void>;
-  success?: (arg: T) => void;
+  functionToWait: (arg: T) => Promise<K>;
+  success?: (arg: K) => void;
   failure?: (error: Error) => void;
 }) {
   const [isWaiting, setIsWaiting] = useState<boolean>(false);
@@ -16,9 +16,9 @@ export function useWaitingApp<T>({
     setIsWaiting(true);
     try {
       functionToWait(arg)
-        .then(() => {
+        .then((response) => {
           setIsWaiting(false);
-          success?.(arg);
+          success?.(response);
         })
         .catch((error) => {
           failure?.(error) ||
