@@ -4,3 +4,5 @@ export interface User {
   email: string;
   name: string;
 }
+
+export type Owner = Pick<User, "id" | "username">;
