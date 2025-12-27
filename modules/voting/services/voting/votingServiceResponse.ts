@@ -1,4 +1,4 @@
-import QuickBooleanPoll from "../new/models/QuickBooleanPoll";
+import QuickBooleanPoll from "../../new/models/QuickBooleanPoll";
 
 export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
   {
@@ -7,8 +7,9 @@ export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
     description: "Votación rápida sobre preferencias de helado",
     owner: {
       id: 1,
-      username: "JuanPerez",
+      userName: "JuanPerez",
     },
+    status: "active",
     close: {
       type: "manualClose",
     },
@@ -22,8 +23,9 @@ export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
     description: "Elige entre varios colores populares",
     owner: {
       id: 2,
-      username: "MariaLopez",
+      userName: "MariaLopez",
     },
+    status: "scheduled",
     close: {
       type: "programmedClose",
       durationMinutes: 60,
@@ -39,8 +41,9 @@ export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
     description: "Votación sobre bebidas calientes",
     owner: {
       id: 3,
-      username: "CarlosGomez",
+      userName: "CarlosGomez",
     },
+    status: "draft",
     close: {
       type: "manualClose",
     },
@@ -54,8 +57,9 @@ export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
     description: "Votación sobre estaciones del año",
     owner: {
       id: 4,
-      username: "AnaMartinez",
+      userName: "AnaMartinez",
     },
+    status: "closed",
     close: {
       type: "programmedClose",
       durationMinutes: 30,
@@ -70,8 +74,9 @@ export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
     description: "Votación sobre preferencias laborales",
     owner: {
       id: 5,
-      username: "LuisFernandez",
+      userName: "LuisFernandez",
     },
+    status: "draft",
     close: {
       type: "manualClose",
     },

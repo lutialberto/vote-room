@@ -1,6 +1,6 @@
 import QuickBooleanPoll, {
   QuickBooleanPollForCreation,
-} from "../new/models/QuickBooleanPoll";
+} from "../../new/models/QuickBooleanPoll";
 import { votingServiceInstance } from "./votingServiceImpl";
 
 export const createQuickBooleanPoll = ({
@@ -11,3 +11,8 @@ export const createQuickBooleanPoll = ({
   userId: number;
 }): Promise<QuickBooleanPoll> =>
   votingServiceInstance.createQuickBooleanPoll(pollData, userId);
+
+export const fetchQuickBooleanPollById = (
+  id: number
+): Promise<QuickBooleanPoll> =>
+  votingServiceInstance.fetchQuickBooleanPollById(id);
