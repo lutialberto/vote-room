@@ -106,13 +106,15 @@ export default function VotingPage() {
           </SpinnerApp>
         )}
       </SpinnerApp>
-      <ButtonApp
-        label="Actualizar resultados"
-        onPress={() => {
-          refetchVoting();
-          refetchVotes();
-        }}
-      />
+      {data?.status !== "closed" && (
+        <ButtonApp
+          label="Actualizar resultados"
+          onPress={() => {
+            refetchVoting();
+            refetchVotes();
+          }}
+        />
+      )}
     </ThemedView>
   );
 }
