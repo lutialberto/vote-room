@@ -1,5 +1,9 @@
 import { Owner } from "@/models/User";
-import { VotingCloseType, VotingReleaseType } from "./Voting";
+import {
+  VotingCloseType,
+  VotingReleaseType,
+  VotingStatus,
+} from "../../models/Voting";
 
 export default interface QuickBooleanPoll {
   id: number;
@@ -9,7 +13,9 @@ export default interface QuickBooleanPoll {
   close: {
     type: VotingCloseType;
     durationMinutes?: number;
+    closedAt?: Date;
   };
+  status: VotingStatus;
   release: {
     type: VotingReleaseType;
     date?: Date;
@@ -18,5 +24,5 @@ export default interface QuickBooleanPoll {
 
 export type QuickBooleanPollForCreation = Omit<
   QuickBooleanPoll,
-  "id" | "owner"
+  "id" | "owner" | "status"
 >;

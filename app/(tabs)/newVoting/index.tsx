@@ -21,8 +21,8 @@ import {
   RELEASE_TYPE_OPTIONS,
 } from "@/modules/voting/new/constants/FormOptions";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
-import { createQuickBooleanPoll } from "@/modules/voting/services/votingService";
 import { router } from "expo-router";
+import { createQuickBooleanPoll } from "@/modules/voting/services/voting/votingService";
 
 export default function NewVoting() {
   const { currentUser } = useUser();
