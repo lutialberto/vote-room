@@ -10,7 +10,8 @@ export const UserContext = createContext<UserContextType>(null);
 
 const MOCK_CURRENT_USER: User = {
   id: 1,
-  username: "mockuser",
+  name: "Mock User",
+  userName: "mockuser",
   email: "mockuser@example.com",
 };
 

@@ -1,8 +1,8 @@
 export interface User {
   id: number;
-  username: string;
+  userName: string;
   email: string;
   name: string;
 }
 
-export type Owner = Pick<User, "id" | "username">;
+export type Owner = Pick<User, "id" | "userName">;
