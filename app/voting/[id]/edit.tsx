@@ -156,7 +156,7 @@ export default function VotingEditPage() {
           />
           <ButtonApp
             label="Replicar votación"
-            onPress={() => router.replace(`/(tabs)/newVoting/${id}`)}
+            onPress={() => router.push(`/voting/${id}/copy`)}
           />
           {canActivate && (
             <ButtonApp
