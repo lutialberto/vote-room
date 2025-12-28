@@ -1,164 +1,158 @@
 import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
-import QuickBooleanPoll, {
-  QuickBooleanPollForCreation,
-} from "../../new/models/QuickBooleanPoll";
-import { QUICK_BOOLEAN_POLL_MOCK_RESPONSE } from "./votingServiceResponse";
-import { VotingReleaseType, VotingStatus } from "../../models/Voting";
+import { BASE_VOTING_MOCK_RESPONSE } from "./votingServiceResponse";
+import {
+  BaseVoting,
+  BaseVotingForCreation,
+  VotingReleaseType,
+  VotingStatus,
+} from "../../models/Voting";
 import { userServiceInstance } from "@/services/user/userServiceImpl";
 
 export class VotingServiceImpl {
-  private quickBooleanPolls: QuickBooleanPoll[] = [
-    ...QUICK_BOOLEAN_POLL_MOCK_RESPONSE,
-  ];
+  private votings: BaseVoting[] = [...BASE_VOTING_MOCK_RESPONSE];
 
-  async createQuickBooleanPoll(
-    pollData: QuickBooleanPollForCreation,
+  createInstantBaseVoting(
+    data: BaseVotingForCreation,
     userId: number
-  ): Promise<QuickBooleanPoll> {
-    return successPromiseBehavior(() => {
-      const user = userServiceInstance.getInstantUserById(userId);
-      if (!user) {
-        throw new Error("User not found");
-      }
-      const mapper: Record<VotingReleaseType, VotingStatus> = {
-        releaseOnCreate: "active",
-        releaseScheduled: "scheduled",
-        manualRelease: "draft",
-      };
-      const status: VotingStatus = mapper[pollData.release.type];
-      const newPoll: QuickBooleanPoll = {
-        ...pollData,
-        owner: {
-          id: userId,
-          userName: `User ${userId}`,
-        },
-        status,
-        id: Math.max(...this.quickBooleanPolls.map((e) => e.id)) + 1,
-      };
+  ): BaseVoting {
+    const user = userServiceInstance.getInstantUserById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const mapper: Record<VotingReleaseType, VotingStatus> = {
+      releaseOnCreate: "active",
+      releaseScheduled: "scheduled",
+      manualRelease: "draft",
+    };
+    const status: VotingStatus = mapper[data.release.type];
+    const newBaseVoting: BaseVoting = {
+      ...data,
+      owner: {
+        id: userId,
+        email: user.email,
+        name: user.name,
+        userName: user.userName,
+      },
+      status,
+      id: Math.max(...this.votings.map((e) => e.id)) + 1,
+    };
 
-      this.quickBooleanPolls.push(newPoll);
-      return { ...newPoll };
-    });
+    this.votings.push(newBaseVoting);
+    return { ...newBaseVoting };
   }
 
-  async updateQuickBooleanPoll(
-    pollData: QuickBooleanPollForCreation,
+  async updateBaseVoting(
+    data: BaseVotingForCreation,
     id: number,
     userId: number
-  ): Promise<QuickBooleanPoll> {
+  ): Promise<BaseVoting> {
     return successPromiseBehavior(() => {
       const user = userServiceInstance.getInstantUserById(userId);
       if (!user) {
         throw new Error("User not found");
       }
-      const pollToUpdate = this.getInstantQuickBooleanPollById(id);
-      if (!pollToUpdate) {
-        throw new Error("Poll not found");
+      const votingToUpdate = this.getInstantBaseVotingById(id);
+      if (!votingToUpdate) {
+        throw new Error("Voting not found");
       }
-      const isOwner = pollToUpdate.owner.id === userId;
+      const isOwner = votingToUpdate.owner.id === userId;
       if (!isOwner) {
-        throw new Error("User is not the owner of the poll");
+        throw new Error("User is not the owner of the voting");
       }
       const mapper: Record<VotingReleaseType, VotingStatus> = {
         releaseOnCreate: "active",
         releaseScheduled: "scheduled",
         manualRelease: "draft",
       };
-      const status: VotingStatus = mapper[pollData.release.type];
-      const updatedPoll: QuickBooleanPoll = {
-        ...pollToUpdate,
-        ...pollData,
+      const status: VotingStatus = mapper[data.release.type];
+      const updatedVoting: BaseVoting = {
+        ...votingToUpdate,
+        ...data,
         status,
       };
 
-      this.quickBooleanPolls = this.quickBooleanPolls.map((poll) =>
-        poll.id === updatedPoll.id ? updatedPoll : poll
+      this.votings = this.votings.map((voting) =>
+        voting.id === updatedVoting.id ? updatedVoting : voting
       );
-      return { ...updatedPoll };
+      return { ...updatedVoting };
     });
   }
 
-  async activateQuickBooleanPoll(
-    id: number,
-    userId: number
-  ): Promise<QuickBooleanPoll> {
+  async activateBaseVoting(id: number, userId: number): Promise<BaseVoting> {
     return successPromiseBehavior(() => {
       const user = userServiceInstance.getInstantUserById(userId);
       if (!user) {
         throw new Error("User not found");
       }
-      const pollToActivate = this.getInstantQuickBooleanPollById(id);
-      if (!pollToActivate) {
-        throw new Error("Poll not found");
+      const votingToActivate = this.getInstantBaseVotingById(id);
+      if (!votingToActivate) {
+        throw new Error("Voting not found");
       }
-      const isOwner = pollToActivate.owner.id === userId;
+      const isOwner = votingToActivate.owner.id === userId;
       if (!isOwner) {
-        throw new Error("User is not the owner of the poll");
+        throw new Error("User is not the owner of the voting");
       }
       const isActivatable =
-        pollToActivate.status === "draft" ||
-        pollToActivate.release.type === "manualRelease";
+        votingToActivate.status === "draft" ||
+        votingToActivate.release.type === "manualRelease";
       if (!isActivatable) {
-        throw new Error("Poll cannot be activated");
+        throw new Error("Voting cannot be activated");
       }
-      const updatedPoll: QuickBooleanPoll = {
-        ...pollToActivate,
+      const updatedVoting: BaseVoting = {
+        ...votingToActivate,
         status: "active",
       };
 
-      this.quickBooleanPolls = this.quickBooleanPolls.map((poll) =>
-        poll.id === updatedPoll.id ? updatedPoll : poll
+      this.votings = this.votings.map((voting) =>
+        voting.id === updatedVoting.id ? updatedVoting : voting
       );
-      return { ...updatedPoll };
+      return { ...updatedVoting };
     });
   }
 
-  async closeQuickBooleanPoll(
-    id: number,
-    userId: number
-  ): Promise<QuickBooleanPoll> {
+  async closeBaseVoting(id: number, userId: number): Promise<BaseVoting> {
     return successPromiseBehavior(() => {
       const user = userServiceInstance.getInstantUserById(userId);
       if (!user) {
         throw new Error("User not found");
       }
-      const pollToClose = this.getInstantQuickBooleanPollById(id);
-      if (!pollToClose) {
-        throw new Error("Poll not found");
+      const votingToClose = this.getInstantBaseVotingById(id);
+      if (!votingToClose) {
+        throw new Error("Voting not found");
       }
-      const isOwner = pollToClose.owner.id === userId;
+      const isOwner = votingToClose.owner.id === userId;
       if (!isOwner) {
-        throw new Error("User is not the owner of the poll");
+        throw new Error("User is not the owner of the voting");
       }
       const isClosable =
-        pollToClose.status === "active" &&
-        pollToClose.close.type === "manualClose";
+        votingToClose.status === "active" &&
+        votingToClose.close.type === "manualClose";
       if (!isClosable) {
-        throw new Error("Poll cannot be closed");
+        throw new Error("Voting cannot be closed");
       }
-      const updatedPoll: QuickBooleanPoll = {
-        ...pollToClose,
+      const updatedVoting: BaseVoting = {
+        ...votingToClose,
         status: "closed",
       };
 
-      this.quickBooleanPolls = this.quickBooleanPolls.map((poll) =>
-        poll.id === updatedPoll.id ? updatedPoll : poll
+      this.votings = this.votings.map((voting) =>
+        voting.id === updatedVoting.id ? updatedVoting : voting
       );
-      return { ...updatedPoll };
+      return { ...updatedVoting };
     });
   }
 
-  getInstantQuickBooleanPollById(id: number): QuickBooleanPoll | undefined {
-    return this.quickBooleanPolls.find((poll) => poll.id === id);
+  getInstantBaseVotingById(id: number): BaseVoting | undefined {
+    return this.votings.find((voting) => voting.id === id);
   }
 
-  async fetchQuickBooleanPollById(id: number): Promise<QuickBooleanPoll> {
+  async fetchBaseVotingById(id: number): Promise<BaseVoting> {
     return successPromiseBehavior(() => {
-      const poll = this.getInstantQuickBooleanPollById(id);
-      if (!poll) {
-        throw new Error("Poll not found");
+      const voting = this.getInstantBaseVotingById(id);
+      if (!voting) {
+        throw new Error("Voting not found");
       }
-      return { ...poll };
+      return { ...voting };
     });
   }
 }

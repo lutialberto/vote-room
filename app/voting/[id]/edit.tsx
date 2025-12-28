@@ -1,23 +1,23 @@
-import { useEffect } from "react";
 import { View, Alert } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { ButtonApp } from "@/components/ButtonApp";
 import { useUser } from "@/contexts/UserContext";
-import QuickBooleanPoll, {
-  QuickBooleanPollForCreation,
-} from "@/modules/voting/new/models/QuickBooleanPoll";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { useItemFetcherApp } from "@/hooks/useItemFetcherApp";
 import {
-  activateQuickBooleanPoll,
-  closeQuickBooleanPoll,
-  fetchQuickBooleanPollById,
-  updateQuickBooleanPoll,
+  activateBaseVoting,
+  closeBaseVoting,
+  updateBaseVoting,
 } from "@/modules/voting/services/voting/votingService";
 import { useLocalSearchParams, router } from "expo-router";
 import { SpinnerApp } from "@/components/SpinnerApp";
-import QuickBooleanPollForm from "@/modules/voting/components/QuickBooleanPollForm";
+import BaseVotingForm from "@/modules/voting/components/BaseVotingForm";
+import {
+  BaseVoting,
+  BaseVotingForCreation,
+} from "@/modules/voting/models/Voting";
+import { fetchBooleanVotingById } from "@/modules/voting/types/boolean/services/voting/booleanVotingService";
 
 export default function VotingEditPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -27,13 +27,13 @@ export default function VotingEditPage() {
     data: voting,
     error,
     isLoading,
-  } = useItemFetcherApp(() => fetchQuickBooleanPollById(Number(id)), [id]);
+  } = useItemFetcherApp(() => fetchBooleanVotingById(Number(id)), [id]);
 
   const { isWaiting: isUpdating, execPromise: handleUpdate } = useWaitingApp({
-    functionToWait: async (data: QuickBooleanPollForCreation) =>
-      updateQuickBooleanPoll({
-        pollData: data,
-        id: Number(id),
+    functionToWait: async (data: BaseVotingForCreation) =>
+      updateBaseVoting({
+        data: data,
+        id: voting?.baseVotingId!,
         userId: currentUser.id,
       }),
     success: () => router.navigate(`/voting/${id}`),
@@ -50,9 +50,9 @@ export default function VotingEditPage() {
         id: number;
         userId: number;
       },
-      QuickBooleanPoll
+      BaseVoting
     >({
-      functionToWait: async (props) => activateQuickBooleanPoll(props),
+      functionToWait: async (props) => activateBaseVoting(props),
       success: () => router.replace(`/voting/${id}`),
       failure: () =>
         Alert.alert(
@@ -66,9 +66,9 @@ export default function VotingEditPage() {
       id: number;
       userId: number;
     },
-    QuickBooleanPoll
+    BaseVoting
   >({
-    functionToWait: async (props) => closeQuickBooleanPoll(props),
+    functionToWait: async (props) => closeBaseVoting(props),
     success: () => {
       router.replace(`/voting/${id}`);
     },
@@ -79,14 +79,18 @@ export default function VotingEditPage() {
       ),
   });
 
-  if (voting && voting.owner.id !== currentUser.id) {
+  if (voting && voting.baseVoting.owner.id !== currentUser.id) {
     router.back();
   }
 
-  const canEdit = voting?.status === "draft" || voting?.status === "scheduled";
-  const canActivate = canEdit && voting?.release.type === "manualRelease";
+  const canEdit =
+    voting?.baseVoting.status === "draft" ||
+    voting?.baseVoting.status === "scheduled";
+  const canActivate =
+    canEdit && voting?.baseVoting.release.type === "manualRelease";
   const canClose =
-    voting?.status === "active" && voting?.close.type === "manualClose";
+    voting?.baseVoting.status === "active" &&
+    voting?.baseVoting.close.type === "manualClose";
   const isReadOnly = !canEdit;
 
   const onActivate = () => {
@@ -99,7 +103,10 @@ export default function VotingEditPage() {
         {
           text: "Activar",
           onPress: () =>
-            handleActivate({ id: Number(id), userId: currentUser.id }),
+            handleActivate({
+              id: voting?.baseVotingId!,
+              userId: currentUser.id,
+            }),
         },
       ]
     );
@@ -116,7 +123,7 @@ export default function VotingEditPage() {
           text: "Cerrar",
           style: "destructive",
           onPress: () =>
-            handleClose({ id: Number(id), userId: currentUser.id }),
+            handleClose({ id: voting?.baseVotingId!, userId: currentUser.id }),
         },
       ]
     );
@@ -140,12 +147,14 @@ export default function VotingEditPage() {
           <ThemedText type="title">
             {isReadOnly ? "Ver votación" : "Editar votación"}
           </ThemedText>
-          <ThemedText type="subtitle">Estado: {voting?.status}</ThemedText>
+          <ThemedText type="subtitle">
+            Estado: {voting?.baseVoting.status}
+          </ThemedText>
         </View>
 
-        <QuickBooleanPollForm
+        <BaseVotingForm
           onSubmit={handleUpdate}
-          voting={voting}
+          voting={voting?.baseVoting || null}
           isReadOnly={isReadOnly || isUpdating}
         />
 

@@ -2,14 +2,13 @@ import { StyleSheet, View } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useUser } from "@/contexts/UserContext";
-import QuickBooleanPoll, {
-  QuickBooleanPollForCreation,
-} from "@/modules/voting/new/models/QuickBooleanPoll";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { router } from "expo-router";
-import { createQuickBooleanPoll } from "@/modules/voting/services/voting/votingService";
-import QuickBooleanPollForm from "@/modules/voting/components/QuickBooleanPollForm";
+import BaseVotingForm from "@/modules/voting/components/BaseVotingForm";
 import { SpinnerApp } from "@/components/SpinnerApp";
+import { BaseVotingForCreation } from "@/modules/voting/models/Voting";
+import { createBooleanVoting } from "@/modules/voting/types/boolean/services/voting/booleanVotingService";
+import BooleanVoting from "@/modules/voting/types/boolean/models/BooleanVoting";
 
 export default function NewVoting() {
   const { currentUser } = useUser();
@@ -18,21 +17,21 @@ export default function NewVoting() {
     useWaitingApp<
       {
         userId: number;
-        pollData: QuickBooleanPollForCreation;
+        data: BaseVotingForCreation;
       },
-      QuickBooleanPoll
+      BooleanVoting
     >({
-      functionToWait: ({ userId, pollData }) =>
-        createQuickBooleanPoll({ userId, pollData }),
+      functionToWait: ({ userId, data }) =>
+        createBooleanVoting({ userId, data }),
       success: ({ id }) => {
         router.replace(`/voting/${id}`);
       },
     });
 
-  const onCreatePoll = async (data: QuickBooleanPollForCreation) => {
+  const onCreateVoting = async (data: BaseVotingForCreation) => {
     handleCreate({
       userId: currentUser.id,
-      pollData: data,
+      data: data,
     });
   };
 
@@ -46,8 +45,8 @@ export default function NewVoting() {
       </View>
 
       <SpinnerApp visible={isWaitingCreate}>
-        <QuickBooleanPollForm
-          onSubmit={onCreatePoll}
+        <BaseVotingForm
+          onSubmit={onCreateVoting}
           isReadOnly={false}
           voting={null}
         />

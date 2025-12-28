@@ -34,8 +34,7 @@ export class VotingServiceImpl {
       if (!user) {
         throw new Error("User not found");
       }
-      const voting =
-        votingServiceInstance.getInstantQuickBooleanPollById(votingId);
+      const voting = votingServiceInstance.getInstantBaseVotingById(votingId);
       if (!voting) {
         throw new Error("Voting not found");
       }

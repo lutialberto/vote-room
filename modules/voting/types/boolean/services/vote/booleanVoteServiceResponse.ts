@@ -1,6 +1,6 @@
-import { Vote } from "../../models/Voting";
+import { BooleanVote } from "../../models/BooleanVote";
 
-export const VOTE_MOCK_RESPONSE: Vote[] = [
+export const BOOLEAN_VOTE_MOCK_RESPONSE: BooleanVote[] = [
   {
     id: 1,
     userId: 1,

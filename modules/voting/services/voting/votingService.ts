@@ -1,47 +1,32 @@
-import QuickBooleanPoll, {
-  QuickBooleanPollForCreation,
-} from "../../new/models/QuickBooleanPoll";
+import { BaseVoting, BaseVotingForCreation } from "../../models/Voting";
 import { votingServiceInstance } from "./votingServiceImpl";
 
-export const createQuickBooleanPoll = ({
-  pollData,
-  userId,
-}: {
-  pollData: QuickBooleanPollForCreation;
-  userId: number;
-}): Promise<QuickBooleanPoll> =>
-  votingServiceInstance.createQuickBooleanPoll(pollData, userId);
-
-export const updateQuickBooleanPoll = ({
-  pollData,
+export const updateBaseVoting = ({
+  data,
   id,
   userId,
 }: {
-  pollData: QuickBooleanPollForCreation;
+  data: BaseVotingForCreation;
   id: number;
   userId: number;
-}): Promise<QuickBooleanPoll> =>
-  votingServiceInstance.updateQuickBooleanPoll(pollData, id, userId);
+}): Promise<BaseVoting> =>
+  votingServiceInstance.updateBaseVoting(data, id, userId);
 
-export const activateQuickBooleanPoll = ({
+export const activateBaseVoting = ({
   id,
   userId,
 }: {
   id: number;
   userId: number;
-}): Promise<QuickBooleanPoll> =>
-  votingServiceInstance.activateQuickBooleanPoll(id, userId);
+}): Promise<BaseVoting> => votingServiceInstance.activateBaseVoting(id, userId);
 
-export const closeQuickBooleanPoll = ({
+export const closeBaseVoting = ({
   id,
   userId,
 }: {
   id: number;
   userId: number;
-}): Promise<QuickBooleanPoll> =>
-  votingServiceInstance.closeQuickBooleanPoll(id, userId);
+}): Promise<BaseVoting> => votingServiceInstance.closeBaseVoting(id, userId);
 
-export const fetchQuickBooleanPollById = (
-  id: number
-): Promise<QuickBooleanPoll> =>
-  votingServiceInstance.fetchQuickBooleanPollById(id);
+export const fetchBaseVotingById = (id: number): Promise<BaseVoting> =>
+  votingServiceInstance.fetchBaseVotingById(id);

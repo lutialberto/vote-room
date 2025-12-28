@@ -1,7 +1,7 @@
 import { ButtonApp } from "@/components/ButtonApp";
 import { ThemedView } from "@/components/ThemedView";
 
-export default function PollBooleanOptions({
+export default function BooleanVotingOptions({
   handleYes,
   handleNo,
 }: {

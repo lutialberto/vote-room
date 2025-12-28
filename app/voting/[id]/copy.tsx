@@ -4,22 +4,21 @@ import { ThemedView } from "@/components/ThemedView";
 import { useUser } from "@/contexts/UserContext";
 import { useItemFetcherApp } from "@/hooks/useItemFetcherApp";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
-import QuickBooleanPollForm from "@/modules/voting/components/QuickBooleanPollForm";
-import QuickBooleanPoll, {
-  QuickBooleanPollForCreation,
-} from "@/modules/voting/new/models/QuickBooleanPoll";
-import {
-  createQuickBooleanPoll,
-  fetchQuickBooleanPollById,
-} from "@/modules/voting/services/voting/votingService";
+import BaseVotingForm from "@/modules/voting/components/BaseVotingForm";
 import { router, useLocalSearchParams } from "expo-router";
+import { BaseVotingForCreation } from "@/modules/voting/models/Voting";
+import {
+  createBooleanVoting,
+  fetchBooleanVotingById,
+} from "@/modules/voting/types/boolean/services/voting/booleanVotingService";
+import BooleanVoting from "@/modules/voting/types/boolean/models/BooleanVoting";
 
 export default function CopyVoting() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { currentUser } = useUser();
 
-  const { data, error, isLoading } = useItemFetcherApp<QuickBooleanPoll>(
-    () => fetchQuickBooleanPollById(Number(id)),
+  const { data, error, isLoading } = useItemFetcherApp<BooleanVoting>(
+    () => fetchBooleanVotingById(Number(id)),
     [id]
   );
 
@@ -27,25 +26,25 @@ export default function CopyVoting() {
     useWaitingApp<
       {
         userId: number;
-        pollData: QuickBooleanPollForCreation;
+        data: BaseVotingForCreation;
       },
-      QuickBooleanPoll
+      BooleanVoting
     >({
-      functionToWait: ({ userId, pollData }) =>
-        createQuickBooleanPoll({ userId, pollData }),
+      functionToWait: ({ userId, data }) =>
+        createBooleanVoting({ userId, data }),
       success: ({ id }) => {
         router.replace(`/voting/${id}`);
       },
     });
 
-  const onCreatePoll = async (data: QuickBooleanPollForCreation) => {
+  const onCreateVoting = async (data: BaseVotingForCreation) => {
     handleCreate({
       userId: currentUser.id,
-      pollData: data,
+      data: data,
     });
   };
 
-  if (data && data.owner.id !== currentUser.id) {
+  if (data && data.baseVoting.owner.id !== currentUser.id) {
     router.replace("/(tabs)/newVoting");
   }
 
@@ -65,10 +64,10 @@ export default function CopyVoting() {
     >
       <ThemedText type="title">Replicar Votación</ThemedText>
       <SpinnerApp visible={isLoading}>
-        <QuickBooleanPollForm
-          onSubmit={onCreatePoll}
+        <BaseVotingForm
+          onSubmit={onCreateVoting}
           isReadOnly={false}
-          voting={data || null}
+          voting={data?.baseVoting || null}
         />
       </SpinnerApp>
     </ThemedView>

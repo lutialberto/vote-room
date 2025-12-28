@@ -1,6 +1,6 @@
-import QuickBooleanPoll from "../../new/models/QuickBooleanPoll";
+import { BaseVoting } from "../../models/Voting";
 
-export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
+export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
   {
     id: 1,
     question: "¿Te gusta el helado?",
@@ -8,6 +8,8 @@ export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
     owner: {
       id: 1,
       userName: "JuanPerez",
+      email: "juan.perez@example.com",
+      name: "Juan Perez",
     },
     status: "active",
     close: {
@@ -24,6 +26,8 @@ export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
     owner: {
       id: 2,
       userName: "MariaLopez",
+      email: "maria.lopez@example.com",
+      name: "Maria Lopez",
     },
     status: "scheduled",
     close: {
@@ -42,6 +46,8 @@ export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
     owner: {
       id: 3,
       userName: "CarlosGomez",
+      email: "carlos.gomez@example.com",
+      name: "Carlos Gomez",
     },
     status: "draft",
     close: {
@@ -58,6 +64,8 @@ export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
     owner: {
       id: 4,
       userName: "AnaMartinez",
+      email: "ana.martinez@example.com",
+      name: "Ana Martinez",
     },
     status: "closed",
     close: {
@@ -75,6 +83,8 @@ export const QUICK_BOOLEAN_POLL_MOCK_RESPONSE: QuickBooleanPoll[] = [
     owner: {
       id: 5,
       userName: "LuisFernandez",
+      email: "luis.fernandez@example.com",
+      name: "Luis Fernandez",
     },
     status: "draft",
     close: {

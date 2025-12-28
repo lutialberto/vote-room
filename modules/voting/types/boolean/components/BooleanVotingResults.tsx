@@ -2,7 +2,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
-export default function PollBooleanResults({
+export default function BooleanVotingResults({
   yesVotes,
   noVotes,
   error,

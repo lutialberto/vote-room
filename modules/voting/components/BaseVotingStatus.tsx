@@ -8,7 +8,7 @@ const labels: Record<VotingStatus, string> = {
   draft: "La votación está en borrador",
 };
 
-export default function QuickBooleanPollStatus(props: {
+export default function BaseVotingStatus(props: {
   status: VotingStatus;
   releaseDate?: Date;
 }) {

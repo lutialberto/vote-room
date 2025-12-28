@@ -4,27 +4,28 @@ import InputTextApp from "@/components/InputTextApp";
 import { useForm } from "react-hook-form";
 import InputDateApp from "@/components/inputDate/InputDateApp";
 import { RadioButtonApp } from "@/components/RadioButtonApp";
-import QuickBooleanPoll, {
-  QuickBooleanPollForCreation,
-} from "@/modules/voting/new/models/QuickBooleanPoll";
 import {
   CLOSE_TYPE_OPTIONS,
   RELEASE_TYPE_OPTIONS,
 } from "@/modules/voting/new/constants/FormOptions";
 import { useEffect } from "react";
 import { ButtonApp } from "@/components/ButtonApp";
+import {
+  BaseVoting,
+  BaseVotingForCreation,
+} from "@/modules/voting/models/Voting";
 
-interface QuickBooleanPollFormProps {
+interface BaseVotingFormProps {
   isReadOnly?: boolean;
-  voting: QuickBooleanPoll | null;
-  onSubmit: (data: QuickBooleanPollForCreation) => void;
+  voting: BaseVoting | null;
+  onSubmit: (data: BaseVotingForCreation) => void;
 }
 
-export default function QuickBooleanPollForm({
+export default function BaseVotingForm({
   isReadOnly = false,
   voting,
   onSubmit,
-}: QuickBooleanPollFormProps) {
+}: BaseVotingFormProps) {
   const {
     handleSubmit,
     control,
@@ -32,7 +33,7 @@ export default function QuickBooleanPollForm({
     watch,
     setValue,
     reset,
-  } = useForm<QuickBooleanPollForCreation>({
+  } = useForm<BaseVotingForCreation>({
     defaultValues: {
       question: "",
       description: "",
@@ -129,7 +130,7 @@ export default function QuickBooleanPollForm({
                 onPress={(value) =>
                   setValue(
                     "close.type",
-                    value as QuickBooleanPollForCreation["close"]["type"]
+                    value as BaseVotingForCreation["close"]["type"]
                   )
                 }
               />
@@ -189,7 +190,7 @@ export default function QuickBooleanPollForm({
                 onPress={(value) =>
                   setValue(
                     "release.type",
-                    value as QuickBooleanPollForCreation["release"]["type"]
+                    value as BaseVotingForCreation["release"]["type"]
                   )
                 }
               />
