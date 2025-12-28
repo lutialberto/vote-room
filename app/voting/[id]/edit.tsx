@@ -175,6 +175,11 @@ export default function VotingEditPage() {
               type="cancel"
             />
           )}
+          <ButtonApp
+            label="← Volver a Nueva Votación"
+            onPress={() => router.push("/(tabs)/newVoting")}
+            type="secondary"
+          />
         </View>
       </SpinnerApp>
     </ThemedView>

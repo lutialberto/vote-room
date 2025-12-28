@@ -78,6 +78,16 @@ export default function ShareRoom() {
           type="secondary"
         />
       </View>
+
+      <HorizontalDivider />
+
+      <View style={styles.section}>
+        <ButtonApp
+          label="Explorar Salas"
+          onPress={() => router.push("/(tabs)/exploreRooms/public")}
+          type="secondary"
+        />
+      </View>
     </ThemedView>
   );
 }
@@ -107,7 +117,6 @@ const getStyles = (colors: ColorScheme) =>
       letterSpacing: 2,
     },
     section: {
-      marginBottom: 24,
       gap: 16,
       justifyContent: "center",
       alignItems: "center",

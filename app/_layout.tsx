@@ -45,11 +45,43 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen
               name="[roomId]/inviteUsers/index"
-              options={{ headerShown: false }}
+              options={{
+                headerShown: true,
+                title: "Invitar usuarios",
+                headerBackTitle: "Volver",
+              }}
             />
             <Stack.Screen
               name="[roomId]/shareRoom/index"
-              options={{ headerShown: false }}
+              options={{
+                headerShown: true,
+                title: "Compartir sala",
+                headerBackTitle: "Volver",
+              }}
+            />
+            <Stack.Screen
+              name="voting/[id]/index"
+              options={{
+                headerShown: true,
+                title: "Votación",
+                headerBackTitle: "Volver",
+              }}
+            />
+            <Stack.Screen
+              name="voting/[id]/edit"
+              options={{
+                headerShown: true,
+                title: "Editar votación",
+                headerBackTitle: "Volver",
+              }}
+            />
+            <Stack.Screen
+              name="voting/[id]/copy"
+              options={{
+                headerShown: true,
+                title: "Copiar votación",
+                headerBackTitle: "Volver",
+              }}
             />
             <Stack.Screen name="+not-found" />
           </Stack>

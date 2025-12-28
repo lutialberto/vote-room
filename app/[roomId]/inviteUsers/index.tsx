@@ -1,7 +1,9 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { ButtonApp } from "@/components/ButtonApp";
 import { useState } from "react";
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
+import { router } from "expo-router";
 import InviteUserTypeSelector from "@/modules/rooms/inviteUsers/components/InviteUserTypeSelector";
 import InviteUserForm from "@/modules/rooms/inviteUsers/components/InviteUserForm";
 import InviteUserPendingList from "@/modules/rooms/inviteUsers/components/InviteUserPendingList";
@@ -62,6 +64,14 @@ export default function InviteUsers() {
           removeInvitation={removeInvitation}
         />
         <InviteUserForm handleSubmitForm={onSubmit} />
+
+        <View style={styles.navigationButtons}>
+          <ButtonApp
+            label="← Explorar Salas"
+            onPress={() => router.push("/(tabs)/exploreRooms/public")}
+            type="secondary"
+          />
+        </View>
       </KeyboardAvoidingView>
     </ThemedView>
   );
@@ -86,5 +96,9 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     lineHeight: 20,
     paddingHorizontal: 16,
+  },
+  navigationButtons: {
+    marginTop: 16,
+    paddingBottom: 20,
   },
 });

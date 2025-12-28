@@ -123,6 +123,11 @@ export default function VotingPage() {
             onPress={() => router.push(`/voting/${data.id}/edit`)}
           />
         )}
+        <ButtonApp
+          label="← Volver a Nueva Votación"
+          onPress={() => router.push("/(tabs)/newVoting")}
+          type="secondary"
+        />
       </ThemedView>
     </ThemedView>
   );
