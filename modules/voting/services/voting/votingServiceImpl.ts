@@ -41,6 +41,113 @@ export class VotingServiceImpl {
     });
   }
 
+  async updateQuickBooleanPoll(
+    pollData: QuickBooleanPollForCreation,
+    id: number,
+    userId: number
+  ): Promise<QuickBooleanPoll> {
+    return successPromiseBehavior(() => {
+      const user = userServiceInstance.getInstantUserById(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      const pollToUpdate = this.getInstantQuickBooleanPollById(id);
+      if (!pollToUpdate) {
+        throw new Error("Poll not found");
+      }
+      const isOwner = pollToUpdate.owner.id === userId;
+      if (!isOwner) {
+        throw new Error("User is not the owner of the poll");
+      }
+      const mapper: Record<VotingReleaseType, VotingStatus> = {
+        releaseOnCreate: "active",
+        releaseScheduled: "scheduled",
+        manualRelease: "draft",
+      };
+      const status: VotingStatus = mapper[pollData.release.type];
+      const updatedPoll: QuickBooleanPoll = {
+        ...pollToUpdate,
+        ...pollData,
+        status,
+      };
+
+      this.quickBooleanPolls = this.quickBooleanPolls.map((poll) =>
+        poll.id === updatedPoll.id ? updatedPoll : poll
+      );
+      return { ...updatedPoll };
+    });
+  }
+
+  async activateQuickBooleanPoll(
+    id: number,
+    userId: number
+  ): Promise<QuickBooleanPoll> {
+    return successPromiseBehavior(() => {
+      const user = userServiceInstance.getInstantUserById(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      const pollToActivate = this.getInstantQuickBooleanPollById(id);
+      if (!pollToActivate) {
+        throw new Error("Poll not found");
+      }
+      const isOwner = pollToActivate.owner.id === userId;
+      if (!isOwner) {
+        throw new Error("User is not the owner of the poll");
+      }
+      const isActivatable =
+        pollToActivate.status === "draft" ||
+        pollToActivate.release.type === "manualRelease";
+      if (!isActivatable) {
+        throw new Error("Poll cannot be activated");
+      }
+      const updatedPoll: QuickBooleanPoll = {
+        ...pollToActivate,
+        status: "active",
+      };
+
+      this.quickBooleanPolls = this.quickBooleanPolls.map((poll) =>
+        poll.id === updatedPoll.id ? updatedPoll : poll
+      );
+      return { ...updatedPoll };
+    });
+  }
+
+  async closeQuickBooleanPoll(
+    id: number,
+    userId: number
+  ): Promise<QuickBooleanPoll> {
+    return successPromiseBehavior(() => {
+      const user = userServiceInstance.getInstantUserById(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      const pollToClose = this.getInstantQuickBooleanPollById(id);
+      if (!pollToClose) {
+        throw new Error("Poll not found");
+      }
+      const isOwner = pollToClose.owner.id === userId;
+      if (!isOwner) {
+        throw new Error("User is not the owner of the poll");
+      }
+      const isClosable =
+        pollToClose.status === "active" &&
+        pollToClose.close.type === "manualClose";
+      if (!isClosable) {
+        throw new Error("Poll cannot be closed");
+      }
+      const updatedPoll: QuickBooleanPoll = {
+        ...pollToClose,
+        status: "closed",
+      };
+
+      this.quickBooleanPolls = this.quickBooleanPolls.map((poll) =>
+        poll.id === updatedPoll.id ? updatedPoll : poll
+      );
+      return { ...updatedPoll };
+    });
+  }
+
   getInstantQuickBooleanPollById(id: number): QuickBooleanPoll | undefined {
     return this.quickBooleanPolls.find((poll) => poll.id === id);
   }

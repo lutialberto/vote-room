@@ -7,6 +7,7 @@ import { useUser } from "@/contexts/UserContext";
 import { useItemFetcherApp } from "@/hooks/useItemFetcherApp";
 import { useListFetcherApp } from "@/hooks/useListFetcherApp";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
+import QuickBooleanPollStatus from "@/modules/voting/components/QuickBooleanPollStatus";
 import PollBooleanOptions from "@/modules/voting/detail/components/PollBooleanOptions";
 import PollBooleanResults from "@/modules/voting/detail/components/PollBooleanResults";
 import { Vote } from "@/modules/voting/models/Voting";
@@ -16,7 +17,7 @@ import {
   fetchVotesByVotingId,
 } from "@/modules/voting/services/vote/voteService";
 import { fetchQuickBooleanPollById } from "@/modules/voting/services/voting/votingService";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 export default function VotingPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -76,17 +77,17 @@ export default function VotingPage() {
         {data?.description && (
           <ThemedText type="subtitle">{data?.description}</ThemedText>
         )}
+        {data && (
+          <QuickBooleanPollStatus
+            status={data.status}
+            releaseDate={data?.release.date}
+          />
+        )}
         {data?.close.type === "programmedClose" && data.status === "active" && (
           <CountDownApp
             seconds={(data.close.durationMinutes || 0) * 60}
             onFinish={refetchVoting}
           />
-        )}
-        {data?.status === "closed" && (
-          <ThemedText>Esta votación ha finalizado</ThemedText>
-        )}
-        {data?.status === "scheduled" && (
-          <ThemedText>Esta votación aún no ha comenzado</ThemedText>
         )}
         <SpinnerApp visible={isLoadingVotes}>
           <PollBooleanResults
@@ -106,15 +107,23 @@ export default function VotingPage() {
           </SpinnerApp>
         )}
       </SpinnerApp>
-      {data?.status !== "closed" && (
-        <ButtonApp
-          label="Actualizar resultados"
-          onPress={() => {
-            refetchVoting();
-            refetchVotes();
-          }}
-        />
-      )}
+      <ThemedView style={{ gap: 8 }}>
+        {data?.status !== "closed" && (
+          <ButtonApp
+            label="Actualizar resultados"
+            onPress={() => {
+              refetchVoting();
+              refetchVotes();
+            }}
+          />
+        )}
+        {data?.owner.id === user.currentUser.id && (
+          <ButtonApp
+            label="Configuración"
+            onPress={() => router.push(`/voting/${data.id}/edit`)}
+          />
+        )}
+      </ThemedView>
     </ThemedView>
   );
 }
