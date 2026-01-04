@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import InputDateApp from "@/components/inputDate/InputDateApp";
 import { RadioButtonApp } from "@/components/RadioButtonApp";
 import {
+  BASE_VOTING_TYPE_OPTIONS,
   CLOSE_TYPE_OPTIONS,
   RELEASE_TYPE_OPTIONS,
 } from "@/modules/voting/new/constants/FormOptions";
@@ -14,18 +15,22 @@ import {
   BaseVoting,
   BaseVotingForCreation,
 } from "@/modules/voting/models/Voting";
+import { useBaseVoting } from "../hooks/useBaseVoting";
 
 interface BaseVotingFormProps {
   isReadOnly?: boolean;
   voting: BaseVoting | null;
   onSubmit: (data: BaseVotingForCreation) => void;
+  isEditMode?: boolean;
 }
 
 export default function BaseVotingForm({
   isReadOnly = false,
   voting,
   onSubmit,
+  isEditMode = false,
 }: BaseVotingFormProps) {
+  const { saveBaseVotingData, resetBaseVotingData } = useBaseVoting();
   const {
     handleSubmit,
     control,
@@ -47,6 +52,11 @@ export default function BaseVotingForm({
       },
     },
   });
+  const type = watch("type");
+  const selectedTypeOption = BASE_VOTING_TYPE_OPTIONS.find(
+    (option) => option.value === type
+  );
+
   const closeType = watch("close.type");
   const selectedCloseOption = CLOSE_TYPE_OPTIONS.find(
     (option) => option.value === closeType
@@ -59,14 +69,15 @@ export default function BaseVotingForm({
 
   useEffect(() => {
     if (voting) {
-      reset({
-        question: voting.question,
-        description: voting.description || "",
-        close: voting.close,
-        release: voting.release,
-      });
+      resetBaseVotingData();
+      reset(voting);
     }
   }, [voting]);
+
+  const onSubmitData = (data: BaseVotingForCreation) => {
+    saveBaseVotingData(data);
+    onSubmit(data);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -103,7 +114,7 @@ export default function BaseVotingForm({
           />
 
           <InputTextApp
-            label="Descripción - opcional"
+            label={`Descripción${isReadOnly ? "" : " - opcional"}`}
             inputControl={{
               control,
               name: "description",
@@ -117,6 +128,32 @@ export default function BaseVotingForm({
             }}
             errorMessage={errors.description?.message}
           />
+
+          <View>
+            <ThemedText type="inputLabel">Tipo de votación</ThemedText>
+            {!isReadOnly ? (
+              <RadioButtonApp
+                options={BASE_VOTING_TYPE_OPTIONS.map((option) => ({
+                  label: option.label,
+                  selected: option.value === type,
+                  value: option.value,
+                }))}
+                enabled={!isEditMode}
+                onPress={(value) =>
+                  setValue("type", value as BaseVotingForCreation["type"])
+                }
+              />
+            ) : (
+              <ThemedText type="default">
+                {selectedTypeOption?.label || type}
+              </ThemedText>
+            )}
+            {selectedTypeOption?.description && (
+              <ThemedText type="hint">
+                {selectedTypeOption.description}
+              </ThemedText>
+            )}
+          </View>
 
           <View>
             <ThemedText type="inputLabel">Configuración de cierre</ThemedText>
@@ -259,7 +296,10 @@ export default function BaseVotingForm({
         </View>
       </ScrollView>
       {!isReadOnly && (
-        <ButtonApp label="Guardar cambios" onPress={handleSubmit(onSubmit)} />
+        <ButtonApp
+          label="Guardar cambios"
+          onPress={handleSubmit(onSubmitData)}
+        />
       )}
     </KeyboardAvoidingView>
   );

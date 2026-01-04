@@ -1,5 +1,7 @@
 import { User } from "@/models/User";
 import BooleanVoting from "../types/boolean/models/BooleanVoting";
+import OptionsVoting from "../types/options/models/OptionsVoting";
+import { VotingType } from "./VotingType";
 
 export type VotingStatus = "draft" | "active" | "closed" | "scheduled";
 
@@ -24,8 +26,9 @@ export interface BaseVoting {
     type: VotingReleaseType;
     date?: Date;
   };
+  type: VotingType;
 }
 
 export type BaseVotingForCreation = Omit<BaseVoting, "id" | "owner" | "status">;
 
-export type Voting = BooleanVoting;
+export type Voting = BooleanVoting | OptionsVoting;

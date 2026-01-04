@@ -1,56 +1,42 @@
 import { StyleSheet, View } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
-import { useUser } from "@/contexts/UserContext";
-import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { router } from "expo-router";
 import BaseVotingForm from "@/modules/voting/components/BaseVotingForm";
-import { SpinnerApp } from "@/components/SpinnerApp";
 import { BaseVotingForCreation } from "@/modules/voting/models/Voting";
-import { createBooleanVoting } from "@/modules/voting/types/boolean/services/voting/booleanVotingService";
-import BooleanVoting from "@/modules/voting/types/boolean/models/BooleanVoting";
+import { useBaseVoting } from "@/modules/voting/hooks/useBaseVoting";
+import { useEffect } from "react";
 
 export default function NewVoting() {
-  const { currentUser } = useUser();
+  const { saveBaseVotingData, resetBaseVotingData } = useBaseVoting();
 
-  const { isWaiting: isWaitingCreate, execPromise: handleCreate } =
-    useWaitingApp<
-      {
-        userId: number;
-        data: BaseVotingForCreation;
-      },
-      BooleanVoting
-    >({
-      functionToWait: ({ userId, data }) =>
-        createBooleanVoting({ userId, data }),
-      success: ({ id }) => {
-        router.replace(`/voting/${id}`);
-      },
-    });
+  useEffect(() => {
+    resetBaseVotingData();
+  }, []);
 
   const onCreateVoting = async (data: BaseVotingForCreation) => {
-    handleCreate({
-      userId: currentUser.id,
-      data: data,
-    });
+    saveBaseVotingData(data);
+    switch (data.type) {
+      case "boolean":
+        router.replace("/(tabs)/newVoting/boolean");
+        break;
+      case "options":
+        router.replace("/(tabs)/newVoting/options");
+        break;
+    }
   };
 
   return (
     <ThemedView style={{ flex: 1, alignItems: "center", padding: 16, gap: 20 }}>
       <View>
-        <ThemedText type="title">Crear Votación Rápida</ThemedText>
-        <ThemedText type="subtitle">
-          Crea una votación Sí/No en segundos
-        </ThemedText>
+        <ThemedText type="title">Crear Votación</ThemedText>
       </View>
 
-      <SpinnerApp visible={isWaitingCreate}>
-        <BaseVotingForm
-          onSubmit={onCreateVoting}
-          isReadOnly={false}
-          voting={null}
-        />
-      </SpinnerApp>
+      <BaseVotingForm
+        onSubmit={onCreateVoting}
+        isReadOnly={false}
+        voting={null}
+      />
     </ThemedView>
   );
 }

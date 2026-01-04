@@ -8,6 +8,7 @@ import { useItemFetcherApp } from "@/hooks/useItemFetcherApp";
 import {
   activateBaseVoting,
   closeBaseVoting,
+  fetchBaseVotingById,
   updateBaseVoting,
 } from "@/modules/voting/services/voting/votingService";
 import { useLocalSearchParams, router } from "expo-router";
@@ -17,7 +18,6 @@ import {
   BaseVoting,
   BaseVotingForCreation,
 } from "@/modules/voting/models/Voting";
-import { fetchBooleanVotingById } from "@/modules/voting/types/boolean/services/voting/booleanVotingService";
 
 export default function VotingEditPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -27,13 +27,13 @@ export default function VotingEditPage() {
     data: voting,
     error,
     isLoading,
-  } = useItemFetcherApp(() => fetchBooleanVotingById(Number(id)), [id]);
+  } = useItemFetcherApp(() => fetchBaseVotingById(Number(id)), [id]);
 
   const { isWaiting: isUpdating, execPromise: handleUpdate } = useWaitingApp({
     functionToWait: async (data: BaseVotingForCreation) =>
       updateBaseVoting({
         data: data,
-        id: voting?.baseVotingId!,
+        id: voting?.id!,
         userId: currentUser.id,
       }),
     success: () => router.navigate(`/voting/${id}`),
@@ -79,18 +79,14 @@ export default function VotingEditPage() {
       ),
   });
 
-  if (voting && voting.baseVoting.owner.id !== currentUser.id) {
+  if (voting && voting.owner.id !== currentUser.id) {
     router.back();
   }
 
-  const canEdit =
-    voting?.baseVoting.status === "draft" ||
-    voting?.baseVoting.status === "scheduled";
-  const canActivate =
-    canEdit && voting?.baseVoting.release.type === "manualRelease";
+  const canEdit = voting?.status === "draft" || voting?.status === "scheduled";
+  const canActivate = canEdit && voting?.release.type === "manualRelease";
   const canClose =
-    voting?.baseVoting.status === "active" &&
-    voting?.baseVoting.close.type === "manualClose";
+    voting?.status === "active" && voting?.close.type === "manualClose";
   const isReadOnly = !canEdit;
 
   const onActivate = () => {
@@ -104,7 +100,7 @@ export default function VotingEditPage() {
           text: "Activar",
           onPress: () =>
             handleActivate({
-              id: voting?.baseVotingId!,
+              id: voting?.id!,
               userId: currentUser.id,
             }),
         },
@@ -123,7 +119,7 @@ export default function VotingEditPage() {
           text: "Cerrar",
           style: "destructive",
           onPress: () =>
-            handleClose({ id: voting?.baseVotingId!, userId: currentUser.id }),
+            handleClose({ id: voting?.id!, userId: currentUser.id }),
         },
       ]
     );
@@ -147,18 +143,22 @@ export default function VotingEditPage() {
           <ThemedText type="title">
             {isReadOnly ? "Ver votación" : "Editar votación"}
           </ThemedText>
-          <ThemedText type="subtitle">
-            Estado: {voting?.baseVoting.status}
-          </ThemedText>
+          <ThemedText type="subtitle">Estado: {voting?.status}</ThemedText>
         </View>
 
         <BaseVotingForm
           onSubmit={handleUpdate}
-          voting={voting?.baseVoting || null}
+          voting={voting || null}
           isReadOnly={isReadOnly || isUpdating}
         />
+        {voting?.type === "options" && (
+          <ButtonApp
+            label={isReadOnly ? "Ver opciones" : "Gestionar opciones"}
+            onPress={() => router.push(`/voting/${id}/edit/options`)}
+          />
+        )}
 
-        <View style={{ gap: 12 }}>
+        <View style={{ gap: 8 }}>
           <ButtonApp
             label="Ver votación"
             onPress={() => router.replace(`/voting/${id}`)}

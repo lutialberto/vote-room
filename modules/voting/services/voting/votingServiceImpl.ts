@@ -12,7 +12,7 @@ export class VotingServiceImpl {
   private votings: BaseVoting[] = [...BASE_VOTING_MOCK_RESPONSE];
 
   createInstantBaseVoting(
-    data: BaseVotingForCreation,
+    baseData: BaseVotingForCreation,
     userId: number
   ): BaseVoting {
     const user = userServiceInstance.getInstantUserById(userId);
@@ -24,9 +24,9 @@ export class VotingServiceImpl {
       releaseScheduled: "scheduled",
       manualRelease: "draft",
     };
-    const status: VotingStatus = mapper[data.release.type];
+    const status: VotingStatus = mapper[baseData.release.type];
     const newBaseVoting: BaseVoting = {
-      ...data,
+      ...baseData,
       owner: {
         id: userId,
         email: user.email,

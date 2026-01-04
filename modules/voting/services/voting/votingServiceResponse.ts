@@ -18,6 +18,7 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     release: {
       type: "releaseOnCreate",
     },
+    type: "boolean",
   },
   {
     id: 2,
@@ -38,6 +39,7 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
       type: "releaseScheduled",
       date: new Date(Date.now() + 3600 * 1000), // 1 hour from now
     },
+    type: "options",
   },
   {
     id: 3,
@@ -56,6 +58,7 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     release: {
       type: "manualRelease",
     },
+    type: "boolean",
   },
   {
     id: 4,
@@ -75,6 +78,7 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     release: {
       type: "releaseOnCreate",
     },
+    type: "options",
   },
   {
     id: 5,
@@ -94,5 +98,6 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
       type: "releaseScheduled",
       date: new Date(Date.now() + 7200 * 1000), // 2 hours from now
     },
+    type: "boolean",
   },
 ];

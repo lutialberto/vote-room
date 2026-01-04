@@ -1,5 +1,21 @@
 import { RadioButtonAppOption } from "@/components/RadioButtonApp";
 
+export const BASE_VOTING_TYPE_OPTIONS: (RadioButtonAppOption & {
+  description: string;
+})[] = [
+  {
+    value: "boolean",
+    label: "Sí/No",
+    selected: false,
+    description: "Votación con dos opciones: Sí o No",
+  },
+  {
+    value: "options",
+    label: "Opciones",
+    selected: false,
+    description: "Votación con múltiples opciones para elegir",
+  },
+];
 export const CLOSE_TYPE_OPTIONS: (RadioButtonAppOption & {
   description: string;
 })[] = [
