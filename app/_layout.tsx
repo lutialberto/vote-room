@@ -68,7 +68,7 @@ export default function RootLayout() {
               }}
             />
             <Stack.Screen
-              name="voting/[id]/edit"
+              name="voting/[id]/edit/index"
               options={{
                 headerShown: true,
                 title: "Editar votación",
