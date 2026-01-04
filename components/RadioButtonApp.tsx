@@ -18,12 +18,14 @@ export type RadioButtonAppProps = {
   options: RadioButtonAppOption[];
   onPress: (value: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  enabled?: boolean;
 };
 
 export function RadioButtonApp({
   options,
   containerStyle,
   onPress,
+  enabled = true,
 }: RadioButtonAppProps) {
   const colors = useThemeColor();
   return (
@@ -33,12 +35,14 @@ export function RadioButtonApp({
           key={option.label}
           onPress={() => onPress(option.value)}
           style={styles.optionContainer}
+          disabled={!enabled}
         >
           <View
             style={[
               styles.icon,
               { borderColor: colors.border },
               option.selected ? { backgroundColor: colors.primary } : null,
+              !enabled ? { backgroundColor: colors.border } : null,
             ]}
           ></View>
           <ThemedText type="defaultSemiBold">{option.label}</ThemedText>
