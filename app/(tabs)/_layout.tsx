@@ -60,6 +60,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="myVotings"
+        options={{
+          title: "Mis Votaciones",
+          tabBarIcon: ({ color }) => (
+            <IconApp size={28} name="bar-chart-outline" color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

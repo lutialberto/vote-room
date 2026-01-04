@@ -36,7 +36,7 @@ export default function VotingEditPage() {
         id: voting?.id!,
         userId: currentUser.id,
       }),
-    success: () => router.navigate(`/voting/${id}`),
+    success: () => router.navigate(`/(tabs)/myVotings/${id}`),
     failure: () =>
       Alert.alert(
         "Error",
@@ -53,7 +53,7 @@ export default function VotingEditPage() {
       BaseVoting
     >({
       functionToWait: async (props) => activateBaseVoting(props),
-      success: () => router.replace(`/voting/${id}`),
+      success: () => router.replace(`/(tabs)/myVotings/${id}`),
       failure: () =>
         Alert.alert(
           "Error",
@@ -70,7 +70,7 @@ export default function VotingEditPage() {
   >({
     functionToWait: async (props) => closeBaseVoting(props),
     success: () => {
-      router.replace(`/voting/${id}`);
+      router.replace(`/(tabs)/myVotings/${id}`);
     },
     failure: () =>
       Alert.alert(
@@ -154,18 +154,18 @@ export default function VotingEditPage() {
         {voting?.type === "options" && (
           <ButtonApp
             label={isReadOnly ? "Ver opciones" : "Gestionar opciones"}
-            onPress={() => router.push(`/voting/${id}/edit/options`)}
+            onPress={() => router.push(`/(tabs)/myVotings/${id}/edit/options`)}
           />
         )}
 
         <View style={{ gap: 8 }}>
           <ButtonApp
             label="Ver votación"
-            onPress={() => router.replace(`/voting/${id}`)}
+            onPress={() => router.replace(`/(tabs)/myVotings/${id}`)}
           />
           <ButtonApp
             label="Replicar votación"
-            onPress={() => router.push(`/voting/${id}/copy`)}
+            onPress={() => router.push(`/(tabs)/newVoting/${id}/copy`)}
           />
           {canActivate && (
             <ButtonApp
@@ -184,11 +184,6 @@ export default function VotingEditPage() {
               type="cancel"
             />
           )}
-          <ButtonApp
-            label="← Volver a Nueva Votación"
-            onPress={() => router.push("/(tabs)/newVoting")}
-            type="secondary"
-          />
         </View>
       </SpinnerApp>
     </ThemedView>

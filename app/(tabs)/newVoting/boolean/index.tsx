@@ -36,7 +36,7 @@ export default function NewBaseVoting() {
       functionToWait: ({ userId, data }) =>
         createBooleanVoting({ userId, data }),
       success: ({ baseVotingId }) => {
-        router.replace(`/voting/${baseVotingId}`);
+        router.replace(`/(tabs)/myVotings/${baseVotingId}`);
       },
     });
 

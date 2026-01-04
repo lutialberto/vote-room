@@ -59,30 +59,6 @@ export default function RootLayout() {
                 headerBackTitle: "Volver",
               }}
             />
-            <Stack.Screen
-              name="voting/[id]/index"
-              options={{
-                headerShown: true,
-                title: "Votación",
-                headerBackTitle: "Volver",
-              }}
-            />
-            <Stack.Screen
-              name="voting/[id]/edit/index"
-              options={{
-                headerShown: true,
-                title: "Editar votación",
-                headerBackTitle: "Volver",
-              }}
-            />
-            <Stack.Screen
-              name="voting/[id]/copy"
-              options={{
-                headerShown: true,
-                title: "Copiar votación",
-                headerBackTitle: "Volver",
-              }}
-            />
             <Stack.Screen name="+not-found" />
           </Stack>
         </UserProvider>

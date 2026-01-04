@@ -32,8 +32,8 @@ export default function CopyVoting() {
     >({
       functionToWait: ({ userId, data }) =>
         createBooleanVoting({ userId, data }),
-      success: ({ id }) => {
-        router.replace(`/voting/${id}`);
+      success: ({ baseVotingId }) => {
+        router.replace(`/(tabs)/myVotings/${baseVotingId}`);
       },
     });
 
@@ -68,6 +68,7 @@ export default function CopyVoting() {
           onSubmit={onCreateVoting}
           isReadOnly={false}
           voting={data?.baseVoting || null}
+          isEditMode={false}
         />
       </SpinnerApp>
     </ThemedView>
