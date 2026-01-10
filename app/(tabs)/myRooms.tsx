@@ -1,19 +1,26 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { StyleSheet, View, RefreshControl, FlatList } from "react-native";
 import RoomCardItem from "@/components/RoomCardItem";
-import { Room } from "../../models/Room";
 import RoomStats, { ROOM_STATS, RoomStatNames } from "@/components/RoomStats";
 import { fetchRoomsByUser } from "@/services/roomMember/roomMemberService";
 import { useUser } from "@/contexts/UserContext";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "@/components/IconApp";
+import { useListFetcherApp } from "@/hooks/useListFetcherApp";
 
 export default function MyRooms() {
   const { currentUser } = useUser();
-  const [refreshing, setRefreshing] = useState(false);
-  const [rooms, setRooms] = useState<Room[]>([]);
+  const {
+    data: rooms,
+    error,
+    isLoading,
+    refetch,
+  } = useListFetcherApp(
+    () => fetchRoomsByUser(currentUser.id),
+    [currentUser.id]
+  );
   const [selectedStats, setSelectedStats] = useState<RoomStatNames | undefined>(
     undefined
   );
@@ -24,22 +31,6 @@ export default function MyRooms() {
         ROOM_STATS[selectedStats].criteria(room, currentUser)
       )
     : rooms;
-
-  useEffect(() => {
-    const fetchRooms2 = () => {
-      fetchRoomsByUser(currentUser.id).then((res) => setRooms(res));
-    };
-
-    fetchRooms2();
-  }, [currentUser.id]);
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    fetchRoomsByUser(currentUser.id).then((res) => {
-      setRooms(res);
-      setRefreshing(false);
-    });
-  };
 
   return (
     <ThemedView>
@@ -68,18 +59,27 @@ export default function MyRooms() {
         }
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
+            refreshing={isLoading}
+            onRefresh={refetch}
             tintColor={primaryColor}
           />
         }
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <IconApp name="home-outline" size={80} />
-            <ThemedText>No tienes salas aún</ThemedText>
-            <ThemedText style={styles.emptyDescription}>
-              Crea una nueva sala o únete a una existente para comenzar
-            </ThemedText>
+            {error ? (
+              <ThemedText>
+                Ocurrió un error al cargar tus salas. Intenta de nuevo más
+                tarde.
+              </ThemedText>
+            ) : (
+              <>
+                <IconApp name="home-outline" size={80} />
+                <ThemedText>No tienes salas aún</ThemedText>
+                <ThemedText style={styles.emptyDescription}>
+                  Crea una nueva sala o únete a una existente para comenzar
+                </ThemedText>
+              </>
+            )}
           </View>
         }
       />
