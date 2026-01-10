@@ -37,7 +37,7 @@ export default function ShareRoom() {
   };
 
   const onInviteUsers = () => {
-    router.push(`/${roomId}/inviteUsers`);
+    router.push(`/(tabs)/myRooms/${roomId}/inviteUsers`);
   };
 
   return (

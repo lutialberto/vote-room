@@ -29,7 +29,7 @@ export default function RoomCardItem({ room }: { room: Room }) {
       };
 
   const navigateToRoom = (roomCode: string) => {
-    router.push(`/${roomCode}/shareRoom`);
+    router.push(`/(tabs)/myRooms/${roomCode}/shareRoom`);
   };
 
   return (

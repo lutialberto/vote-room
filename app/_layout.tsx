@@ -43,22 +43,6 @@ export default function RootLayout() {
         <UserProvider>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="[roomId]/inviteUsers/index"
-              options={{
-                headerShown: true,
-                title: "Invitar usuarios",
-                headerBackTitle: "Volver",
-              }}
-            />
-            <Stack.Screen
-              name="[roomId]/shareRoom/index"
-              options={{
-                headerShown: true,
-                title: "Compartir sala",
-                headerBackTitle: "Volver",
-              }}
-            />
             <Stack.Screen name="+not-found" />
           </Stack>
         </UserProvider>
