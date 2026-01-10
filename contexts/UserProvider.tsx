@@ -1,24 +1,18 @@
-import React, { createContext, useContext, ReactNode } from "react";
+import { createContext, ReactNode } from "react";
 import { User } from "@/models/User";
+import { USER_MOCK_RESPONSE } from "@/services/user/userServiceResponse";
 
 export interface UserContextType {
   currentUser: User;
   isAuthenticated: boolean;
 }
 
-export const UserContext = createContext<UserContextType>(null);
-
-const MOCK_CURRENT_USER: User = {
-  id: 1,
-  name: "Mock User",
-  userName: "mockuser",
-  email: "mockuser@example.com",
-};
-
 const contextValue: UserContextType = {
-  currentUser: MOCK_CURRENT_USER,
+  currentUser: USER_MOCK_RESPONSE[0],
   isAuthenticated: true,
 };
+
+export const UserContext = createContext<UserContextType>(contextValue);
 
 export function UserProvider(props: { children: ReactNode }) {
   return (
