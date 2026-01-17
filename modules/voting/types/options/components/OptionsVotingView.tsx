@@ -94,24 +94,24 @@ export default function OptionsVotingView(props: {
             />
           )}
         <CardApp style={{ padding: 16, width: "100%" }}>
-          {alreadyVoted ? (
-            <>
-              <SpinnerApp visible={isLoadingVotes || !alreadyVoted}>
-                <OptionsVotingResults
-                  options={data?.options}
-                  votes={votes}
-                  error={errorVotes}
-                />
-              </SpinnerApp>
-              <ThemedText type="hint">
-                ✅ Ya has votado en esta encuesta
-              </ThemedText>
-            </>
-          ) : (
+          {alreadyVoted && (
+            <ThemedText type="hint">
+              ✅ Ya has votado en esta encuesta
+            </ThemedText>
+          )}
+          {!alreadyVoted && data?.baseVoting.status === "active" ? (
             <SpinnerApp visible={isWaitingVote}>
               <OptionsVotingOptions
                 options={data?.options}
                 handleOptionSelected={(optionId) => handleVote({ optionId })}
+              />
+            </SpinnerApp>
+          ) : (
+            <SpinnerApp visible={isLoadingVotes}>
+              <OptionsVotingResults
+                options={data?.options}
+                votes={votes}
+                error={errorVotes}
               />
             </SpinnerApp>
           )}

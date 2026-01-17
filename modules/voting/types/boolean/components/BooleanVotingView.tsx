@@ -92,20 +92,22 @@ export default function BooleanVotingView(props: {
               onFinish={refetchVoting}
             />
           )}
-        <SpinnerApp visible={isLoadingVotes}>
-          <BooleanVotingResults
-            yesVotes={yesVotes}
-            noVotes={noVotes}
-            error={errorVotes}
-          />
-        </SpinnerApp>
-        {alreadyVoted ? (
+        {alreadyVoted && (
           <ThemedText type="hint">✅ Ya has votado en esta encuesta</ThemedText>
-        ) : (
+        )}
+        {!alreadyVoted && data?.baseVoting.status === "active" ? (
           <SpinnerApp visible={isWaitingVote}>
             <BooleanVotingOptions
               handleYes={() => handleVote({ choice: true })}
               handleNo={() => handleVote({ choice: false })}
+            />
+          </SpinnerApp>
+        ) : (
+          <SpinnerApp visible={isLoadingVotes}>
+            <BooleanVotingResults
+              yesVotes={yesVotes}
+              noVotes={noVotes}
+              error={errorVotes}
             />
           </SpinnerApp>
         )}
