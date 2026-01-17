@@ -2,7 +2,7 @@ import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
 import { VotingMember } from "../../models/VotingMember";
 import { VOTING_MEMBER_MOCK_RESPONSE } from "./votingMemberServiceResponse";
 import { userServiceInstance } from "@/services/user/userServiceImpl";
-import { votingServiceInstance } from "../voting/votingServiceImpl";
+import { votingCoreService } from "../voting/votingCoreService";
 
 export class VotingServiceImpl {
   private votingMembers: VotingMember[] = [...VOTING_MEMBER_MOCK_RESPONSE];
@@ -34,7 +34,7 @@ export class VotingServiceImpl {
       if (!user) {
         throw new Error("User not found");
       }
-      const voting = votingServiceInstance.getInstantBaseVotingById(votingId);
+      const voting = votingCoreService.getInstantBaseVotingById(votingId);
       if (!voting) {
         throw new Error("Voting not found");
       }

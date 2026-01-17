@@ -1,5 +1,4 @@
 import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
-import { BASE_VOTING_MOCK_RESPONSE } from "./votingServiceResponse";
 import {
   BaseVoting,
   BaseVotingForCreation,
@@ -7,11 +6,10 @@ import {
   VotingStatus,
 } from "../../models/Voting";
 import { userServiceInstance } from "@/services/user/userServiceImpl";
+import { votingCoreService } from "./votingCoreService";
 import { votingMemberServiceInstance } from "../votingMember/votingMemberServiceImpl";
 
 export class VotingServiceImpl {
-  private votings: BaseVoting[] = [...BASE_VOTING_MOCK_RESPONSE];
-
   createInstantBaseVoting(
     baseData: BaseVotingForCreation,
     userId: number
@@ -26,6 +24,7 @@ export class VotingServiceImpl {
       manualRelease: "draft",
     };
     const status: VotingStatus = mapper[baseData.release.type];
+    const votings = votingCoreService.getInstantBaseVotings();
     const newBaseVoting: BaseVoting = {
       ...baseData,
       owner: {
@@ -35,10 +34,10 @@ export class VotingServiceImpl {
         userName: user.userName,
       },
       status,
-      id: Math.max(...this.votings.map((e) => e.id)) + 1,
+      id: Math.max(...votings.map((e) => e.id)) + 1,
     };
 
-    this.votings.push(newBaseVoting);
+    votingCoreService.addInstantBaseVoting(newBaseVoting);
     return { ...newBaseVoting };
   }
 
@@ -72,9 +71,7 @@ export class VotingServiceImpl {
         status,
       };
 
-      this.votings = this.votings.map((voting) =>
-        voting.id === updatedVoting.id ? updatedVoting : voting
-      );
+      votingCoreService.updateInstantBaseVoting(updatedVoting);
       return { ...updatedVoting };
     });
   }
@@ -104,9 +101,7 @@ export class VotingServiceImpl {
         status: "active",
       };
 
-      this.votings = this.votings.map((voting) =>
-        voting.id === updatedVoting.id ? updatedVoting : voting
-      );
+      votingCoreService.updateInstantBaseVoting(updatedVoting);
       return { ...updatedVoting };
     });
   }
@@ -136,15 +131,13 @@ export class VotingServiceImpl {
         status: "closed",
       };
 
-      this.votings = this.votings.map((voting) =>
-        voting.id === updatedVoting.id ? updatedVoting : voting
-      );
+      votingCoreService.updateInstantBaseVoting(updatedVoting);
       return { ...updatedVoting };
     });
   }
 
   getInstantBaseVotingById(id: number): BaseVoting | undefined {
-    return this.votings.find((voting) => voting.id === id);
+    return votingCoreService.getInstantBaseVotingById(id);
   }
 
   async fetchBaseVotingById(id: number): Promise<BaseVoting> {

@@ -1,14 +1,9 @@
-import { BASE_VOTING_MOCK_RESPONSE } from "@/modules/voting/services/voting/votingServiceResponse";
 import BooleanVoting, { BooleanVotingRecord } from "../../models/BooleanVoting";
 import { BOOLEAN_VOTING_SERVICE_RESPONSE_MOCK } from "./booleanVotingServiceResponse";
-import {
-  BaseVotingForCreation,
-  VotingReleaseType,
-  VotingStatus,
-} from "@/modules/voting/models/Voting";
+import { BaseVotingForCreation } from "@/modules/voting/models/Voting";
 import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
-import { userServiceInstance } from "@/services/user/userServiceImpl";
 import { votingServiceInstance } from "@/modules/voting/services/voting/votingServiceImpl";
+import { votingCoreService } from "@/modules/voting/services/voting/votingCoreService";
 
 export class BooleanVotingServiceImpl {
   private votings: BooleanVotingRecord[] = [
@@ -42,7 +37,7 @@ export class BooleanVotingServiceImpl {
     if (!record) {
       throw new Error(`Voting not found with id: ${id}`);
     }
-    const baseVoting = votingServiceInstance.getInstantBaseVotingById(
+    const baseVoting = votingCoreService.getInstantBaseVotingById(
       record.baseVotingId
     );
     if (!baseVoting) {

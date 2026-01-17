@@ -1,9 +1,8 @@
 import { roomMembersMockResponse } from "./roomMemberResponse";
 import { Room } from "../../models/Room";
 import { RoomMember } from "../../models/RoomMember";
-import { getRoomByCode } from "../room/roomService";
 import { successPromiseBehavior } from "../serviceUtilsImpl";
-import { roomServiceInstance } from "../room/roomServiceImpl";
+import { roomCoreService } from "../room/roomCoreService";
 
 export class RoomMemberServiceImpl {
   private roomMembers: RoomMember[] = [...roomMembersMockResponse];
@@ -17,7 +16,7 @@ export class RoomMemberServiceImpl {
       .filter((roomMember) => roomMember.userId === userId)
       .map((roomMember) => roomMember.roomCode);
 
-    const allRooms = roomServiceInstance.getInstantRooms();
+    const allRooms = roomCoreService.getInstantRooms();
     const userRooms = allRooms.filter((room) =>
       userRoomCodes.includes(room.code)
     );
@@ -30,7 +29,7 @@ export class RoomMemberServiceImpl {
     userId: number,
     key?: string
   ): { roomCode: string } {
-    const room = roomServiceInstance.getInstantRoomByCode(code);
+    const room = roomCoreService.getInstantRoomByCode(code);
     if (!room) {
       throw new Error(`Room not found: ${code}`);
     }

@@ -1,5 +1,5 @@
 import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
-import { votingServiceInstance } from "../../../../services/voting/votingServiceImpl";
+import { votingCoreService } from "../../../../services/voting/votingCoreService";
 import { OptionsVote } from "../../models/OptionsVote";
 import { OPTIONS_VOTE_MOCK_RESPONSE } from "./optionsVoteServiceResponse";
 import { optionsVotingChoiceServiceInstance } from "../choice/optionsVotingChoiceServiceImpl";
@@ -19,7 +19,7 @@ export class OptionsVoteServiceImpl {
     votingOptionChoiceId: number
   ): Promise<OptionsVote> {
     return successPromiseBehavior(() => {
-      const vote = votingServiceInstance.getInstantBaseVotingById(votingId);
+      const vote = votingCoreService.getInstantBaseVotingById(votingId);
       if (!vote) {
         throw new Error(`Voting not found with id: ${votingId}`);
       }

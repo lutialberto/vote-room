@@ -1,6 +1,7 @@
 import { BaseVotingForCreation } from "@/modules/voting/models/Voting";
 import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
 import { votingServiceInstance } from "@/modules/voting/services/voting/votingServiceImpl";
+import { votingCoreService } from "@/modules/voting/services/voting/votingCoreService";
 import OptionsVoting, { OptionsVotingRecord } from "../../models/OptionsVoting";
 import { OPTIONS_VOTING_SERVICE_RESPONSE_MOCK } from "./optionsVotingServiceResponse";
 import { optionsVotingChoiceServiceInstance } from "../choice/optionsVotingChoiceServiceImpl";
@@ -46,8 +47,7 @@ export class OptionsVotingServiceImpl {
     options: string[]
   ): Promise<OptionsVoting> {
     return successPromiseBehavior(() => {
-      const baseVoting =
-        votingServiceInstance.getInstantBaseVotingById(votingId);
+      const baseVoting = votingCoreService.getInstantBaseVotingById(votingId);
       if (!baseVoting) {
         throw new Error(`Base voting not found with id: ${votingId}`);
       }
@@ -85,7 +85,7 @@ export class OptionsVotingServiceImpl {
     if (!record) {
       throw new Error(`Voting not found with id: ${id}`);
     }
-    const baseVoting = votingServiceInstance.getInstantBaseVotingById(
+    const baseVoting = votingCoreService.getInstantBaseVotingById(
       record.baseVotingId
     );
     if (!baseVoting) {
@@ -113,7 +113,7 @@ export class OptionsVotingServiceImpl {
     if (!record) {
       throw new Error(`Voting not found with votingId: ${votingId}`);
     }
-    const baseVoting = votingServiceInstance.getInstantBaseVotingById(
+    const baseVoting = votingCoreService.getInstantBaseVotingById(
       record.baseVotingId
     );
     if (!baseVoting) {

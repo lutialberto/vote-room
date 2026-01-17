@@ -1,6 +1,6 @@
 import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
 import { BOOLEAN_VOTE_MOCK_RESPONSE } from "./booleanVoteServiceResponse";
-import { votingServiceInstance } from "../../../../services/voting/votingServiceImpl";
+import { votingCoreService } from "../../../../services/voting/votingCoreService";
 import { BooleanVote } from "../../models/BooleanVote";
 
 export class VoteServiceImpl {
@@ -18,7 +18,7 @@ export class VoteServiceImpl {
     choice: boolean
   ): Promise<BooleanVote> {
     return successPromiseBehavior(() => {
-      const vote = votingServiceInstance.getInstantBaseVotingById(votingId);
+      const vote = votingCoreService.getInstantBaseVotingById(votingId);
       if (!vote) {
         throw new Error(`Voting not found with id: ${votingId}`);
       }
