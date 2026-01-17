@@ -39,10 +39,14 @@ export class RoomServiceImpl {
       ) as PublicRoomType[];
     });
 
+  getInstantRoomByCode(code: string): Room | null {
+    const room = this.rooms.find((r) => r.code === code);
+    return room ? { ...room } : null;
+  }
+
   async getRoomByCode(code: string): Promise<Room | null> {
     return successPromiseBehavior(() => {
-      const room = this.rooms.find((r) => r.code === code);
-      return room ? { ...room } : null;
+      return this.getInstantRoomByCode(code);
     });
   }
 

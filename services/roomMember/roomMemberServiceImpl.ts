@@ -25,35 +25,44 @@ export class RoomMemberServiceImpl {
     return userRooms;
   }
 
+  joinRoomInstant(
+    code: string,
+    userId: number,
+    key?: string
+  ): { roomCode: string } {
+    const room = roomServiceInstance.getInstantRoomByCode(code);
+    if (!room) {
+      throw new Error(`Room not found: ${code}`);
+    }
+    if (room.isPrivate && key && room.key !== key) {
+      throw new Error(`Invalid room key ${key} for room: ${code}`);
+    }
+
+    const existingMember = this.roomMembers.find(
+      (member) => member.roomCode === code && member.userId === userId
+    );
+    if (existingMember) {
+      throw new Error(`User ${userId} already in room: ${code}`);
+    }
+
+    const newId = this.getNextId();
+    const newRoomMember: RoomMember = {
+      id: newId,
+      roomCode: code,
+      userId,
+    };
+    this.roomMembers.push(newRoomMember);
+    return { roomCode: code };
+  }
+
   async joinRoom(
     code: string,
     userId: number,
     key?: string
   ): Promise<{ roomCode: string }> {
     return successPromiseBehavior(async () => {
-      const room = await getRoomByCode(code);
-      if (!room) {
-        throw new Error("Room not found");
-      }
-      if (room.isPrivate && room.key !== key) {
-        throw new Error("Invalid room key");
-      }
-
-      const existingMember = this.roomMembers.find(
-        (member) => member.roomCode === code && member.userId === userId
-      );
-      if (existingMember) {
-        throw new Error("User already in room");
-      }
-
-      const newId = this.getNextId();
-      const newRoomMember: RoomMember = {
-        id: newId,
-        roomCode: code,
-        userId,
-      };
-      this.roomMembers.push(newRoomMember);
-    }).then(() => ({ roomCode: code }));
+      return this.joinRoomInstant(code, userId, key);
+    });
   }
 
   private getNextId(): number {

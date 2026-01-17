@@ -1,6 +1,7 @@
 import { pendingRoomInvitationRequestMockResponse } from "./pendingRoomInvitationRequestResponse";
 import { PendingRoomInvitationRequest } from "../models/PendingRoomInvitationRequest";
 import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
+import { roomMemberServiceInstance } from "@/services/roomMember/roomMemberServiceImpl";
 
 export class PendingRoomInvitationRequestServiceImpl {
   private pendingRoomInvitationRequests: PendingRoomInvitationRequest[] = [
@@ -32,15 +33,23 @@ export class PendingRoomInvitationRequestServiceImpl {
   async acceptPendingRoomInvitationRequest(
     id: number
   ): Promise<{ id: number }> {
-    return successPromiseBehavior(() => {
+    return successPromiseBehavior(async () => {
+      const invitation = this.pendingRoomInvitationRequests.find(
+        (inv) => inv.id === id
+      );
+      if (!invitation) {
+        throw new Error("Invitation not found");
+      }
+
       this.pendingRoomInvitationRequests =
-        this.pendingRoomInvitationRequests.map((invitation) =>
-          invitation.id === id ? { ...invitation, confirmed: true } : invitation
+        this.pendingRoomInvitationRequests.filter(
+          (invitation) => invitation.id !== id
         );
-      this.pendingRoomInvitationRequests =
-        this.pendingRoomInvitationRequests.map((invitation) =>
-          invitation.id === id ? { ...invitation, confirmed: true } : invitation
-        );
+
+      roomMemberServiceInstance.joinRoomInstant(
+        invitation.roomCode,
+        invitation.invitedUserId
+      );
     }).then(() => ({ id }));
   }
 }
