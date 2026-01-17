@@ -10,3 +10,11 @@ export function addVotingMember({
 }): Promise<VotingMember> {
   return votingMemberServiceInstance.addVotingMember(votingId, userId);
 }
+
+export function fetchVotingMembersByUserId({
+  userId,
+}: {
+  userId: number;
+}): Promise<VotingMember[]> {
+  return votingMemberServiceInstance.fetchVotingMembersByUserId(userId);
+}

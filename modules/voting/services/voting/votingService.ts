@@ -30,3 +30,8 @@ export const closeBaseVoting = ({
 
 export const fetchBaseVotingById = (id: number): Promise<BaseVoting> =>
   votingServiceInstance.fetchBaseVotingById(id);
+
+export const fetchBaseVotingsByUserId = (
+  userId: number
+): Promise<BaseVoting[]> =>
+  votingServiceInstance.fetchBaseVotingsByUserId(userId);

@@ -1,47 +1,23 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useEffect, useState } from "react";
 import { StyleSheet, View, RefreshControl, FlatList } from "react-native";
-import RoomCardItem from "@/components/RoomCardItem";
-import RoomStats, { ROOM_STATS, RoomStatNames } from "@/components/RoomStats";
-import { fetchRoomsByUser } from "@/services/roomMember/roomMemberService";
 import { useUser } from "@/contexts/UserContext";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "@/components/IconApp";
+import { useListFetcherApp } from "@/hooks/useListFetcherApp";
+import VotingCardItem from "@/modules/voting/view/components/VotingCardItem";
+import { fetchBaseVotingsByUserId } from "@/modules/voting/services/voting/votingService";
 
 export default function MyVotings() {
   const { currentUser } = useUser();
-  const [refreshing, setRefreshing] = useState(false);
-  //   const [rooms, setRooms] = useState<Room[]>([]);
-  //   const [selectedStats, setSelectedStats] = useState<RoomStatNames | undefined>(
-  //     undefined
-  //   );
+  const { data, error, isLoading, refetch } = useListFetcherApp(
+    () => fetchBaseVotingsByUserId(currentUser.id),
+    [currentUser.id]
+  );
   const { primary: primaryColor } = useThemeColor();
 
-  //   const roomsBySelectedStat = selectedStats
-  //     ? rooms.filter((room) =>
-  //         ROOM_STATS[selectedStats].criteria(room, currentUser)
-  //       )
-  //     : rooms;
-
-  //   useEffect(() => {
-  //     const fetchRooms2 = () => {
-  //       fetchRoomsByUser(currentUser.id).then((res) => setRooms(res));
-  //     };
-
-  //     fetchRooms2();
-  //   }, [currentUser.id]);
-
-  //   const onRefresh = async () => {
-  //     setRefreshing(true);
-  //     fetchRoomsByUser(currentUser.id).then((res) => {
-  //       setRooms(res);
-  //       setRefreshing(false);
-  //     });
-  //   };
-
   return (
-    <ThemedView>
+    <ThemedView style={{ flex: 1 }}>
       <View style={styles.header}>
         <ThemedText type="title">🏠 Mis Votaciones</ThemedText>
         <ThemedText type="subtitle" style={styles.pageSubtitle}>
@@ -49,39 +25,39 @@ export default function MyVotings() {
         </ThemedText>
       </View>
 
-      {/* <FlatList
-        data={roomsBySelectedStat}
+      <FlatList
+        data={data}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.code}
-        renderItem={({ item }) => <RoomCardItem room={item} />}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <VotingCardItem {...item} />}
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-        ListHeaderComponent={
-          <RoomStats
-            rooms={rooms}
-            selectedStats={selectedStats}
-            handleSelectedStatsItemPress={(item) =>
-              setSelectedStats((prev) => (prev === item ? undefined : item))
-            }
-          />
-        }
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
+            refreshing={isLoading}
+            onRefresh={refetch}
             tintColor={primaryColor}
           />
         }
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <IconApp name="home-outline" size={80} />
-            <ThemedText>No tienes salas aún</ThemedText>
-            <ThemedText style={styles.emptyDescription}>
-              Crea una nueva sala o únete a una existente para comenzar
-            </ThemedText>
+            {error && (
+              <ThemedText style={styles.emptyDescription}>
+                Ocurrió un error al cargar tus votaciones
+              </ThemedText>
+            )}
+            {!isLoading && !error && (
+              <>
+                <IconApp name="home-outline" size={80} />
+                <ThemedText>No tienes votaciones aún</ThemedText>
+                <ThemedText style={styles.emptyDescription}>
+                  Crea una nueva votación o únete a una existente
+                </ThemedText>
+              </>
+            )}
           </View>
         }
-      /> */}
+      />
     </ThemedView>
   );
 }

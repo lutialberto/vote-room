@@ -7,6 +7,7 @@ import {
   VotingStatus,
 } from "../../models/Voting";
 import { userServiceInstance } from "@/services/user/userServiceImpl";
+import { votingMemberServiceInstance } from "../votingMember/votingMemberServiceImpl";
 
 export class VotingServiceImpl {
   private votings: BaseVoting[] = [...BASE_VOTING_MOCK_RESPONSE];
@@ -153,6 +154,21 @@ export class VotingServiceImpl {
         throw new Error("Voting not found");
       }
       return { ...voting };
+    });
+  }
+
+  async fetchBaseVotingsByUserId(userId: number): Promise<BaseVoting[]> {
+    return successPromiseBehavior(() => {
+      const votingsMember =
+        votingMemberServiceInstance.getInstantVotingMembersByUserId(userId);
+      const votings: BaseVoting[] = [];
+      votingsMember?.forEach((votingMember) => {
+        const voting = this.getInstantBaseVotingById(votingMember.votingId);
+        if (voting) {
+          votings.push(voting);
+        }
+      });
+      return votings;
     });
   }
 }

@@ -3,52 +3,52 @@ import { VotingMember } from "../../models/VotingMember";
 export const VOTING_MEMBER_MOCK_RESPONSE: VotingMember[] = [
   {
     id: 1,
-    userId: 101,
+    userId: 1,
     votingId: 1,
   },
   {
     id: 2,
-    userId: 102,
+    userId: 2,
     votingId: 1,
   },
   {
     id: 3,
-    userId: 103,
+    userId: 1,
     votingId: 2,
   },
   {
     id: 4,
-    userId: 104,
+    userId: 2,
     votingId: 2,
   },
   {
     id: 5,
-    userId: 105,
+    userId: 1,
     votingId: 3,
   },
   {
     id: 6,
-    userId: 106,
+    userId: 2,
     votingId: 3,
   },
   {
     id: 7,
-    userId: 107,
+    userId: 1,
     votingId: 4,
   },
   {
     id: 8,
-    userId: 108,
+    userId: 2,
     votingId: 4,
   },
   {
     id: 9,
-    userId: 109,
+    userId: 3,
     votingId: 4,
   },
   {
     id: 10,
-    userId: 110,
+    userId: 4,
     votingId: 4,
   },
   {
