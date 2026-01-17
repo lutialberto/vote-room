@@ -7,9 +7,9 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     description: "Votación rápida sobre preferencias de helado",
     owner: {
       id: 1,
-      userName: "JuanPerez",
-      email: "juan.perez@example.com",
-      name: "Juan Perez",
+      userName: "Alice",
+      email: "alice@example.com",
+      name: "Alice Smith",
     },
     status: "active",
     close: {
@@ -26,9 +26,9 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     description: "Elige entre varios colores populares",
     owner: {
       id: 2,
-      userName: "MariaLopez",
-      email: "maria.lopez@example.com",
-      name: "Maria Lopez",
+      userName: "Bob",
+      email: "bob@example.com",
+      name: "Bob Johnson",
     },
     status: "scheduled",
     close: {
@@ -47,9 +47,9 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     description: "Votación sobre bebidas calientes",
     owner: {
       id: 3,
-      userName: "CarlosGomez",
-      email: "carlos.gomez@example.com",
-      name: "Carlos Gomez",
+      userName: "Charlie",
+      email: "charlie@example.com",
+      name: "Charlie Brown",
     },
     status: "draft",
     close: {
@@ -66,9 +66,9 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     description: "Votación sobre estaciones del año",
     owner: {
       id: 4,
-      userName: "AnaMartinez",
-      email: "ana.martinez@example.com",
-      name: "Ana Martinez",
+      userName: "Diana",
+      email: "diana@example.com",
+      name: "Diana Prince",
     },
     status: "closed",
     close: {
@@ -86,9 +86,9 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     description: "Votación sobre preferencias laborales",
     owner: {
       id: 5,
-      userName: "LuisFernandez",
-      email: "luis.fernandez@example.com",
-      name: "Luis Fernandez",
+      userName: "Ethan",
+      email: "ethan@example.com",
+      name: "Ethan Hunt",
     },
     status: "draft",
     close: {
