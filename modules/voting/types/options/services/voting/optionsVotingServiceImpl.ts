@@ -49,20 +49,22 @@ export class OptionsVotingServiceImpl {
       const baseVoting =
         votingServiceInstance.getInstantBaseVotingById(votingId);
       if (!baseVoting) {
-        throw new Error("Base voting not found");
+        throw new Error(`Base voting not found with id: ${votingId}`);
       }
       const isOwner = baseVoting.owner.id === userId;
       if (!isOwner) {
-        throw new Error("User is not the owner of the voting");
+        throw new Error(
+          `User ${userId} is not the owner of voting ${votingId}`
+        );
       }
       const user = userServiceInstance.getInstantUserById(userId);
       if (!user) {
-        throw new Error("User not found");
+        throw new Error(`User not found with id: ${userId}`);
       }
 
       const optionsVotingToUpdate = this.votings.find((e) => e.id === votingId);
       if (!optionsVotingToUpdate) {
-        throw new Error("Options voting not found");
+        throw new Error(`Options voting not found with id: ${votingId}`);
       }
       const choices =
         optionsVotingChoiceServiceInstance.updateOptionsVotingChoices(
@@ -81,13 +83,13 @@ export class OptionsVotingServiceImpl {
   getInstantOptionsVotingById(id: number): OptionsVoting | undefined {
     const record = this.votings.find((voting) => voting.id === id);
     if (!record) {
-      throw new Error("Voting not found");
+      throw new Error(`Voting not found with id: ${id}`);
     }
     const baseVoting = votingServiceInstance.getInstantBaseVotingById(
       record.baseVotingId
     );
     if (!baseVoting) {
-      throw new Error("Base voting not found");
+      throw new Error(`Base voting not found with id: ${record.baseVotingId}`);
     }
     const options =
       optionsVotingChoiceServiceInstance.getInstantOptionsVotingChoicesByOptionsVotingId(
@@ -109,13 +111,13 @@ export class OptionsVotingServiceImpl {
       (voting) => voting.baseVotingId === votingId
     );
     if (!record) {
-      throw new Error("Voting not found");
+      throw new Error(`Voting not found with votingId: ${votingId}`);
     }
     const baseVoting = votingServiceInstance.getInstantBaseVotingById(
       record.baseVotingId
     );
     if (!baseVoting) {
-      throw new Error("Base voting not found");
+      throw new Error(`Base voting not found with id: ${record.baseVotingId}`);
     }
     const options =
       optionsVotingChoiceServiceInstance.getInstantOptionsVotingChoicesByOptionsVotingId(
@@ -134,7 +136,7 @@ export class OptionsVotingServiceImpl {
     return successPromiseBehavior(() => {
       const voting = this.getInstantOptionsVotingById(id);
       if (!voting) {
-        throw new Error("Voting not found");
+        throw new Error(`Voting not found with id: ${id}`);
       }
       return { ...voting };
     });
@@ -144,7 +146,7 @@ export class OptionsVotingServiceImpl {
     return successPromiseBehavior(() => {
       const voting = this.getInstantOptionsVotingByVotingId(votingId);
       if (!voting) {
-        throw new Error("Voting not found");
+        throw new Error(`Voting not found with votingId: ${votingId}`);
       }
       return { ...voting };
     });

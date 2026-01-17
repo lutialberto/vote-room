@@ -20,17 +20,21 @@ export class VoteServiceImpl {
     return successPromiseBehavior(() => {
       const vote = votingServiceInstance.getInstantBaseVotingById(votingId);
       if (!vote) {
-        throw new Error("Voting not found");
+        throw new Error(`Voting not found with id: ${votingId}`);
       }
 
       if (vote.status !== "active") {
-        throw new Error("Voting is not active");
+        throw new Error(
+          `Voting is not active. Status: '${vote.status}', votingId: ${votingId}`
+        );
       }
       const existingVote = this.booleanVotes.find(
         (vote) => vote.votingId === votingId && vote.userId === userId
       );
       if (existingVote) {
-        throw new Error("User has already voted in this voting.");
+        throw new Error(
+          `User ${userId} has already voted in voting ${votingId}. VoteId: ${existingVote.id}`
+        );
       }
       const newVote: BooleanVote = {
         id: Math.max(...this.booleanVotes.map((e) => e.id)) + 1,

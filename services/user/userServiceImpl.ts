@@ -19,7 +19,7 @@ export class UserServiceImpl {
     return successPromiseBehavior(() => {
       const user = this.getInstantUserById(id);
       if (!user) {
-        throw new Error("User not found");
+        throw new Error(`User not found with id: ${id}`);
       }
       return { ...user };
     });
@@ -29,7 +29,7 @@ export class UserServiceImpl {
     return successPromiseBehavior(() => {
       const user = this.getInstantUserByEmail(email);
       if (!user) {
-        throw new Error("User not found");
+        throw new Error(`User not found with email: '${email}'`);
       }
       return { ...user };
     });
@@ -39,7 +39,7 @@ export class UserServiceImpl {
     return successPromiseBehavior(() => {
       const user = this.getInstantUserByUserName(userName);
       if (!user) {
-        throw new Error("User not found");
+        throw new Error(`User not found with userName: '${userName}'`);
       }
       return { ...user };
     });

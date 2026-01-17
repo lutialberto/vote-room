@@ -40,13 +40,13 @@ export class BooleanVotingServiceImpl {
   getInstantBooleanVotingById(id: number): BooleanVoting | undefined {
     const record = this.votings.find((voting) => voting.id === id);
     if (!record) {
-      throw new Error("Voting not found");
+      throw new Error(`Voting not found with id: ${id}`);
     }
     const baseVoting = votingServiceInstance.getInstantBaseVotingById(
       record.baseVotingId
     );
     if (!baseVoting) {
-      throw new Error("Base voting not found");
+      throw new Error(`Base voting not found with id: ${record.baseVotingId}`);
     }
     return {
       ...record,
@@ -60,7 +60,7 @@ export class BooleanVotingServiceImpl {
     return successPromiseBehavior(() => {
       const voting = this.getInstantBooleanVotingById(id);
       if (!voting) {
-        throw new Error("Voting not found");
+        throw new Error(`Voting not found with id: ${id}`);
       }
       return { ...voting };
     });

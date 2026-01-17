@@ -21,30 +21,36 @@ export class OptionsVoteServiceImpl {
     return successPromiseBehavior(() => {
       const vote = votingServiceInstance.getInstantBaseVotingById(votingId);
       if (!vote) {
-        throw new Error("Voting not found");
+        throw new Error(`Voting not found with id: ${votingId}`);
       }
 
       if (vote.status !== "active") {
-        throw new Error("Voting is not active");
+        throw new Error(
+          `Voting is not active. Status: '${vote.status}', votingId: ${votingId}`
+        );
       }
       const existingVote = this.optionsVotes.find(
         (vote) => vote.votingId === votingId && vote.userId === userId
       );
       if (existingVote) {
-        throw new Error("User has already voted in this voting.");
+        throw new Error(
+          `User ${userId} has already voted in voting ${votingId}. VoteId: ${existingVote.id}`
+        );
       }
       const optionsVoting =
         optionsVotingChoiceServiceInstance.getInstantOptionsVotingChoicesByOptionsVotingId(
           votingId
         );
       if (!optionsVoting) {
-        throw new Error("Options voting not found");
+        throw new Error(`Options voting not found with id: ${votingId}`);
       }
       const isValidChoice = optionsVoting.some(
         (choice) => choice.id === votingOptionChoiceId
       );
       if (!isValidChoice) {
-        throw new Error("Invalid voting option choice");
+        throw new Error(
+          `Invalid voting option choice: ${votingOptionChoiceId} for voting ${votingId}`
+        );
       }
       const newVote: OptionsVote = {
         id: Math.max(...this.optionsVotes.map((e) => e.id)) + 1,
