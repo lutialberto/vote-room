@@ -6,6 +6,7 @@ import { ThemedView } from "@/components/ThemedView";
 import UserSwitcherModal from "@/modules/users/profile/components/UserSwitcherModal";
 import UserDataSection from "@/modules/users/profile/components/UserDataSection";
 import SectionsApp, { SectionProps } from "@/components/SectionsApp";
+import { router } from "expo-router";
 
 export default function ProfileScreen() {
   const [switcherVisible, setSwitcherVisible] = useState(false);
@@ -22,6 +23,12 @@ export default function ProfileScreen() {
           name: "Cambiar Usuario",
           icon: "swap-horizontal",
           onPress: () => setSwitcherVisible(true),
+        },
+        {
+          id: "onboarding",
+          name: "Introducción a la App",
+          icon: "book",
+          onPress: () => router.navigate("/onBoarding"),
         },
       ],
     },
