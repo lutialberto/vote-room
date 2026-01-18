@@ -5,6 +5,16 @@ import { successPromiseBehavior } from "../serviceUtilsImpl";
 export class UserServiceImpl {
   private users: User[] = [...USER_MOCK_RESPONSE];
 
+  getInstantUsers(): User[] {
+    return [...this.users];
+  }
+
+  async fetchUsers(): Promise<User[]> {
+    return successPromiseBehavior(() => {
+      return this.getInstantUsers();
+    });
+  }
+
   getInstantUserById(id: number): User | undefined {
     return this.users.find((user) => user.id === id);
   }

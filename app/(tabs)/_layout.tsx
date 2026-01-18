@@ -109,6 +109,21 @@ export default function TabLayout() {
           },
         }}
       />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Perfil",
+          tabBarIcon: ({ color }) => (
+            <IconApp size={28} name="person-circle" color={color} />
+          ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            handleTabPress("profile", "/(tabs)/profile");
+          },
+        }}
+      />
     </Tabs>
   );
 }
