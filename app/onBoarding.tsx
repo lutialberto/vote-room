@@ -2,94 +2,64 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { ButtonApp } from "@/components/ButtonApp";
 import { useOnboarding } from "@/hooks/useOnboarding";
-import { StyleSheet, View } from "react-native";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { ScrollView, StyleSheet } from "react-native";
 import { router } from "expo-router";
+import { CarouselApp } from "@/components/CarouselApp";
+import OnBoardingStep from "@/modules/onBoarding/components/OnBoardingStep";
+import { ONBOARDING_STEPS } from "@/modules/onBoarding/constants/OnBoardingSteps";
 
 export default function OnBoardingView() {
   const { completeOnboarding } = useOnboarding();
-  const colors = useThemeColor();
-  const styles = getStyles(colors);
 
   const handleCompleteOnboarding = () => {
     completeOnboarding();
     router.replace("/(tabs)/exploreRooms/byCode");
   };
 
+  const functionalityCarousel = ONBOARDING_STEPS.map((step) => {
+    return {
+      id: step.id,
+      content: (
+        <OnBoardingStep
+          title={`${step.titleEmoji} ${step.title}`}
+          descriptions={step.descriptions}
+        />
+      ),
+    };
+  });
+
   return (
     <ThemedView style={styles.container}>
-      <View style={styles.content}>
-        <ThemedText type="title" style={styles.title}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        directionalLockEnabled={true}
+      >
+        <ThemedText type="title" style={styles.mainTitle}>
           ¡Bienvenido a Vote Room!
         </ThemedText>
 
-        <ThemedText style={styles.subtitle}>
-          Crea salas, organiza votaciones y toma decisiones en grupo de manera
-          fácil y democrática.
-        </ThemedText>
+        <CarouselApp items={functionalityCarousel} />
 
-        <View style={styles.features}>
-          <ThemedText style={styles.feature}>
-            ✅ Crea salas públicas o privadas
-          </ThemedText>
-          <ThemedText style={styles.feature}>
-            🗳️ Organiza votaciones de opciones múltiples
-          </ThemedText>
-          <ThemedText style={styles.feature}>
-            👥 Invita usuarios a participar
-          </ThemedText>
-          <ThemedText style={styles.feature}>
-            📊 Ve los resultados en tiempo real
-          </ThemedText>
-        </View>
-      </View>
-
-      <View style={styles.footer}>
         <ButtonApp
-          label="Comenzar"
+          label="Saltear Introducción"
           onPress={handleCompleteOnboarding}
-          style={styles.startButton}
         />
-      </View>
+      </ScrollView>
     </ThemedView>
   );
 }
 
-const getStyles = (colors: any) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingHorizontal: 24,
-      paddingTop: 60,
-      paddingBottom: 40,
-    },
-    content: {
-      flex: 1,
-      justifyContent: "center",
-      gap: 30,
-    },
-    title: {
-      textAlign: "center",
-      marginBottom: 10,
-    },
-    subtitle: {
-      textAlign: "center",
-      fontSize: 18,
-      lineHeight: 24,
-      opacity: 0.8,
-    },
-    features: {
-      gap: 15,
-      marginTop: 20,
-    },
-    feature: {
-      fontSize: 16,
-      lineHeight: 24,
-    },
-    footer: {
-      paddingTop: 20,
-    },
-    startButton: {
-      marginTop: 20,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    paddingBottom: 30,
+  },
+  mainTitle: {
+    textAlign: "center",
+  },
+});
