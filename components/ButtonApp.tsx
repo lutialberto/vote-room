@@ -11,7 +11,7 @@ import { ColorScheme } from "@/constants/Colors";
 import { IconApp, IconName } from "./IconApp";
 
 export type ButtonAppProps = TouchableOpacityProps & {
-  type?: "primary" | "secondary" | "cancel";
+  type?: "primary" | "secondary" | "cancel" | "outline";
   label?: string;
   labelStyle?: TextStyle;
   icon?: IconName;
@@ -32,6 +32,7 @@ export function ButtonApp({
         styles.container,
         type === "secondary" && { backgroundColor: colors.secondary },
         type === "cancel" && { backgroundColor: colors.cancel },
+        type === "outline" && styles.outlineContainer,
         style,
       ]}
       {...otherProps}
@@ -41,10 +42,22 @@ export function ButtonApp({
           <IconApp
             name={otherProps.icon}
             size={labelStyle?.fontSize ?? 16}
-            color={labelStyle?.color?.toString() ?? colors.text}
+            color={
+              labelStyle?.color?.toString() ??
+              (type === "outline" ? colors.primary : colors.text)
+            }
           />
         )}
-        {label && <ThemedText style={labelStyle}>{label}</ThemedText>}
+        {label && (
+          <ThemedText
+            style={[
+              type === "outline" && { color: colors.primary },
+              labelStyle,
+            ]}
+          >
+            {label}
+          </ThemedText>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -61,5 +74,10 @@ const getStyles = (colors: ColorScheme) =>
       flexDirection: "row",
       marginHorizontal: "auto",
       backgroundColor: colors.primary,
+    },
+    outlineContainer: {
+      backgroundColor: "transparent",
+      borderWidth: 1,
+      borderColor: colors.primary,
     },
   });
