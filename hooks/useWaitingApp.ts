@@ -21,20 +21,27 @@ export function useWaitingApp<T, K>({
           success?.(response);
         })
         .catch((error) => {
-          failure?.(error) ||
+          if (failure) {
+            failure(error);
+          } else {
             Alert.alert(
               "Error",
               error.message ||
                 "Ocurrió un problema, intente de nuevo más tarde."
             );
+          }
           setIsWaiting(false);
         });
     } catch (error) {
-      Alert.alert(
-        "Error",
-        (error as Error).message ||
-          "Ocurrió un error, intente de nuevo más tarde."
-      );
+      if (failure) {
+        failure(error as Error);
+      } else {
+        Alert.alert(
+          "Error",
+          (error as Error).message ||
+            "Ocurrió un error, intente de nuevo más tarde."
+        );
+      }
       setIsWaiting(false);
     }
   }

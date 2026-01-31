@@ -2,9 +2,13 @@ export async function successPromiseBehavior<T>(
   success: () => T,
   delay: number = 500
 ): Promise<T> {
-  return new Promise<T>((resolve) => {
+  return new Promise<T>((resolve, reject) => {
     setTimeout(() => {
-      resolve(success());
+      try {
+        resolve(success());
+      } catch (error) {
+        reject(error);
+      }
     }, delay);
   });
 }
