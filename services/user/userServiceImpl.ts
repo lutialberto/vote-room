@@ -1,4 +1,8 @@
-import { User } from "@/models/User";
+import {
+  User,
+  UserEmailForCreation,
+  UserSimpleForCreation,
+} from "@/models/User";
 import { USER_MOCK_RESPONSE } from "./userServiceResponse";
 import { successPromiseBehavior } from "../serviceUtilsImpl";
 
@@ -15,11 +19,38 @@ export class UserServiceImpl {
     });
   }
 
+  async createUserSimple(user: UserSimpleForCreation): Promise<User> {
+    return successPromiseBehavior(() => {
+      const newUser: User = {
+        id: this.users.length + 1,
+        userName: user.userName,
+        type: "name",
+      };
+      this.users.push(newUser);
+      return newUser;
+    });
+  }
+
+  async createUserEmail(user: UserEmailForCreation): Promise<User> {
+    return successPromiseBehavior(() => {
+      const newUser: User = {
+        id: this.users.length + 1,
+        userName: user.userName,
+        email: user.email,
+        type: "email",
+      };
+      this.users.push(newUser);
+      return newUser;
+    });
+  }
+
   getInstantUserById(id: number): User | undefined {
     return this.users.find((user) => user.id === id);
   }
   getInstantUserByEmail(email: string): User | undefined {
-    return this.users.find((user) => user.email === email);
+    return this.users.find(
+      (user) => user.type === "email" && user.email === email
+    );
   }
   getInstantUserByUserName(userName: string): User | undefined {
     return this.users.find((user) => user.userName === userName);

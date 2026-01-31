@@ -1,4 +1,8 @@
-import { User } from "@/models/User";
+import {
+  User,
+  UserEmailForCreation,
+  UserSimpleForCreation,
+} from "@/models/User";
 import { userServiceInstance } from "./userServiceImpl";
 
 /**
@@ -15,4 +19,20 @@ import { userServiceInstance } from "./userServiceImpl";
 // Funciones públicas del servicio
 export const fetchUsers = async (): Promise<User[]> => {
   return userServiceInstance.fetchUsers();
+};
+
+export const createUser = async (
+  user: UserSimpleForCreation
+): Promise<User> => {
+  return userServiceInstance.createUserSimple(user);
+};
+
+export const createUserEmail = async (
+  user: UserEmailForCreation
+): Promise<User> => {
+  return userServiceInstance.createUserEmail(user);
+};
+
+export const fetchUserByEmail = async (email: string): Promise<User> => {
+  return userServiceInstance.fetchUserByEmail(email);
 };

@@ -51,9 +51,10 @@ export default function UserSwitcherModal({
         ]}
       >
         <View style={styles.userInfo}>
-          <ThemedText type="subtitle">{item.name}</ThemedText>
-          <ThemedText type="hint">@{item.userName}</ThemedText>
-          <ThemedText type="hint">{item.email}</ThemedText>
+          <ThemedText type="subtitle">{item.userName}</ThemedText>
+          {item.type === "email" && (
+            <ThemedText type="hint">{item.email}</ThemedText>
+          )}
         </View>
 
         {item.id === currentUser.id && (
@@ -90,9 +91,7 @@ export default function UserSwitcherModal({
             }}
           >
             <ThemedText type="subtitle">Usuario Actual</ThemedText>
-            <ThemedText colorName="primary">
-              {currentUser.name} (@{currentUser.userName})
-            </ThemedText>
+            <ThemedText colorName="primary">{currentUser.userName}</ThemedText>
           </CardApp>
 
           <FlatList

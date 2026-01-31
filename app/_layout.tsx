@@ -44,6 +44,10 @@ export default function RootLayout() {
         <UserProvider>
           <Stack>
             <Stack.Screen name="onBoarding" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="userCreation"
+              options={{ headerShown: false }}
+            />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
           </Stack>

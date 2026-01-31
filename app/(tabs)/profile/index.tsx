@@ -30,6 +30,12 @@ export default function ProfileScreen() {
           icon: "book",
           onPress: () => router.navigate("/onBoarding"),
         },
+        {
+          id: "user-creation",
+          name: "Crear Usuario",
+          icon: "person-add",
+          onPress: () => router.navigate("/userCreation"),
+        },
       ],
     },
   ];
