@@ -1,6 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export type StorageKey = "hasCompletedOnboarding" | "hasCompletedUserCreation";
+export type StorageKey =
+  | "hasCompletedOnboarding"
+  | "hasCompletedUserCreation"
+  | "userSession";
 export type StorageEnv = "development" | "production";
 
 interface StorageProps {

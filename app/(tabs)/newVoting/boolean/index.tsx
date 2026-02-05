@@ -1,19 +1,18 @@
 import { StyleSheet, View } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
-import { useUser } from "@/contexts/UserContext";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { router } from "expo-router";
-import BaseVotingForm from "@/modules/voting/components/BaseVotingForm";
 import { SpinnerApp } from "@/components/SpinnerApp";
 import { BaseVotingForCreation } from "@/modules/voting/models/Voting";
 import { createBooleanVoting } from "@/modules/voting/types/boolean/services/voting/booleanVotingService";
 import BooleanVoting from "@/modules/voting/types/boolean/models/BooleanVoting";
 import { useBaseVoting } from "@/modules/voting/hooks/useBaseVoting";
 import { useEffect } from "react";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function NewBaseVoting() {
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const { data } = useBaseVoting();
 
   useEffect(() => {

@@ -7,13 +7,29 @@ import UserSwitcherModal from "@/modules/users/profile/components/UserSwitcherMo
 import UserDataSection from "@/modules/users/profile/components/UserDataSection";
 import SectionsApp, { SectionProps } from "@/components/SectionsApp";
 import { router } from "expo-router";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function ProfileScreen() {
   const [switcherVisible, setSwitcherVisible] = useState(false);
+  const { logout } = useAuthenticatedUser();
   const colors = useThemeColor();
   const styles = getStyles(colors);
 
   const data: SectionProps[] = [
+    {
+      id: "account",
+      title: "Cuenta",
+      items: [
+        {
+          id: "logout",
+          name: "Cerrar Sesión",
+          icon: "log-out",
+          onPress: () => {
+            logout();
+          },
+        },
+      ],
+    },
     {
       id: "development",
       title: "Desarrollo",
@@ -34,7 +50,7 @@ export default function ProfileScreen() {
           id: "user-creation",
           name: "Crear Usuario",
           icon: "person-add",
-          onPress: () => router.navigate("/userCreation"),
+          onPress: () => router.navigate("/userCreation/onBoarding"),
         },
       ],
     },

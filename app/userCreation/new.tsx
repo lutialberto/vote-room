@@ -5,23 +5,20 @@ import { View, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import { useForm } from "react-hook-form";
 import InputTextApp from "@/components/InputTextApp";
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/hooks/useUser";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { createUser } from "@/services/user/userService";
 import { User, UserForm } from "@/models/User";
 import { SpinnerApp } from "@/components/SpinnerApp";
 
 export default function UserCreationNewView() {
-  const { switchUser } = useUser();
+  const { login } = useUser();
   const { execPromise: fnCreateUser, isWaiting } = useWaitingApp<
     UserForm,
     User
   >({
     functionToWait: (data) => createUser(data),
-    success: (user) => {
-      switchUser(user);
-      router.replace("/(tabs)/exploreRooms/byCode");
-    },
+    success: (user) => login(user),
     failure: (error) => alert(`Error al crear el usuario: ${error.message}`),
   });
   const {

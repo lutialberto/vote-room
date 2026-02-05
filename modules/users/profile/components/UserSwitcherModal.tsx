@@ -1,15 +1,11 @@
-import React, { useState } from "react";
 import {
   Modal,
   TouchableOpacity,
   View,
   StyleSheet,
-  Alert,
   FlatList,
 } from "react-native";
 import { User } from "@/models/User";
-import { UserContext } from "@/contexts/UserProvider";
-import { useContext } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -19,7 +15,7 @@ import { CardApp } from "@/components/CardApp";
 import { SpinnerApp } from "@/components/SpinnerApp";
 import { useListFetcherApp } from "@/hooks/useListFetcherApp";
 import { fetchUsers } from "@/services/user/userService";
-import { useUser } from "@/contexts/UserContext";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 interface DevUserSwitcherProps {
   visible: boolean;
@@ -30,7 +26,7 @@ export default function UserSwitcherModal({
   visible,
   onClose,
 }: DevUserSwitcherProps) {
-  const { currentUser, switchUser } = useUser();
+  const { currentUser, switchUser } = useAuthenticatedUser();
   const { data: availableUsers, isLoading } =
     useListFetcherApp<User>(fetchUsers);
   const colors = useThemeColor();

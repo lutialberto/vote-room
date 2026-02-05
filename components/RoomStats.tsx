@@ -1,10 +1,10 @@
 import { ThemedText } from "@/components/ThemedText";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Room } from "@/models/Room";
 import { User } from "@/models/User";
-import { useUser } from "@/contexts/UserContext";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { CardApp } from "./CardApp";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export type RoomStatNames = "owner" | "active" | "unread";
 export type RoomStat = {
@@ -36,7 +36,7 @@ export default function RoomStats({
   handleSelectedStatsItemPress: (item: RoomStatNames) => void;
   selectedStats: RoomStatNames | undefined;
 }) {
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const { primary: primaryColor } = useThemeColor();
 
   return (

@@ -1,12 +1,12 @@
 import { View, StyleSheet } from "react-native";
-import { useUser } from "@/contexts/UserContext";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedText } from "@/components/ThemedText";
 import { IconApp } from "@/components/IconApp";
 import { CardApp } from "@/components/CardApp";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function UserDataSection() {
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const colors = useThemeColor();
   const styles = getStyles(colors);
 
@@ -16,9 +16,10 @@ export default function UserDataSection() {
         <IconApp name="person" size={40} colorName="primary" />
       </View>
       <View>
-        <ThemedText type="subtitle">{currentUser.name}</ThemedText>
-        <ThemedText type="hint">@{currentUser.userName}</ThemedText>
-        <ThemedText type="hint">{currentUser.email}</ThemedText>
+        <ThemedText type="subtitle">{currentUser.userName}</ThemedText>
+        {currentUser.type === "email" && (
+          <ThemedText type="hint">{currentUser.email}</ThemedText>
+        )}
       </View>
     </CardApp>
   );

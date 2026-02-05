@@ -2,7 +2,6 @@ import { View, Alert } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { ButtonApp } from "@/components/ButtonApp";
-import { useUser } from "@/contexts/UserContext";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { useItemFetcherApp } from "@/hooks/useItemFetcherApp";
 import {
@@ -18,10 +17,11 @@ import {
   BaseVoting,
   BaseVotingForCreation,
 } from "@/modules/voting/models/Voting";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function VotingEditPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
 
   const {
     data: voting,

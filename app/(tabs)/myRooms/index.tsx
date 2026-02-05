@@ -5,13 +5,13 @@ import { StyleSheet, View, RefreshControl, FlatList } from "react-native";
 import RoomCardItem from "@/components/RoomCardItem";
 import RoomStats, { ROOM_STATS, RoomStatNames } from "@/components/RoomStats";
 import { fetchRoomsByUser } from "@/services/roomMember/roomMemberService";
-import { useUser } from "@/contexts/UserContext";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "@/components/IconApp";
 import { useListFetcherApp } from "@/hooks/useListFetcherApp";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function MyRooms() {
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const {
     data: rooms,
     error,

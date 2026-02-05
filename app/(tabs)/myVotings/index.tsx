@@ -1,15 +1,15 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { StyleSheet, View, RefreshControl, FlatList } from "react-native";
-import { useUser } from "@/contexts/UserContext";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "@/components/IconApp";
 import { useListFetcherApp } from "@/hooks/useListFetcherApp";
 import VotingCardItem from "@/modules/voting/view/components/VotingCardItem";
 import { fetchBaseVotingsByUserId } from "@/modules/voting/services/voting/votingService";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function MyVotings() {
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const { data, error, isLoading, refetch } = useListFetcherApp(
     () => fetchBaseVotingsByUserId(currentUser.id),
     [currentUser.id]

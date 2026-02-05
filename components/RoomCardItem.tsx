@@ -2,10 +2,10 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { ThemedText } from "./ThemedText";
 import { Room, RoomStatus } from "@/models/Room";
 import { router } from "expo-router";
-import { useUser } from "@/contexts/UserContext";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "./IconApp";
 import { CardApp } from "./CardApp";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function RoomCardItem({ room }: { room: Room }) {
   const {
@@ -14,7 +14,7 @@ export default function RoomCardItem({ room }: { room: Room }) {
     gray: grayColor,
   } = useThemeColor();
 
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
 
   const statusConfig: Record<RoomStatus, { color: string; text: string }> = {
     active: { color: greenColor, text: "Activa" },

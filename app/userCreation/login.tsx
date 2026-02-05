@@ -5,7 +5,7 @@ import { View, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import { useForm } from "react-hook-form";
 import InputTextApp from "@/components/InputTextApp";
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/hooks/useUser";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { fetchUserByEmail } from "@/services/user/userService";
 import { User } from "@/models/User";
@@ -17,7 +17,7 @@ interface LoginForm {
 }
 
 export default function LoginView() {
-  const { switchUser } = useUser();
+  const { login } = useUser();
   const { execPromise: loginWithCredentials, isWaiting } = useWaitingApp<
     LoginForm,
     User
@@ -26,10 +26,7 @@ export default function LoginView() {
       //TODO: falta chequeo de contraseña valida
       return fetchUserByEmail(data.email);
     },
-    success: (user) => {
-      switchUser(user);
-      router.replace("/(tabs)/exploreRooms/byCode");
-    },
+    success: (user) => login(user),
     failure: () =>
       setError("password", { message: "Credenciales incorrectas" }),
   });

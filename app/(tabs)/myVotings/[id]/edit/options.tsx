@@ -1,7 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
-import { useUser } from "@/contexts/UserContext";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { router, useLocalSearchParams } from "expo-router";
 import { SpinnerApp } from "@/components/SpinnerApp";
@@ -14,9 +13,10 @@ import {
   updateOptionsVoting,
 } from "@/modules/voting/types/options/services/voting/optionsVotingService";
 import { useItemFetcherApp } from "@/hooks/useItemFetcherApp";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function EditVotingOptions() {
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const { id } = useLocalSearchParams<{ id: string }>();
 
   const { data, error, isLoading } = useItemFetcherApp(

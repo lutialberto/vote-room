@@ -1,7 +1,7 @@
 import { SpinnerApp } from "@/components/SpinnerApp";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useUser } from "@/contexts/UserContext";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { PendingRoomInvitationRequestCard } from "@/modules/rooms/exploreRooms/invitations/components/PendingRoomInvitationRequestCard";
 import { usePendingRoomInvitationRequest } from "@/modules/rooms/exploreRooms/invitations/hooks/usePendingRoomInvitationRequest";
@@ -13,7 +13,7 @@ import { router } from "expo-router";
 import { Alert, FlatList, StyleSheet } from "react-native";
 
 export default function InvitationsTab() {
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const {
     data,
     error,

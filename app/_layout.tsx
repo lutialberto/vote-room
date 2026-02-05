@@ -3,55 +3,64 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { useFonts } from "expo-font";
 import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { UserProvider } from "@/contexts/UserProvider";
-import { useOnboarding } from "@/hooks/useOnboarding";
+import { useAppReady } from "@/hooks/useAppReady";
+import { useEffect } from "react";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const { isLoading: onboardingLoading, shouldShowOnboarding } =
-    useOnboarding();
-  const [areFontsLoaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-  });
-  const isAppReady = areFontsLoaded && !onboardingLoading;
+  const {
+    isAppReady,
+    shouldShowOnboarding,
+    shouldShowUserCreation,
+    isAuthenticated,
+  } = useAppReady();
 
   useEffect(() => {
     if (isAppReady) {
-      SplashScreen.hideAsync();
-    }
-  }, [isAppReady]);
+      //se agrega delay para que no haya un parpadeo al ocultar el splash screen e instanciar el stack
+      setTimeout(() => {
+        SplashScreen.hideAsync();
+      }, 300);
 
-  useEffect(() => {
-    if (isAppReady && !shouldShowOnboarding) {
-      router.replace("/(tabs)/exploreRooms/byCode");
+      if (!shouldShowOnboarding && !shouldShowUserCreation && isAuthenticated) {
+        router.replace("/(tabs)/exploreRooms/byCode");
+      } else {
+        if (shouldShowOnboarding) {
+          router.replace("/onBoarding");
+        } else if (shouldShowUserCreation) {
+          router.replace("/userCreation/onBoarding");
+        }
+        if (!shouldShowUserCreation && !isAuthenticated) {
+          router.replace("/userCreation/login");
+        }
+      }
     }
-  }, [isAppReady, shouldShowOnboarding]);
+  }, [isAppReady, isAuthenticated]);
+
+  if (!isAppReady) {
+    return null;
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <UserProvider>
-          <Stack>
-            <Stack.Screen name="onBoarding" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="userCreation"
-              options={{ headerShown: false }}
-            />
+        <Stack>
+          <Stack.Screen name="onBoarding" options={{ headerShown: false }} />
+          <Stack.Screen name="userCreation" options={{ headerShown: false }} />
+          <Stack.Protected guard={isAuthenticated}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </UserProvider>
+          </Stack.Protected>
+          <Stack.Screen name="+not-found" />
+        </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>
     </SafeAreaView>

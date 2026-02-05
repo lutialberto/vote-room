@@ -1,7 +1,6 @@
 import { SpinnerApp } from "@/components/SpinnerApp";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useUser } from "@/contexts/UserContext";
 import { useItemFetcherApp } from "@/hooks/useItemFetcherApp";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import BaseVotingForm from "@/modules/voting/components/BaseVotingForm";
@@ -12,10 +11,11 @@ import {
   fetchBooleanVotingById,
 } from "@/modules/voting/types/boolean/services/voting/booleanVotingService";
 import BooleanVoting from "@/modules/voting/types/boolean/models/BooleanVoting";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function CopyVoting() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
 
   const { data, error, isLoading } = useItemFetcherApp<BooleanVoting>(
     () => fetchBooleanVotingById(Number(id)),

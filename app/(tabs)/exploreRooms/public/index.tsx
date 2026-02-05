@@ -1,9 +1,7 @@
 import { ButtonApp } from "@/components/ButtonApp";
-import { IconApp } from "@/components/IconApp";
 import { SpinnerApp } from "@/components/SpinnerApp";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useUser } from "@/contexts/UserContext";
 import { useListFetcherApp } from "@/hooks/useListFetcherApp";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { PublicRoomType, PublicRoomTypeFilter } from "@/models/Room";
@@ -16,11 +14,12 @@ import { useState } from "react";
 import { FlatList, View } from "react-native";
 import PublicRoomFilterChips from "@/modules/rooms/exploreRooms/public/components/PublicRoomFilterChips";
 import { router } from "expo-router";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function PublicRoomsTab() {
   const [filter, setFilter] = useState<PublicRoomTypeFilter>({});
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const { data, error, isLoading, refetch } = useListFetcherApp<PublicRoomType>(
     () => fetchPublicRooms(currentUser.id, filter),
     [currentUser.id, filter]

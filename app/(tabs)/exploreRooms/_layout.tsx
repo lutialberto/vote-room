@@ -2,16 +2,16 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import ByCodeTab from "./byCode";
 import InvitationsTab from "./invitations";
 import PublicRoomsTab from "./public";
-import { useUser } from "@/contexts/UserContext";
 import { usePendingRoomInvitationRequest } from "@/modules/rooms/exploreRooms/invitations/hooks/usePendingRoomInvitationRequest";
 import { TabBadgeApp } from "@/components/TabBadgeApp";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "@/components/IconApp";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function ExploreRooms() {
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const { data } = usePendingRoomInvitationRequest(currentUser?.id);
   const invitationsCount = data?.length || 0;
 

@@ -1,10 +1,9 @@
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { OptionsVote } from "../models/OptionsVote";
 import { OptionsVotingChoiceReference } from "../models/OptionsVoting";
 import { View } from "react-native";
-import { useUser } from "@/contexts/UserContext";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function OptionsVotingResults({
   votes,
@@ -15,7 +14,7 @@ export default function OptionsVotingResults({
   options: OptionsVotingChoiceReference[] | undefined;
   error: Error | null;
 }) {
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const colors = useThemeColor();
   if (error) {
     return <ThemedText>Error cargando resultados.</ThemedText>;

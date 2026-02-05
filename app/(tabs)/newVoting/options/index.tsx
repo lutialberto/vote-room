@@ -1,7 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
-import { useUser } from "@/contexts/UserContext";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { router } from "expo-router";
 import { SpinnerApp } from "@/components/SpinnerApp";
@@ -12,9 +11,10 @@ import OptionsVoting, {
 } from "@/modules/voting/types/options/models/OptionsVoting";
 import { createOptionsVoting } from "@/modules/voting/types/options/services/voting/optionsVotingService";
 import { useBaseVoting } from "@/modules/voting/hooks/useBaseVoting";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function NewVoting() {
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const { data: baseData } = useBaseVoting();
 
   const { isWaiting: isWaitingCreate, execPromise: handleCreate } =

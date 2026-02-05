@@ -1,12 +1,10 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { RoomStatus } from "@/models/Room";
 import { router } from "expo-router";
-import { useUser } from "@/contexts/UserContext";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { CardApp } from "@/components/CardApp";
 import { ThemedText } from "@/components/ThemedText";
-import { IconApp } from "@/components/IconApp";
 import { BaseVoting, VotingStatus } from "../../models/Voting";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function VotingCardItem(props: BaseVoting) {
   const {
@@ -16,7 +14,7 @@ export default function VotingCardItem(props: BaseVoting) {
     red: redColor,
   } = useThemeColor();
 
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
 
   const statusConfig: Record<VotingStatus, { color: string; text: string }> = {
     closed: { color: redColor, text: "Cerrada" },

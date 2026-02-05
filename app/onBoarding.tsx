@@ -13,7 +13,7 @@ export default function OnBoardingView() {
 
   const handleCompleteOnboarding = () => {
     completeOnboarding();
-    router.replace("/(tabs)/exploreRooms/byCode");
+    router.replace("/userCreation/onBoarding");
   };
 
   const functionalityCarousel = ONBOARDING_STEPS.map((step) => {

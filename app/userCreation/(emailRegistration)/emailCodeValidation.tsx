@@ -5,7 +5,7 @@ import { View, StyleSheet } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useForm } from "react-hook-form";
 import InputTextApp from "@/components/InputTextApp";
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/hooks/useUser";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { createUser, createUserEmail } from "@/services/user/userService";
 import { User, UserEmailForCreation, UserForm } from "@/models/User";
@@ -19,16 +19,13 @@ interface EmailCodeValidationForm {
 
 export default function EmailCodeValidationView() {
   const { userName, email } = useLocalSearchParams();
-  const { switchUser } = useUser();
+  const { login } = useUser();
   const { execPromise: fnCreateUser, isWaiting } = useWaitingApp<
     UserEmailForCreation,
     User
   >({
     functionToWait: (data) => createUserEmail(data),
-    success: (user) => {
-      switchUser(user);
-      router.replace("/(tabs)/exploreRooms/byCode");
-    },
+    success: (user) => login(user),
     failure: (error) => alert(`Error al crear el usuario: ${error.message}`),
   });
   const {

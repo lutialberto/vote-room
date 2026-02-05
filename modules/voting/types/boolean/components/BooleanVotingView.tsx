@@ -1,7 +1,6 @@
 import { ButtonApp } from "@/components/ButtonApp";
 import { SpinnerApp } from "@/components/SpinnerApp";
 import { ThemedView } from "@/components/ThemedView";
-import { UserContextType } from "@/contexts/UserProvider";
 import { router } from "expo-router";
 import BooleanVotingOptions from "./BooleanVotingOptions";
 import { ThemedText } from "@/components/ThemedText";
@@ -18,11 +17,9 @@ import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { useItemFetcherApp } from "@/hooks/useItemFetcherApp";
 import { fetchBooleanVotingById } from "../services/voting/booleanVotingService";
 import BooleanVoting from "../models/BooleanVoting";
+import { User } from "@/models/User";
 
-export default function BooleanVotingView(props: {
-  id: number;
-  user: UserContextType;
-}) {
+export default function BooleanVotingView(props: { id: number; user: User }) {
   const {
     data,
     error,
@@ -39,7 +36,7 @@ export default function BooleanVotingView(props: {
       castBooleanVote({
         votingId: props.id,
         choice,
-        userId: props.user.currentUser.id,
+        userId: props.user.id,
       }),
     success: () => {
       refetchVoting();
@@ -56,9 +53,7 @@ export default function BooleanVotingView(props: {
   );
   const noVotes = votes.filter((vote) => !vote.choice).length;
   const yesVotes = votes.filter((vote) => vote.choice).length;
-  const alreadyVoted = votes.some(
-    (vote) => vote.userId === props.user.currentUser.id
-  );
+  const alreadyVoted = votes.some((vote) => vote.userId === props.user.id);
 
   if (error) {
     return (
@@ -122,7 +117,7 @@ export default function BooleanVotingView(props: {
             }}
           />
         )}
-        {data?.baseVoting.owner.id === props.user.currentUser.id && (
+        {data?.baseVoting.owner.id === props.user.id && (
           <ButtonApp
             label="Configuración"
             onPress={() => router.push(`/(tabs)/myVotings/${data.id}/edit`)}

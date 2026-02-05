@@ -14,10 +14,10 @@ import {
   StyleSheet,
 } from "react-native";
 import { joinRoom } from "@/services/roomMember/roomMemberService";
-import { useUser } from "@/contexts/UserContext";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function ByCodeTab() {
-  const { currentUser } = useUser();
+  const { currentUser } = useAuthenticatedUser();
   const [state, setState] = useState<SearchRoomByCodeState>({
     state: "idle",
   });
