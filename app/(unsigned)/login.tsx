@@ -121,7 +121,7 @@ export default function LoginView() {
         <ButtonApp
           label="Registrarse"
           type="secondary"
-          onPress={() => router.replace("/userCreation/new")}
+          onPress={() => router.replace("/(unsigned)/(registration)/new")}
         />
       </View>
     </ThemedView>

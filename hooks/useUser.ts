@@ -58,11 +58,9 @@ export const useUser = create<UserState>((set) => ({
   login: (currentUser: User) => {
     persistUserSession(currentUser);
     set({ currentUser, isAuthenticated: true });
-    router.replace("/(tabs)/exploreRooms/byCode");
   },
   logout: () => {
     persistUserSession();
     set({ currentUser: undefined, isAuthenticated: false });
-    router.replace("/userCreation/login");
   },
 }));

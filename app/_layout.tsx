@@ -30,21 +30,8 @@ export default function RootLayout() {
       setTimeout(() => {
         SplashScreen.hideAsync();
       }, 300);
-
-      if (!shouldShowOnboarding && !shouldShowUserCreation && isAuthenticated) {
-        router.replace("/(tabs)/exploreRooms/byCode");
-      } else {
-        if (shouldShowOnboarding) {
-          router.replace("/onBoarding");
-        } else if (shouldShowUserCreation) {
-          router.replace("/userCreation/onBoarding");
-        }
-        if (!shouldShowUserCreation && !isAuthenticated) {
-          router.replace("/userCreation/login");
-        }
-      }
     }
-  }, [isAppReady, isAuthenticated]);
+  }, [isAppReady]);
 
   if (!isAppReady) {
     return null;
@@ -54,8 +41,25 @@ export default function RootLayout() {
     <SafeAreaView style={{ flex: 1 }}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
-          <Stack.Screen name="onBoarding" options={{ headerShown: false }} />
-          <Stack.Screen name="userCreation" options={{ headerShown: false }} />
+          <Stack.Protected guard={shouldShowOnboarding}>
+            <Stack.Screen name="onBoarding" options={{ headerShown: false }} />
+          </Stack.Protected>
+          <Stack.Protected guard={shouldShowUserCreation}>
+            <Stack.Screen
+              name="(unsigned)/onBoarding"
+              options={{ headerShown: false }}
+            />
+          </Stack.Protected>
+          <Stack.Protected guard={!isAuthenticated}>
+            <Stack.Screen
+              name="(unsigned)/login"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="(unsigned)/(registration)"
+              options={{ headerShown: false }}
+            />
+          </Stack.Protected>
           <Stack.Protected guard={isAuthenticated}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack.Protected>

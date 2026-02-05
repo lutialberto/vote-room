@@ -4,11 +4,9 @@ import "react-native-reanimated";
 export default function UserCreationLayout() {
   return (
     <Stack>
-      <Stack.Screen name="onBoarding" options={{ headerShown: false }} />
       <Stack.Screen name="new" options={{ headerShown: false }} />
-      <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen
-        name="(emailRegistration)/emailCodeValidation"
+        name="/emailCodeValidation"
         options={{ headerShown: false }}
       />
     </Stack>

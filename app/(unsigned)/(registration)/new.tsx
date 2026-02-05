@@ -39,7 +39,7 @@ export default function UserCreationNewView() {
       //TODO: falta implementar envio de codigo de verificacion por email
       //TODO: falta depurar campos al pasar por query params
       router.replace(
-        `/userCreation/(emailRegistration)/emailCodeValidation?email=${data.email}&userName=${data.userName}`
+        `/(unsigned)/(registration)/emailCodeValidation?email=${data.email}&userName=${data.userName}`
       );
     }
   };
@@ -108,7 +108,7 @@ export default function UserCreationNewView() {
         <ButtonApp
           label="Iniciar Sesión"
           type="secondary"
-          onPress={() => router.replace("/userCreation/login")}
+          onPress={() => router.replace("/(unsigned)/login")}
         />
       </View>
     </ThemedView>

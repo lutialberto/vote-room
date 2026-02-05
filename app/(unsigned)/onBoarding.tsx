@@ -1,7 +1,6 @@
 import { ThemedView } from "@/components/ThemedView";
 import { ButtonApp } from "@/components/ButtonApp";
 import { StyleSheet } from "react-native";
-import { router } from "expo-router";
 import UserCreationCarousel from "@/modules/users/creation/components/UserCreationCarousel";
 import { useUserSession } from "@/hooks/useUserSession";
 
@@ -10,7 +9,6 @@ export default function UserCreationOnBoardingView() {
 
   const handleCompleteOnboarding = () => {
     completeUserCreation();
-    router.replace("/userCreation/new");
   };
 
   return (

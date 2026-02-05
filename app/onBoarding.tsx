@@ -3,7 +3,6 @@ import { ThemedView } from "@/components/ThemedView";
 import { ButtonApp } from "@/components/ButtonApp";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import { ScrollView, StyleSheet } from "react-native";
-import { router } from "expo-router";
 import { CarouselApp } from "@/components/CarouselApp";
 import OnBoardingStep from "@/modules/onBoarding/components/OnBoardingStep";
 import { ONBOARDING_STEPS } from "@/modules/onBoarding/constants/OnBoardingSteps";
@@ -13,7 +12,6 @@ export default function OnBoardingView() {
 
   const handleCompleteOnboarding = () => {
     completeOnboarding();
-    router.replace("/userCreation/onBoarding");
   };
 
   const functionalityCarousel = ONBOARDING_STEPS.map((step) => {
