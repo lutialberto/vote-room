@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import InputTextApp from "@/components/InputTextApp";
 import { useUser } from "@/hooks/useUser";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
-import { fetchUserByEmail } from "@/services/user/userService";
+import { fetchUserByCredentials } from "@/services/user/userService";
 import { User } from "@/models/User";
 import { SpinnerApp } from "@/components/SpinnerApp";
 
@@ -22,10 +22,7 @@ export default function LoginView() {
     LoginForm,
     User
   >({
-    functionToWait: (data) => {
-      //TODO: falta chequeo de contraseña valida
-      return fetchUserByEmail(data.email);
-    },
+    functionToWait: (data) => fetchUserByCredentials(data.email, data.password),
     success: (user) => login(user),
     failure: () =>
       setError("password", { message: "Credenciales incorrectas" }),
@@ -96,10 +93,25 @@ export default function LoginView() {
             errorMessage={errors.password?.message}
           />
 
-          <ButtonApp
-            label="Iniciar Sesión"
-            onPress={handleSubmit(handleLogin)}
-          />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ButtonApp
+              label="Olvidé mi Contraseña"
+              type="secondary"
+              onPress={() =>
+                router.push("/(unsigned)/(passwordRecovery)/email")
+              }
+            />
+            <ButtonApp
+              label="Iniciar Sesión"
+              onPress={handleSubmit(handleLogin)}
+            />
+          </View>
           <ButtonApp
             type="outline"
             label="Iniciar Sesión con Facebook"

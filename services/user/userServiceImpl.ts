@@ -37,10 +37,25 @@ export class UserServiceImpl {
         id: this.users.length + 1,
         userName: user.userName,
         email: user.email,
+        password: user.password,
         type: "email",
       };
       this.users.push(newUser);
       return newUser;
+    });
+  }
+
+  async updateUserEmailPassword(data: {
+    email: string;
+    password: string;
+  }): Promise<User> {
+    return successPromiseBehavior(() => {
+      const user = this.getInstantUserByEmail(data.email);
+      if (!user || user.type !== "email") {
+        throw new Error(`User not found with email: '${data.email}'`);
+      }
+      user.password = data.password;
+      return user;
     });
   }
 
@@ -66,13 +81,23 @@ export class UserServiceImpl {
     });
   }
 
-  async fetchUserByEmail(email: string): Promise<User> {
+  async fetchUserByCredentials(email: string, password: string): Promise<User> {
     return successPromiseBehavior(() => {
       const user = this.getInstantUserByEmail(email);
-      if (!user) {
+      if (!user || user.type !== "email" || user.password !== password) {
         throw new Error(`User not found with email: '${email}'`);
       }
       return { ...user };
+    });
+  }
+
+  async checkUserByEmail(email: string): Promise<boolean> {
+    return successPromiseBehavior(() => {
+      const user = this.getInstantUserByEmail(email);
+      if (!user || user.type !== "email") {
+        return false;
+      }
+      return true;
     });
   }
 

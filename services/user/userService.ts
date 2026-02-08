@@ -33,6 +33,20 @@ export const createUserEmail = async (
   return userServiceInstance.createUserEmail(user);
 };
 
-export const fetchUserByEmail = async (email: string): Promise<User> => {
-  return userServiceInstance.fetchUserByEmail(email);
+export const updateUserEmailPassword = async (data: {
+  email: string;
+  password: string;
+}): Promise<User> => {
+  return userServiceInstance.updateUserEmailPassword(data);
+};
+
+export const fetchUserByCredentials = async (
+  email: string,
+  password: string
+): Promise<User> => {
+  return userServiceInstance.fetchUserByCredentials(email, password);
+};
+
+export const checkUserByEmail = async (email: string): Promise<boolean> => {
+  return userServiceInstance.checkUserByEmail(email);
 };

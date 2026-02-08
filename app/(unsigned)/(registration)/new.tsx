@@ -7,12 +7,40 @@ import { useForm } from "react-hook-form";
 import InputTextApp from "@/components/InputTextApp";
 import { useUser } from "@/hooks/useUser";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
-import { createUser } from "@/services/user/userService";
+import { checkUserByEmail, createUser } from "@/services/user/userService";
 import { User, UserForm } from "@/models/User";
 import { SpinnerApp } from "@/components/SpinnerApp";
+import { createUserCode } from "@/services/userCode/userCodeService";
 
 export default function UserCreationNewView() {
   const { login } = useUser();
+  const { execPromise: fnCheckUserEmail, isWaiting: isCheckingEmail } =
+    useWaitingApp<{ email: string }, boolean>({
+      functionToWait: (data) => checkUserByEmail(data.email),
+      success: (exists) => {
+        if (exists) {
+          setError("email", {
+            message: "El correo electrónico ya está registrado",
+          });
+        } else {
+          fncreateUserCode({ email: watch("email") });
+        }
+      },
+      failure: (error) => alert(`Error al validar el mail: ${error.message}`),
+    });
+  const { execPromise: fncreateUserCode, isWaiting: isCreatingUserCode } =
+    useWaitingApp<{ email: string }, { email: string }>({
+      functionToWait: (data) => createUserCode(data.email),
+      success: () => {
+        const email = encodeURIComponent(watch("email"));
+        const userName = encodeURIComponent(watch("userName"));
+        router.replace(
+          `/(unsigned)/(registration)/emailCodeValidation?email=${email}&userName=${userName}`
+        );
+      },
+      failure: (error) =>
+        alert(`Error al enviar el código de validación: ${error.message}`),
+    });
   const { execPromise: fnCreateUser, isWaiting } = useWaitingApp<
     UserForm,
     User
@@ -24,6 +52,8 @@ export default function UserCreationNewView() {
   const {
     control,
     handleSubmit,
+    watch,
+    setError,
     formState: { errors },
   } = useForm<UserForm>({
     defaultValues: {
@@ -35,12 +65,7 @@ export default function UserCreationNewView() {
     if (data.email === "") {
       fnCreateUser(data);
     } else {
-      //TODO: falta chequeo de email unico
-      //TODO: falta implementar envio de codigo de verificacion por email
-      //TODO: falta depurar campos al pasar por query params
-      router.replace(
-        `/(unsigned)/(registration)/emailCodeValidation?email=${data.email}&userName=${data.userName}`
-      );
+      fnCheckUserEmail({ email: data.email });
     }
   };
 

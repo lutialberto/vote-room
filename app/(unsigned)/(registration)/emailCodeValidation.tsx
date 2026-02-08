@@ -2,14 +2,18 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { ButtonApp } from "@/components/ButtonApp";
 import { View, StyleSheet } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useForm } from "react-hook-form";
 import InputTextApp from "@/components/InputTextApp";
 import { useUser } from "@/hooks/useUser";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
-import { createUser, createUserEmail } from "@/services/user/userService";
-import { User, UserEmailForCreation, UserForm } from "@/models/User";
+import { createUserEmail } from "@/services/user/userService";
+import { User, UserEmailForCreation } from "@/models/User";
 import { SpinnerApp } from "@/components/SpinnerApp";
+import {
+  createUserCode,
+  validateEmailCode,
+} from "@/services/userCode/userCodeService";
 
 interface EmailCodeValidationForm {
   emailCode: string;
@@ -18,8 +22,32 @@ interface EmailCodeValidationForm {
 }
 
 export default function EmailCodeValidationView() {
-  const { userName, email } = useLocalSearchParams();
+  const { userName: userNameEncoded, email } = useLocalSearchParams();
+  const userName = decodeURIComponent(userNameEncoded as string);
   const { login } = useUser();
+  const { execPromise: fnCreateUserCode, isWaiting: isWaitingCreateUserCode } =
+    useWaitingApp({
+      functionToWait: () => createUserCode(email as string),
+      failure: (error) => alert(`Error al enviar el código: ${error.message}`),
+    });
+  const {
+    execPromise: fnValidateEmailCode,
+    isWaiting: isWaitingValidateEmailCode,
+  } = useWaitingApp<{ email: string; code: string }, boolean>({
+    functionToWait: (data) => validateEmailCode(data),
+    success: (isValid) => {
+      if (isValid) {
+        fnCreateUser({
+          userName,
+          email: email as string,
+          password: watch("password"),
+        });
+      } else {
+        setError("emailCode", { message: "Código de verificación inválido" });
+      }
+    },
+    failure: (error) => alert(`Error al crear el usuario: ${error.message}`),
+  });
   const { execPromise: fnCreateUser, isWaiting } = useWaitingApp<
     UserEmailForCreation,
     User
@@ -32,6 +60,7 @@ export default function EmailCodeValidationView() {
     control,
     handleSubmit,
     watch,
+    setError,
     formState: { errors },
   } = useForm<EmailCodeValidationForm>({
     defaultValues: {
@@ -41,16 +70,10 @@ export default function EmailCodeValidationView() {
     },
   });
   const handleEmailValidation = (data: EmailCodeValidationForm) => {
-    //TODO: implementar validación de código de email
-    //TODO: implementar chequeo y guardado de contraseña
-    fnCreateUser({
-      userName: userName as string,
-      email: email as string,
-    });
+    fnValidateEmailCode({ email: email as string, code: data.emailCode });
   };
   const handleResendCode = () => {
-    //TODO: implementar reenvio de código
-    alert("Funcionalidad de reenvío de código no implementada.");
+    fnCreateUserCode();
   };
 
   return (
@@ -66,7 +89,11 @@ export default function EmailCodeValidationView() {
       </ThemedText>
 
       <View style={styles.formContainer}>
-        <SpinnerApp visible={isWaiting}>
+        <SpinnerApp
+          visible={
+            isWaiting || isWaitingCreateUserCode || isWaitingValidateEmailCode
+          }
+        >
           <InputTextApp
             inputControl={{
               control,
@@ -117,12 +144,19 @@ export default function EmailCodeValidationView() {
             errorMessage={errors.confirmPassword?.message}
           />
 
-          <ButtonApp
-            label="Guardar"
-            onPress={handleSubmit(handleEmailValidation)}
-          />
-
-          <ButtonApp label="Reenviar Código" onPress={handleResendCode} />
+          <View
+            style={{ flexDirection: "row", justifyContent: "center", gap: 20 }}
+          >
+            <ButtonApp
+              label="Reenviar Código"
+              type="secondary"
+              onPress={handleResendCode}
+            />
+            <ButtonApp
+              label="Guardar"
+              onPress={handleSubmit(handleEmailValidation)}
+            />
+          </View>
         </SpinnerApp>
       </View>
     </ThemedView>

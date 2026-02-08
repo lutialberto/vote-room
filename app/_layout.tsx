@@ -56,6 +56,10 @@ export default function RootLayout() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
+              name="(unsigned)/(passwordRecovery)"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="(unsigned)/(registration)"
               options={{ headerShown: false }}
             />

@@ -9,6 +9,7 @@ export interface UserBase {
 export type UserEmail = UserBase & {
   type: "email";
   email: string;
+  password: string;
 };
 
 export type UserSimpleForCreation = Omit<UserSimple, "id" | "type">;
