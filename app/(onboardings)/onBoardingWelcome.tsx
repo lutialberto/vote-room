@@ -6,12 +6,20 @@ import { ScrollView, StyleSheet } from "react-native";
 import { CarouselApp } from "@/components/CarouselApp";
 import OnBoardingStep from "@/modules/onBoarding/components/OnBoardingStep";
 import { ONBOARDING_STEPS } from "@/modules/onBoarding/constants/OnBoardingSteps";
+import { useAppReady } from "@/hooks/useAppReady";
+import { router } from "expo-router";
 
 export default function OnBoardingView() {
   const { completeOnboarding } = useOnboarding();
+  const { isAuthenticated } = useAppReady();
 
   const handleCompleteOnboarding = () => {
     completeOnboarding();
+    if (isAuthenticated) {
+      router.replace("/(tabs)/exploreRooms/byCode");
+    } else {
+      router.replace("/(unsigned)/login");
+    }
   };
 
   const functionalityCarousel = ONBOARDING_STEPS.map((step) => {

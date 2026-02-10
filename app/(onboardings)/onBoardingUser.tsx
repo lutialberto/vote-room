@@ -3,12 +3,20 @@ import { ButtonApp } from "@/components/ButtonApp";
 import { StyleSheet } from "react-native";
 import UserCreationCarousel from "@/modules/users/creation/components/UserCreationCarousel";
 import { useUserSession } from "@/hooks/useUserSession";
+import { useAppReady } from "@/hooks/useAppReady";
+import { router } from "expo-router";
 
 export default function UserCreationOnBoardingView() {
   const { completeUserCreation } = useUserSession();
+  const { isAuthenticated } = useAppReady();
 
   const handleCompleteOnboarding = () => {
     completeUserCreation();
+    if (isAuthenticated) {
+      router.replace("/(tabs)/exploreRooms/byCode");
+    } else {
+      router.replace("/(unsigned)/login");
+    }
   };
 
   return (
@@ -16,7 +24,7 @@ export default function UserCreationOnBoardingView() {
       <UserCreationCarousel />
 
       <ButtonApp
-        label="Ir a Crear Usuario"
+        label="Saltear introducción"
         onPress={handleCompleteOnboarding}
       />
     </ThemedView>

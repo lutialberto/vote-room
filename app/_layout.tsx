@@ -42,27 +42,19 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Protected guard={shouldShowOnboarding}>
-            <Stack.Screen name="onBoarding" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="(onBoardings)/onboardingWelcome"
+              options={{ headerShown: false }}
+            />
           </Stack.Protected>
           <Stack.Protected guard={shouldShowUserCreation}>
             <Stack.Screen
-              name="(unsigned)/onBoarding"
+              name="(onBoardings)/onBoardingUser"
               options={{ headerShown: false }}
             />
           </Stack.Protected>
           <Stack.Protected guard={!isAuthenticated}>
-            <Stack.Screen
-              name="(unsigned)/login"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="(unsigned)/(passwordRecovery)"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="(unsigned)/(registration)"
-              options={{ headerShown: false }}
-            />
+            <Stack.Screen name="(unsigned)" options={{ headerShown: false }} />
           </Stack.Protected>
           <Stack.Protected guard={isAuthenticated}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

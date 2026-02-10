@@ -4,10 +4,19 @@ import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { IconApp } from "@/components/IconApp";
+import { useAppReady } from "@/hooks/useAppReady";
+import { useEffect } from "react";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const pathname = usePathname();
+  const { isAppReady, isAuthenticated } = useAppReady();
+
+  useEffect(() => {
+    if (isAppReady && !isAuthenticated) {
+      router.replace("/(unsigned)/login");
+    }
+  }, [isAppReady, isAuthenticated]);
 
   const handleTabPress = (tabName: string, initialRoute: Href) => {
     const isCurrentTab = pathname.startsWith(`/(tabs)/${tabName}`);
@@ -17,6 +26,10 @@ export default function TabLayout() {
       router.navigate(initialRoute);
     }
   };
+
+  if (!isAppReady || !isAuthenticated) {
+    return null;
+  }
 
   return (
     <Tabs
