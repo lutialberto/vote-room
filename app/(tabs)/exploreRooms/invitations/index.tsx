@@ -34,7 +34,7 @@ export default function InvitationsTab() {
       success: ({ id }) => {
         removeDataItem(id);
         const item = data.find((invitation) => invitation.id === id);
-        router.push(`/(tabs)/myRooms/${item?.roomCode}/shareRoom`);
+        router.push(`/(tabs)/dashboard/myRooms/${item?.roomCode}/shareRoom`);
       },
     });
   const { isWaiting: isWaitingReject, execPromise: handleRejectConfirmed } =

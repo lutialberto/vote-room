@@ -36,7 +36,7 @@ export default function PublicRoomsTab() {
     functionToWait: ({ roomCode, userId }) => joinRoom(roomCode, userId),
     success: ({ roomCode }) => {
       refetch();
-      router.push(`/(tabs)/myRooms/${roomCode}/shareRoom`);
+      router.push(`/(tabs)/dashboard/myRooms/${roomCode}/shareRoom`);
     },
   });
 

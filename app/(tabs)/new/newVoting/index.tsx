@@ -18,10 +18,10 @@ export default function NewVoting() {
     saveBaseVotingData(data);
     switch (data.type) {
       case "boolean":
-        router.replace("/(tabs)/newVoting/boolean");
+        router.replace("/(tabs)/new/newVoting/boolean");
         break;
       case "options":
-        router.replace("/(tabs)/newVoting/options");
+        router.replace("/(tabs)/new/newVoting/options");
         break;
     }
   };

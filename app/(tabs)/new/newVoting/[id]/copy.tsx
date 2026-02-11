@@ -33,7 +33,7 @@ export default function CopyVoting() {
       functionToWait: ({ userId, data }) =>
         createBooleanVoting({ userId, data }),
       success: ({ baseVotingId }) => {
-        router.replace(`/(tabs)/myVotings/${baseVotingId}`);
+        router.replace(`/(tabs)/dashboard/myVotings/${baseVotingId}`);
       },
     });
 
@@ -45,7 +45,7 @@ export default function CopyVoting() {
   };
 
   if (data && data.baseVoting.owner.id !== currentUser.id) {
-    router.replace("/(tabs)/newVoting");
+    router.replace("/(tabs)/new/newVoting");
   }
 
   if (error) {

@@ -24,7 +24,7 @@ export default function VotingCardItem(props: BaseVoting) {
   };
   const votingStatusConfig = statusConfig[props.status];
   const navigateToVoting = () => {
-    router.push(`/(tabs)/myVotings/${props.id}`);
+    router.push(`/(tabs)/dashboard/myVotings/${props.id}`);
   };
 
   return (

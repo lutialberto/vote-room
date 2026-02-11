@@ -50,7 +50,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="exploreRooms"
         options={{
-          title: "Explorar Salas",
+          title: "Explorar",
           tabBarIcon: ({ color }) => (
             <IconApp size={28} name="search" color={color} />
           ),
@@ -63,9 +63,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="newRoom"
+        name="new"
         options={{
-          title: "Nueva Sala",
+          title: "Crear",
           tabBarIcon: ({ color }) => (
             <IconApp size={28} name="add-circle" color={color} />
           ),
@@ -73,52 +73,22 @@ export default function TabLayout() {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            handleTabPress("newRoom", "/(tabs)/newRoom/(steps)/roomNameStep");
+            handleTabPress("new", "/(tabs)/new");
           },
         }}
       />
       <Tabs.Screen
-        name="newVoting"
+        name="dashboard"
         options={{
-          title: "Nueva Votación",
+          title: "Mis Cosas",
           tabBarIcon: ({ color }) => (
-            <IconApp size={28} name="bar-chart-outline" color={color} />
+            <IconApp size={28} name="grid" color={color} />
           ),
         }}
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            handleTabPress("newVoting", "/(tabs)/newVoting");
-          },
-        }}
-      />
-      <Tabs.Screen
-        name="myRooms"
-        options={{
-          title: "Mis Salas",
-          tabBarIcon: ({ color }) => (
-            <IconApp size={28} name="people" color={color} />
-          ),
-        }}
-        listeners={{
-          tabPress: (e) => {
-            e.preventDefault();
-            handleTabPress("myRooms", "/(tabs)/myRooms");
-          },
-        }}
-      />
-      <Tabs.Screen
-        name="myVotings"
-        options={{
-          title: "Mis Votaciones",
-          tabBarIcon: ({ color }) => (
-            <IconApp size={28} name="bar-chart-outline" color={color} />
-          ),
-        }}
-        listeners={{
-          tabPress: (e) => {
-            e.preventDefault();
-            handleTabPress("myVotings", "/(tabs)/myVotings");
+            handleTabPress("dashboard", "/(tabs)/dashboard/myRooms");
           },
         }}
       />

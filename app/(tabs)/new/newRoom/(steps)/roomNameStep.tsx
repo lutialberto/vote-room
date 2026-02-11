@@ -34,7 +34,7 @@ export default function RoomNameStep() {
   });
   const onSubmit = (data: FormData) => {
     // TODO: falta definir que hacer con los datos
-    router.navigate("/(tabs)/newRoom/(steps)/roomTypeStep");
+    router.navigate("/(tabs)/new/newRoom/(steps)/roomTypeStep");
   };
 
   return (

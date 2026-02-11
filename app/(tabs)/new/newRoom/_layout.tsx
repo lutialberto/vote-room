@@ -13,10 +13,10 @@ export default function NewRoomScreen() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="(steps)/roomNameStep"
-          options={{ title: "Crear Sala" }}
+          options={{ title: "Crear Sala", headerShown: false }}
         />
         <Stack.Screen
           name="(steps)/roomTypeStep"

@@ -58,7 +58,7 @@ export default function RoomScopeStep() {
   const onConfirm = () => {
     // TODO: falta definir que hacer con los datos
     const roomId = 1;
-    router.replace(`/(tabs)/myRooms/${roomId}/shareRoom`);
+    router.replace(`/(tabs)/dashboard/myRooms/${roomId}/shareRoom`);
   };
 
   return (

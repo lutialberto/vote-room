@@ -1,83 +1,38 @@
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import ByCodeTab from "./byCode";
 import InvitationsTab from "./invitations";
 import PublicRoomsTab from "./public";
 import { usePendingRoomInvitationRequest } from "@/modules/rooms/exploreRooms/invitations/hooks/usePendingRoomInvitationRequest";
-import { TabBadgeApp } from "@/components/TabBadgeApp";
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { IconApp } from "@/components/IconApp";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
-
-const Tab = createMaterialTopTabNavigator();
+import TopTabNavigatorApp from "@/components/TopTabNavigatorApp";
 
 export default function ExploreRooms() {
   const { currentUser } = useAuthenticatedUser();
   const { data } = usePendingRoomInvitationRequest(currentUser?.id);
   const invitationsCount = data?.length || 0;
 
-  const {
-    primary: primaryColor,
-    icon: iconColor,
-    border: borderColor,
-    background: backgroundColor,
-  } = useThemeColor();
-
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: primaryColor,
-        tabBarInactiveTintColor: iconColor,
-        tabBarIndicatorStyle: {
-          backgroundColor: primaryColor,
-          height: 3,
+    <TopTabNavigatorApp
+      tabs={[
+        {
+          name: "byCode",
+          component: ByCodeTab,
+          label: "Por Código",
+          icon: "keypad",
         },
-        tabBarLabelStyle: {
-          fontSize: 14,
-          fontWeight: "600",
-          textTransform: "none",
+        {
+          name: "public",
+          component: PublicRoomsTab,
+          label: "Públicas",
+          icon: "globe",
         },
-        tabBarStyle: {
-          backgroundColor: backgroundColor,
-          elevation: 0,
-          shadowOpacity: 0,
-          borderBottomWidth: 1,
-          borderBottomColor: borderColor,
+        {
+          name: "invitations",
+          component: InvitationsTab,
+          label: "Invitaciones",
+          icon: "mail",
+          badge: invitationsCount > 0,
         },
-      }}
-    >
-      <Tab.Screen
-        name="byCode"
-        component={ByCodeTab}
-        options={{
-          tabBarLabel: "Por Código",
-          tabBarIcon: ({ color }) => (
-            <IconApp name="keypad" size={18} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="public"
-        component={PublicRoomsTab}
-        options={{
-          tabBarLabel: "Públicas",
-          tabBarIcon: ({ color }) => (
-            <IconApp name="globe" size={18} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="invitations"
-        component={InvitationsTab}
-        options={{
-          tabBarLabel: "Invitaciones",
-          tabBarIcon: ({ color }) => (
-            <>
-              <IconApp name="mail" size={18} color={color} />
-              <TabBadgeApp visible={invitationsCount > 0} />
-            </>
-          ),
-        }}
-      />
-    </Tab.Navigator>
+      ]}
+    />
   );
 }

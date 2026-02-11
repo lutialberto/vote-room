@@ -29,7 +29,7 @@ export default function OptionsVotingStep() {
       functionToWait: ({ userId, baseData, options }) =>
         createOptionsVoting({ userId, baseData, options }),
       success: ({ baseVotingId }) =>
-        router.replace(`/(tabs)/myVotings/${baseVotingId}`),
+        router.replace(`/(tabs)/dashboard/myVotings/${baseVotingId}`),
     });
 
   const onCreateVoting = async (data: OptionsVotingForCreation) => {

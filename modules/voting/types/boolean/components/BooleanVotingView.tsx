@@ -120,7 +120,9 @@ export default function BooleanVotingView(props: { id: number; user: User }) {
         {data?.baseVoting.owner.id === props.user.id && (
           <ButtonApp
             label="Configuración"
-            onPress={() => router.push(`/(tabs)/myVotings/${data.id}/edit`)}
+            onPress={() =>
+              router.push(`/(tabs)/dashboard/myVotings/${data.id}/edit`)
+            }
           />
         )}
       </ThemedView>

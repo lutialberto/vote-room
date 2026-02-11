@@ -20,10 +20,10 @@ Este es un proyecto **React Native con Expo** que utiliza **TypeScript** y **Exp
 ```
 app/                    # Expo Router - rutas principales
 ├── (tabs)/            # Tab navigation
-│   ├── myRooms/       # Gestión de salas
-│   ├── myVotings/     # Gestión de votaciones
-│   ├── newRoom/       # Flujo creación sala
-│   └── exploreRooms/  # Exploración y búsqueda
+│   ├── profile/       # Perfil de usuario
+│   ├── dashboard/     # Dashboard con mis salas/votaciones
+│   ├── new/       # Flujo de creación de salas/votaciones
+│   └── explore/  # Exploración y búsqueda
 
 components/            # Componentes reutilizables globales
 ├── ButtonApp.tsx      # Botón principal

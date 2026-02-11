@@ -36,7 +36,7 @@ export default function VotingEditPage() {
         id: voting?.id!,
         userId: currentUser.id,
       }),
-    success: () => router.navigate(`/(tabs)/myVotings/${id}`),
+    success: () => router.navigate(`/(tabs)/dashboard/myVotings/${id}`),
     failure: () =>
       Alert.alert(
         "Error",
@@ -53,7 +53,7 @@ export default function VotingEditPage() {
       BaseVoting
     >({
       functionToWait: async (props) => activateBaseVoting(props),
-      success: () => router.replace(`/(tabs)/myVotings/${id}`),
+      success: () => router.replace(`/(tabs)/dashboard/myVotings/${id}`),
       failure: () =>
         Alert.alert(
           "Error",
@@ -70,7 +70,7 @@ export default function VotingEditPage() {
   >({
     functionToWait: async (props) => closeBaseVoting(props),
     success: () => {
-      router.replace(`/(tabs)/myVotings/${id}`);
+      router.replace(`/(tabs)/dashboard/myVotings/${id}`);
     },
     failure: () =>
       Alert.alert(
@@ -154,18 +154,20 @@ export default function VotingEditPage() {
         {voting?.type === "options" && (
           <ButtonApp
             label={isReadOnly ? "Ver opciones" : "Gestionar opciones"}
-            onPress={() => router.push(`/(tabs)/myVotings/${id}/edit/options`)}
+            onPress={() =>
+              router.push(`/(tabs)/dashboard/myVotings/${id}/edit/options`)
+            }
           />
         )}
 
         <View style={{ gap: 8 }}>
           <ButtonApp
             label="Ver votación"
-            onPress={() => router.replace(`/(tabs)/myVotings/${id}`)}
+            onPress={() => router.replace(`/(tabs)/dashboard/myVotings/${id}`)}
           />
           <ButtonApp
             label="Replicar votación"
-            onPress={() => router.push(`/(tabs)/newVoting/${id}/copy`)}
+            onPress={() => router.push(`/(tabs)/new/newVoting/${id}/copy`)}
           />
           {canActivate && (
             <ButtonApp
