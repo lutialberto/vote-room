@@ -88,7 +88,7 @@ export default function TabLayout() {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            handleTabPress("dashboard", "/(tabs)/dashboard/myRooms");
+            handleTabPress("dashboard", "/(tabs)/dashboard");
           },
         }}
       />

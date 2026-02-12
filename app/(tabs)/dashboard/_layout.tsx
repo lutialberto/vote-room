@@ -1,24 +1,15 @@
-import TopTabNavigatorApp from "@/components/TopTabNavigatorApp";
-import MyRooms from "./myRooms";
-import MyVotings from "./myVotings";
+import { Stack } from "expo-router";
 
 export default function DashboardLayout() {
   return (
-    <TopTabNavigatorApp
-      tabs={[
-        {
-          name: "myRooms",
-          component: MyRooms,
-          icon: "people",
-          label: "Mis Salas",
-        },
-        {
-          name: "myVoting",
-          icon: "bar-chart-outline",
-          component: MyVotings,
-          label: "Mis Votaciones",
-        },
-      ]}
-    />
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="myRooms" options={{ headerShown: false }} />
+      <Stack.Screen name="myVotings" options={{ headerShown: false }} />
+    </Stack>
   );
 }
