@@ -1,4 +1,4 @@
-import { User } from "@/models/User";
+import { UserBase } from "@/models/User";
 import BooleanVoting from "../types/boolean/models/BooleanVoting";
 import OptionsVoting from "../types/options/models/OptionsVoting";
 import { VotingType } from "./VotingType";
@@ -15,7 +15,7 @@ export interface BaseVoting {
   id: number;
   question: string;
   description?: string;
-  owner: User;
+  owner: UserBase;
   close: {
     type: VotingCloseType;
     durationMinutes?: number;

@@ -16,7 +16,7 @@ export class VotingServiceImpl {
   ): BaseVoting {
     const user = userServiceInstance.getInstantUserById(userId);
     if (!user) {
-      throw new Error("User not found");
+      throw new Error(`User not found with id: ${userId}`);
     }
     const mapper: Record<VotingReleaseType, VotingStatus> = {
       releaseOnCreate: "active",
@@ -29,9 +29,8 @@ export class VotingServiceImpl {
       ...baseData,
       owner: {
         id: userId,
-        email: user.email,
-        name: user.name,
         userName: user.userName,
+        type: user.type,
       },
       status,
       id: Math.max(...votings.map((e) => e.id)) + 1,
@@ -49,7 +48,7 @@ export class VotingServiceImpl {
     return successPromiseBehavior(() => {
       const user = userServiceInstance.getInstantUserById(userId);
       if (!user) {
-        throw new Error("User not found");
+        throw new Error(`User not found with id: ${userId}`);
       }
       const votingToUpdate = this.getInstantBaseVotingById(id);
       if (!votingToUpdate) {

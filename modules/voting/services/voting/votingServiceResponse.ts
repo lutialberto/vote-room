@@ -8,8 +8,7 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     owner: {
       id: 1,
       userName: "Alice",
-      email: "alice@example.com",
-      name: "Alice Smith",
+      type: "email",
     },
     status: "active",
     close: {
@@ -27,8 +26,7 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     owner: {
       id: 2,
       userName: "Bob",
-      email: "bob@example.com",
-      name: "Bob Johnson",
+      type: "email",
     },
     status: "scheduled",
     close: {
@@ -48,8 +46,7 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     owner: {
       id: 3,
       userName: "Charlie",
-      email: "charlie@example.com",
-      name: "Charlie Brown",
+      type: "email",
     },
     status: "draft",
     close: {
@@ -67,8 +64,7 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     owner: {
       id: 4,
       userName: "Diana",
-      email: "diana@example.com",
-      name: "Diana Prince",
+      type: "email",
     },
     status: "closed",
     close: {
@@ -87,8 +83,7 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
     owner: {
       id: 5,
       userName: "Ethan",
-      email: "ethan@example.com",
-      name: "Ethan Hunt",
+      type: "email",
     },
     status: "draft",
     close: {
