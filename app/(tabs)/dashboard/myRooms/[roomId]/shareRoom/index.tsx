@@ -1,6 +1,5 @@
 import { ButtonApp } from "@/components/ButtonApp";
 import { CardApp } from "@/components/CardApp";
-import HorizontalDivider from "@/components/divider/HorizontalDivider";
 import { IconApp } from "@/components/IconApp";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -8,7 +7,7 @@ import { ColorScheme } from "@/constants/Colors";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import * as Clipboard from "expo-clipboard";
 import { useLocalSearchParams, router } from "expo-router";
-import { Alert, Share, View, StyleSheet } from "react-native";
+import { Alert, Share, View, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function ShareRoom() {
   const { roomId } = useLocalSearchParams<{ roomId: string }>();
@@ -40,6 +39,26 @@ export default function ShareRoom() {
     router.push(`/(tabs)/dashboard/myRooms/${roomId}/inviteUsers`);
   };
 
+  const inviteOptions = [
+    {
+      key: "inviteUsers",
+      title: "👥 Invitar usuarios específicos",
+      description: "Invita usuarios por nombre, email o código",
+      onPress: onInviteUsers,
+    },
+    {
+      key: "shareLink",
+      title: "📱 Compartir en redes sociales",
+      description: "Envía el enlace para que se una automáticamente",
+      onPress: onShareRoom,
+    },
+    {
+      key: "copyCode",
+      title: "📋 Solo el código",
+      description: "Para enviar en aplicaciones de mensajería",
+      onPress: onCopyToClipboard,
+    },
+  ];
   return (
     <ThemedView style={styles.container}>
       <CardApp style={styles.codeContainer}>
@@ -47,46 +66,28 @@ export default function ShareRoom() {
         <ThemedText type="title">{roomId}</ThemedText>
       </CardApp>
 
-      <View style={styles.section}>
-        <ThemedText type="subtitle">👥 Invitar usuarios específicos</ThemedText>
-        <ThemedText style={styles.description}>
-          Invita usuarios por nombre, email o código
-        </ThemedText>
-        <ButtonApp label="👥 Invitar usuarios" onPress={onInviteUsers} />
-      </View>
-
-      <HorizontalDivider />
-
-      <View style={styles.section}>
-        <ThemedText type="subtitle">📱 Compartir en redes sociales</ThemedText>
-        <ThemedText style={styles.description}>
-          Envía el enlace para que se una automáticamente
-        </ThemedText>
-        <ButtonApp label="🔗 Compartir enlace" onPress={onShareRoom} />
-      </View>
-
-      <HorizontalDivider />
-
-      <View style={styles.section}>
-        <ThemedText type="subtitle">📋 Solo el código</ThemedText>
-        <ThemedText style={styles.description}>
-          Para enviar en aplicaciones de mensajería
-        </ThemedText>
-        <ButtonApp
-          label="📋 Copiar código"
-          onPress={onCopyToClipboard}
-          type="secondary"
-        />
-      </View>
-
-      <HorizontalDivider />
-
-      <View style={styles.section}>
-        <ButtonApp
-          label="Explorar Salas"
-          onPress={() => router.push("/(tabs)/exploreRooms/public")}
-          type="secondary"
-        />
+      <View style={{ gap: 8 }}>
+        {inviteOptions.map((option) => (
+          <TouchableOpacity key={option.key} onPress={option.onPress}>
+            <CardApp
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                borderColor: colors.border,
+                borderWidth: 1,
+              }}
+            >
+              <View style={styles.section}>
+                <ThemedText type="subtitle">{option.title}</ThemedText>
+                <ThemedText style={styles.description}>
+                  {option.description}
+                </ThemedText>
+              </View>
+              <IconApp name="chevron-forward" size={30} />
+            </CardApp>
+          </TouchableOpacity>
+        ))}
       </View>
     </ThemedView>
   );
@@ -95,13 +96,12 @@ export default function ShareRoom() {
 const getStyles = (colors: ColorScheme) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: 20,
-      paddingVertical: 24,
+      paddingHorizontal: 10,
       flex: 1,
       justifyContent: "center",
+      gap: 20,
     },
     codeContainer: {
-      marginBottom: 32,
       alignItems: "center",
       flexDirection: "row",
       justifyContent: "center",
@@ -117,9 +117,8 @@ const getStyles = (colors: ColorScheme) =>
       letterSpacing: 2,
     },
     section: {
-      gap: 16,
-      justifyContent: "center",
-      alignItems: "center",
+      gap: 6,
+      paddingLeft: 10,
     },
     description: {
       opacity: 0.7,
