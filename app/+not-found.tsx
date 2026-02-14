@@ -3,16 +3,29 @@ import { StyleSheet } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useAppReady } from "@/hooks/useAppReady";
 
 export default function NotFoundScreen() {
+  const { isAuthenticated, isAppReady } = useAppReady();
+
+  if (!isAppReady) {
+    return null;
+  }
+
   return (
     <>
       <Stack.Screen options={{ title: "Oops!" }} />
       <ThemedView style={styles.container}>
         <ThemedText type="title">This screen doesn't exist.</ThemedText>
-        <Link href="/" style={styles.link}>
-          <ThemedText type="link">Go to home screen!</ThemedText>
-        </Link>
+        {isAuthenticated ? (
+          <Link href="/(tabs)/dashboard" style={styles.link}>
+            <ThemedText type="link">Go to home screen!</ThemedText>
+          </Link>
+        ) : (
+          <Link href="/(unsigned)/login" style={styles.link}>
+            <ThemedText type="link">Go to login screen!</ThemedText>
+          </Link>
+        )}
       </ThemedView>
     </>
   );
