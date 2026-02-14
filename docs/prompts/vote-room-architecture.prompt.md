@@ -19,11 +19,26 @@ Este es un proyecto **React Native con Expo** que utiliza **TypeScript** y **Exp
 
 ```
 app/                    # Expo Router - rutas principales
-├── (tabs)/            # Tab navigation
-│   ├── profile/       # Perfil de usuario
-│   ├── dashboard/     # Dashboard con mis salas/votaciones
-│   ├── new/       # Flujo de creación de salas/votaciones
-│   └── explore/  # Exploración y búsqueda
+├── (onboardings)/     # Flujo de onboarding
+│   ├── onBoardingUser.tsx
+│   └── onBoardingWelcome.tsx
+├── (unsigned)/        # Rutas para usuarios no autenticados
+│   ├── login.tsx
+│   ├── (passwordRecovery)/
+│   └── (registration)/
+└── (tabs)/            # Tab navigation
+    ├── dashboard/     # Hub principal con sub-rutas
+    │   ├── myRooms/   # Gestión de salas del usuario
+    │   └── myVotings/ # Gestión de votaciones del usuario
+    ├── exploreRooms/  # Exploración y búsqueda
+    │   ├── byCode/    # Búsqueda por código
+    │   ├── invitations/ # Invitaciones recibidas
+    │   └── public/    # Salas públicas
+    ├── new/           # Hub de creación
+    │   ├── newEvent/  # Crear eventos
+    │   ├── newRoom/   # Crear salas
+    │   └── newVoting/ # Crear votaciones
+    └── profile/       # Perfil de usuario
 
 components/            # Componentes reutilizables globales
 ├── ButtonApp.tsx      # Botón principal
@@ -32,19 +47,34 @@ components/            # Componentes reutilizables globales
 └── ui/               # Componentes UI específicos
 
 modules/               # Módulos de dominio
+├── events/            # Lógica de eventos
+│   ├── components/   # Componentes específicos
+│   ├── hooks/        # Hooks del dominio
+│   ├── services/     # Servicios API
+│   ├── models/       # Tipos del dominio
+│   └── types/        # Tipos específicos
 ├── voting/            # Lógica de votaciones
 │   ├── components/   # Componentes específicos
 │   ├── hooks/        # Hooks del dominio
 │   ├── services/     # Servicios API
 │   ├── models/       # Tipos del dominio
 │   └── types/        # Tipos específicos (boolean, options)
-└── rooms/             # Lógica de salas
+├── rooms/             # Lógica de salas
+│   ├── exploreRooms/ # Exploración de salas
+│   ├── inviteUsers/  # Invitación de usuarios
+│   └── newSteps/     # Pasos de creación
+├── users/             # Lógica de usuarios
+│   ├── creation/     # Creación de usuarios
+│   └── profile/      # Perfil de usuario
+└── onBoarding/        # Lógica de onboarding
+    ├── components/   # Componentes específicos
+    └── constants/    # Constantes del onboarding
 
 hooks/                 # Hooks globales reutilizables
 services/              # Servicios API globales
 models/               # Tipos/interfaces globales
 constants/            # Constantes (Colors, etc.)
-contexts/             # Context providers
+utils/                # Utilidades globales
 ```
 
 ### 🎯 Principios de Organización
@@ -54,15 +84,27 @@ contexts/             # Context providers
 ```
 ✅ CORRECTO:
 modules/
+├── events/            # Nuevo módulo de eventos
+│   ├── components/
+│   ├── hooks/
+│   ├── services/
+│   ├── models/
+│   └── types/
 ├── voting/
 │   ├── components/
 │   ├── hooks/
 │   ├── services/
 │   └── models/
-└── rooms/
+├── rooms/
+│   ├── components/
+│   ├── hooks/
+│   └── services/
+├── users/
+│   ├── creation/
+│   └── profile/
+└── onBoarding/        # Nuevo módulo de onboarding
     ├── components/
-    ├── hooks/
-    └── services/
+    └── constants/
 
 ❌ INCORRECTO:
 ├── components/ (todos mezclados)
@@ -72,10 +114,14 @@ modules/
 
 #### 🔄 Separación de Responsabilidades
 
-- **`app/`**: Solo routing y screens principales
+- **`app/`**: Solo routing y screens principales con grupos lógicos
+  - **`(onboardings)/`**: Flujo de incorporación de usuarios
+  - **`(unsigned)/`**: Autenticación y registro
+  - **`(tabs)/`**: Navegación principal autenticada
 - **`components/`**: Solo componentes globales reutilizables
-- **`modules/`**: Lógica específica de dominio
+- **`modules/`**: Lógica específica de dominio (events, voting, rooms, users, onBoarding)
 - **`services/`**: Solo servicios compartidos entre módulos
+- **`utils/`**: Utilidades globales del proyecto
 
 ## 🌈 Sistema de Colores y Theming
 
@@ -164,16 +210,39 @@ export const Colors: { light: ColorScheme; dark: ColorScheme } = {
 
 ```
 app/
-├── _layout.tsx           # Root layout
-├── (tabs)/              # Tab group
-│   ├── _layout.tsx      # Tabs layout
-│   ├── myRooms/
-│   │   ├── index.tsx    # /myRooms
-│   │   └── [roomId]/    # /myRooms/[roomId]
-│   └── myVotings/
-│       ├── index.tsx    # /myVotings
-│       └── [id]/        # /myVotings/[id]
-└── +not-found.tsx       # 404 page
+├── _layout.tsx              # Root layout
+├── (onboardings)/          # Onboarding group
+│   ├── onBoardingUser.tsx
+│   └── onBoardingWelcome.tsx
+├── (unsigned)/             # Unsigned users group
+│   ├── _layout.tsx
+│   ├── login.tsx
+│   ├── (passwordRecovery)/
+│   └── (registration)/
+├── (tabs)/                 # Tab group
+│   ├── _layout.tsx         # Tabs layout
+│   ├── dashboard/          # Dashboard hub
+│   │   ├── index.tsx       # /dashboard
+│   │   ├── _layout.tsx
+│   │   ├── myRooms/
+│   │   │   ├── index.tsx   # /dashboard/myRooms
+│   │   │   └── [roomId]/   # /dashboard/myRooms/[roomId]
+│   │   └── myVotings/
+│   │       ├── index.tsx   # /dashboard/myVotings
+│   │       └── [id]/       # /dashboard/myVotings/[id]
+│   ├── exploreRooms/       # Explore hub
+│   │   ├── _layout.tsx
+│   │   ├── byCode/
+│   │   ├── invitations/
+│   │   └── public/
+│   ├── new/                # Creation hub
+│   │   ├── index.tsx       # /new
+│   │   ├── _layout.tsx
+│   │   ├── newEvent/
+│   │   ├── newRoom/
+│   │   └── newVoting/
+│   └── profile/            # Profile
+└── +not-found.tsx          # 404 page
 ```
 
 ### Layout Patterns
@@ -366,6 +435,17 @@ export class VotingServiceImpl {
 
 ## 🔧 Setup y Configuración
 
+### Herramientas de Desarrollo
+
+El proyecto incluye configuración para herramientas de calidad de código:
+
+```
+.husky/              # Git hooks
+.lintstagedrc.json   # Lint staged files
+.prettierrc          # Code formatting
+.vscode/             # VS Code settings
+```
+
 ### Dependencias Core
 
 ```json
@@ -375,7 +455,10 @@ export class VotingServiceImpl {
   "react-hook-form": "latest",
   "zustand": "latest",
   "react-native": "latest",
-  "typescript": "latest"
+  "typescript": "latest",
+  "prettier": "latest",
+  "husky": "latest",
+  "lint-staged": "latest"
 }
 ```
 
