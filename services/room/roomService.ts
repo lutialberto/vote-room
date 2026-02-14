@@ -27,8 +27,8 @@ export const fetchPublicRooms = (
 export const fetchRooms = (): Promise<Room[]> =>
   roomServiceInstance.fetchRooms();
 
-export const getRoomByCode = (code: string): Promise<Room | null> =>
-  roomServiceInstance.getRoomByCode(code);
+export const fetchRoomByCode = (code: string): Promise<Room | null> =>
+  roomServiceInstance.fetchRoomByCode(code);
 
 export const createRoom = (roomData: CreateRoomData): Promise<Room> =>
   roomServiceInstance.createRoom(roomData);

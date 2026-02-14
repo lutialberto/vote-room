@@ -5,7 +5,7 @@ import SearchRoomByCodeFormKey from "@/modules/rooms/exploreRooms/components/Sea
 import SearchInstructions from "@/modules/rooms/exploreRooms/components/SearchRoomByCodeInstructions";
 import SearchRoomByCodeResults from "@/modules/rooms/exploreRooms/components/SearchRoomByCodeResults";
 import { SearchRoomByCodeState } from "@/modules/rooms/exploreRooms/models/SearchRoomByCodeState";
-import { getRoomByCode } from "@/services/room/roomService";
+import { fetchRoomByCode } from "@/services/room/roomService";
 import { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -27,7 +27,7 @@ export default function ByCodeTab() {
       ...prev,
       state: "searching",
     }));
-    getRoomByCode(roomCode.toUpperCase())
+    fetchRoomByCode(roomCode.toUpperCase())
       .then((room) => {
         console.log({ room, roomCode });
         if (room) {
@@ -49,7 +49,7 @@ export default function ByCodeTab() {
       joinRoom(state.room.code, currentUser.id)
         .then(() => {
           handleNewSearch();
-          router.push(`/(tabs)/dashboard/myRooms/${state.room.code}/shareRoom`);
+          router.push(`/(tabs)/dashboard/myRooms/${state.room.code}`);
         })
         .catch(() => {
           setState({ state: "error" });
@@ -67,7 +67,7 @@ export default function ByCodeTab() {
       joinRoom(state.room.code, currentUser.id, key)
         .then(() => {
           handleNewSearch();
-          router.push(`/(tabs)/dashboard/myRooms/${state.room.code}/shareRoom`);
+          router.push(`/(tabs)/dashboard/myRooms/${state.room.code}`);
         })
         .catch((error) => {
           setState((prev) => ({

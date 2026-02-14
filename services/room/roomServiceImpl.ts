@@ -44,7 +44,7 @@ export class RoomServiceImpl {
     return room ? { ...room } : null;
   }
 
-  async getRoomByCode(code: string): Promise<Room | null> {
+  async fetchRoomByCode(code: string): Promise<Room | null> {
     return successPromiseBehavior(() => {
       return this.getInstantRoomByCode(code);
     });

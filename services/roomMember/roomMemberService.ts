@@ -1,3 +1,4 @@
+import { RoomMemberWithUser } from "@/models/RoomMember";
 import { Room } from "../../models/Room";
 import { roomMemberServiceInstance } from "./roomMemberServiceImpl";
 
@@ -14,6 +15,11 @@ import { roomMemberServiceInstance } from "./roomMemberServiceImpl";
 
 export const fetchRoomsByUser = (userId: number): Promise<Room[]> =>
   roomMemberServiceInstance.fetchRoomsByUser(userId);
+
+export const fetchRoomMembersByRoom = (
+  roomCode: string
+): Promise<RoomMemberWithUser[]> =>
+  roomMemberServiceInstance.fetchRoomMembersByRoom(roomCode);
 
 export const joinRoom = (
   code: string,

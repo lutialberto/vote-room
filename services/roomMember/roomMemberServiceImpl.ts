@@ -1,14 +1,38 @@
 import { roomMembersMockResponse } from "./roomMemberResponse";
 import { Room } from "../../models/Room";
-import { RoomMember } from "../../models/RoomMember";
+import { RoomMember, RoomMemberWithUser } from "../../models/RoomMember";
 import { successPromiseBehavior } from "../serviceUtilsImpl";
 import { roomCoreService } from "../room/roomCoreService";
+import { userServiceInstance } from "../user/userServiceImpl";
 
 export class RoomMemberServiceImpl {
   private roomMembers: RoomMember[] = [...roomMembersMockResponse];
 
   async fetchRoomsByUser(userId: number): Promise<Room[]> {
     return successPromiseBehavior(() => this.getInstantRoomsByUser(userId));
+  }
+
+  async fetchRoomMembersByRoom(
+    roomCode: string
+  ): Promise<RoomMemberWithUser[]> {
+    return successPromiseBehavior(() =>
+      this.roomMembers
+        .filter((roomMember) => roomMember.roomCode === roomCode)
+        .map((roomMember) => {
+          const user = userServiceInstance.getInstantUserById(
+            roomMember.userId
+          );
+          if (!user) {
+            throw new Error(
+              `User ${roomMember.userId} not found as room member for room ${roomMember.roomCode}`
+            );
+          }
+          return {
+            ...roomMember,
+            user,
+          } as RoomMemberWithUser;
+        })
+    );
   }
 
   getInstantRoomsByUser(userId: number) {
