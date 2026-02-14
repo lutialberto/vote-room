@@ -61,9 +61,7 @@ export default function InviteUserForm({
 const getStyles = (colors: ColorScheme) =>
   StyleSheet.create({
     inputSection: {
-      borderTopWidth: 1,
-      paddingVertical: 16,
-      paddingBottom: 24,
+      paddingBottom: 10,
       borderTopColor: colors.border,
     },
     inputContainer: {

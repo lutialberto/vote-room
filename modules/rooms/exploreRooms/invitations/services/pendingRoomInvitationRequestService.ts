@@ -1,3 +1,4 @@
+import { PendingInvitation } from "@/modules/rooms/inviteUsers/models/PendingInvitation";
 import { PendingRoomInvitationRequest } from "../models/PendingRoomInvitationRequest";
 import { pendingRoomInvitationRequestServiceInstance } from "./pendingRoomInvitationRequestServiceImpl";
 
@@ -22,5 +23,15 @@ export function acceptPendingRoomInvitationRequest(
 ): Promise<{ id: number }> {
   return pendingRoomInvitationRequestServiceInstance.acceptPendingRoomInvitationRequest(
     id
+  );
+}
+
+export function createPendingRoomInvitationsRequest(
+  pendingInvitations: PendingInvitation[],
+  roomCode: string
+): Promise<boolean> {
+  return pendingRoomInvitationRequestServiceInstance.createPendingRoomInvitationsRequest(
+    pendingInvitations,
+    roomCode
   );
 }

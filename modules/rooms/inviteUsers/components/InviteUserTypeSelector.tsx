@@ -51,18 +51,17 @@ export default function InviteUserTypeSelector({
 const getStyles = (colors: ColorScheme) =>
   StyleSheet.create({
     optionsContainer: {
-      marginBottom: 24,
+      marginBottom: 10,
     },
     hintContainer: {
       flexDirection: "row",
       alignItems: "flex-start",
-      marginBottom: 24,
+      marginBottom: 10,
       borderLeftWidth: 4,
       borderLeftColor: colors.primary,
     },
     hintIcon: {
       marginRight: 12,
-      marginTop: 2,
     },
     hint: {
       flex: 1,

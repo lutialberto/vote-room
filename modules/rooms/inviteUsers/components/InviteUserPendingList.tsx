@@ -1,5 +1,11 @@
 import { ThemedText } from "@/components/ThemedText";
-import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+} from "react-native";
 import { PendingInvitation } from "../models/PendingInvitation";
 import { USER_INVITATIONS } from "../constants/userInvitations";
 import { ButtonApp } from "@/components/ButtonApp";
@@ -7,30 +13,62 @@ import { IconApp } from "@/components/IconApp";
 import { CardApp } from "@/components/CardApp";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ColorScheme } from "@/constants/Colors";
+import { useWaitingApp } from "@/hooks/useWaitingApp";
+import { createPendingRoomInvitationsRequest } from "../../exploreRooms/invitations/services/pendingRoomInvitationRequestService";
 
 export default function InviteUserPendingList({
+  roomId,
   pendingInvitations,
   removeInvitation,
 }: {
+  roomId: string;
   pendingInvitations: PendingInvitation[];
   removeInvitation: (id: string) => void;
 }) {
   const colors = useThemeColor();
   const styles = getStyles(colors);
 
+  const { execPromise: fnCreatePendingInvitations, isWaiting } = useWaitingApp<
+    {
+      invitations: PendingInvitation[];
+      roomId: string;
+    },
+    boolean
+  >({
+    functionToWait: (data) =>
+      createPendingRoomInvitationsRequest(data.invitations, data.roomId),
+    success: () => {
+      console.log("Invitaciones enviadas con éxito");
+      pendingInvitations.forEach((inv) => removeInvitation(inv.id));
+    },
+    failure: (err) => {
+      console.log("Error al enviar invitaciones:", err);
+      Alert.alert(
+        "Error",
+        "No se pudieron enviar las invitaciones: " + err.message
+      );
+    },
+  });
+
   return (
     <>
       <View style={styles.pendingHeader}>
-        <IconApp name="send" size={20} colorName="primary" />
-        <ThemedText type="subtitle">
-          Invitaciones pendientes ({pendingInvitations.length})
-        </ThemedText>
+        {pendingInvitations.length > 0 && (
+          <ButtonApp
+            label={`Enviar Invitaciones pendientes (${pendingInvitations.length})`}
+            onPress={() =>
+              fnCreatePendingInvitations({
+                invitations: pendingInvitations,
+                roomId,
+              })
+            }
+          />
+        )}
       </View>
       <FlatList
         showsVerticalScrollIndicator={false}
         data={pendingInvitations}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.invitationsList}
         ListEmptyComponent={() => (
           <ThemedText style={{ textAlign: "center" }}>
             No hay invitaciones pendientes
@@ -54,15 +92,6 @@ export default function InviteUserPendingList({
           </CardApp>
         )}
       />
-      {pendingInvitations.length > 0 ? (
-        <ButtonApp
-          label="Enviar todas"
-          style={styles.sendAllButton}
-          onPress={() => {
-            // Lógica para enviar todas las invitaciones
-          }}
-        />
-      ) : null}
     </>
   );
 }
@@ -73,19 +102,13 @@ const getStyles = (colors: ColorScheme) =>
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      marginBottom: 16,
+      marginBottom: 6,
       gap: 8,
-    },
-    invitationsList: {
-      gap: 12,
-      marginBottom: 20,
     },
     invitationItem: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      marginVertical: 8,
-      marginHorizontal: 16,
     },
     invitationInfo: {
       flexDirection: "row",
@@ -100,8 +123,5 @@ const getStyles = (colors: ColorScheme) =>
       padding: 8,
       borderRadius: 20,
       backgroundColor: colors.primary + "20",
-    },
-    sendAllButton: {
-      margin: 16,
     },
   });

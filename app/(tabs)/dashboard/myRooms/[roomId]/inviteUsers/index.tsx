@@ -3,7 +3,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { ButtonApp } from "@/components/ButtonApp";
 import { useState } from "react";
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import InviteUserTypeSelector from "@/modules/rooms/inviteUsers/components/InviteUserTypeSelector";
 import InviteUserForm from "@/modules/rooms/inviteUsers/components/InviteUserForm";
 import InviteUserPendingList from "@/modules/rooms/inviteUsers/components/InviteUserPendingList";
@@ -12,6 +12,7 @@ import { UserInvitationType } from "@/modules/rooms/inviteUsers/models/UserInvit
 import { UserInvitation } from "@/modules/rooms/inviteUsers/models/UserInvitation";
 
 export default function InviteUsers() {
+  const { roomId } = useLocalSearchParams<{ roomId: string }>();
   const [pendingInvitations, setPendingInvitations] = useState<
     PendingInvitation[]
   >([]);
@@ -59,19 +60,12 @@ export default function InviteUsers() {
           handleSelectedOption={onInvitationTypeChange}
         />
 
+        <InviteUserForm handleSubmitForm={onSubmit} />
         <InviteUserPendingList
           pendingInvitations={pendingInvitations}
           removeInvitation={removeInvitation}
+          roomId={roomId}
         />
-        <InviteUserForm handleSubmitForm={onSubmit} />
-
-        <View style={styles.navigationButtons}>
-          <ButtonApp
-            label="← Explorar Salas"
-            onPress={() => router.push("/(tabs)/exploreRooms/public")}
-            type="secondary"
-          />
-        </View>
       </KeyboardAvoidingView>
     </ThemedView>
   );
@@ -80,12 +74,10 @@ export default function InviteUsers() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
   },
   header: {
     alignItems: "center",
-    paddingHorizontal: 20,
-    marginBottom: 10,
   },
   title: {
     marginBottom: 8,
@@ -96,9 +88,5 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     lineHeight: 20,
     paddingHorizontal: 16,
-  },
-  navigationButtons: {
-    marginTop: 16,
-    paddingBottom: 20,
   },
 });
