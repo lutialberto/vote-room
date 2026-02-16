@@ -6,12 +6,15 @@ import { ThemedView } from "@/components/ThemedView";
 import UserSwitcherModal from "@/modules/users/profile/components/UserSwitcherModal";
 import UserDataSection from "@/modules/users/profile/components/UserDataSection";
 import SectionsApp, { SectionProps } from "@/components/SectionsApp";
-import { router } from "expo-router";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
+import { useUserSession } from "@/hooks/useUserSession";
+import { useOnboarding } from "@/hooks/useOnboarding";
 
 export default function ProfileScreen() {
   const [switcherVisible, setSwitcherVisible] = useState(false);
   const { logout } = useAuthenticatedUser();
+  const { resetOnboarding } = useOnboarding();
+  const { resetUserCreation } = useUserSession();
   const colors = useThemeColor();
   const styles = getStyles(colors);
 
@@ -44,13 +47,13 @@ export default function ProfileScreen() {
           id: "onboarding",
           name: "Introducción a la App",
           icon: "book",
-          onPress: () => router.navigate("/(onboardings)/onBoardingWelcome"),
+          onPress: () => resetOnboarding(),
         },
         {
           id: "user-creation",
           name: "Crear Usuario",
           icon: "person-add",
-          onPress: () => router.navigate("/(onboardings)/onBoardingUser"),
+          onPress: () => resetUserCreation(),
         },
       ],
     },
