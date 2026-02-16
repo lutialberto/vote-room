@@ -18,15 +18,12 @@ export default function RootLayout() {
 
   return (
     <Stack>
-      <Stack.Screen name="(unsigned)/login" options={{ headerShown: false }} />
+      <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen
-        name="(unsigned)/(passwordRecovery)"
+        name="(passwordRecovery)"
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="(unsigned)/(registration)"
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="(registration)" options={{ headerShown: false }} />
     </Stack>
   );
 }
