@@ -6,7 +6,7 @@ export default function UserCreationLayout() {
     <Stack>
       <Stack.Screen name="new" options={{ headerShown: false }} />
       <Stack.Screen
-        name="/emailCodeValidation"
+        name="emailCodeValidation"
         options={{ headerShown: false }}
       />
     </Stack>
