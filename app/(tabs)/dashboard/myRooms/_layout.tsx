@@ -31,6 +31,14 @@ export default function MyRoomsScreen() {
             headerBackTitle: "Volver",
           }}
         />
+        <Stack.Screen
+          name="[roomId]/shareRoom/shareQrModal"
+          options={{
+            presentation: "formSheet",
+            sheetCornerRadius: 16,
+            sheetAllowedDetents: "fitToContents",
+          }}
+        />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

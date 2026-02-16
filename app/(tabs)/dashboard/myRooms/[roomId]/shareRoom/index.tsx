@@ -5,6 +5,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { ColorScheme } from "@/constants/Colors";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { getDeepLinkRoomDetailInvitation } from "@/utils/deeplink.utils";
 import * as Clipboard from "expo-clipboard";
 import { useLocalSearchParams, router } from "expo-router";
 import { Alert, Share, View, StyleSheet, TouchableOpacity } from "react-native";
@@ -19,15 +20,14 @@ export default function ShareRoom() {
   };
 
   const onShareRoom = async () => {
-    const webUrl = `https://vote-room.app/room/${roomId}`;
-    const deepLink = `vote-room://room/${roomId}`;
+    const deepLink = getDeepLinkRoomDetailInvitation(roomId);
 
-    const message = `¡Únete a mi sala de votación!\n\nCódigo: ${roomId}\n\n${webUrl}`;
+    const message = `¡Únete a mi sala de votación!\n\nCódigo: ${roomId}\n\n${deepLink}`;
 
     try {
       await Share.share({
         message: message,
-        url: webUrl,
+        url: deepLink,
         title: "Únete a mi sala de votación",
       });
     } catch (error) {
@@ -57,6 +57,15 @@ export default function ShareRoom() {
       title: "📋 Solo el código",
       description: "Para enviar en aplicaciones de mensajería",
       onPress: onCopyToClipboard,
+    },
+    {
+      key: "shareQrModal",
+      title: "📷 Compartir QR",
+      description: "Para que los usuarios se unan escaneando el código",
+      onPress: () =>
+        router.push(
+          `/(tabs)/dashboard/myRooms/${roomId}/shareRoom/shareQrModal`
+        ),
     },
   ];
   return (
