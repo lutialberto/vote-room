@@ -11,6 +11,7 @@ import "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppReady } from "@/hooks/useAppReady";
 import { useEffect } from "react";
+import { useDeeplinkHolderApp } from "@/hooks/useDeeplinkHolderApp";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -23,6 +24,7 @@ export default function RootLayout() {
     shouldShowUserCreation,
     isAuthenticated,
   } = useAppReady();
+  const { deeplink } = useDeeplinkHolderApp();
 
   useEffect(() => {
     if (isAppReady) {
@@ -32,6 +34,12 @@ export default function RootLayout() {
       }, 300);
     }
   }, [isAppReady]);
+
+  useEffect(() => {
+    if (deeplink) {
+      router.push(deeplink);
+    }
+  }, [deeplink]);
 
   if (!isAppReady) {
     return null;
@@ -60,6 +68,7 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack.Protected>
           <Stack.Screen name="+not-found" />
+          <Stack.Screen name="(deeplinks)" options={{ headerShown: false }} />
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>
