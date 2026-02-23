@@ -20,6 +20,7 @@ import { IconApp } from "@/components/IconApp";
 import { NewStepMainIcon } from "@/modules/rooms/newSteps/components/NewStepMainIcon";
 import { CardApp } from "@/components/CardApp";
 import { ColorScheme } from "@/constants/Colors";
+import { useNewRoomData } from "@/modules/rooms/newSteps/hooks/useNewRoomData";
 
 type FormData = {
   tags: string[];
@@ -29,8 +30,8 @@ type FormData = {
 
 export default function RoomTypeStep() {
   const colors = useThemeColor();
-  // const { primary: primaryColor, border: borderColor } = useThemeColor();
   const styles = getStyles(colors);
+  const { saveRoomTypeData } = useNewRoomData();
 
   const {
     handleSubmit,
@@ -47,7 +48,7 @@ export default function RoomTypeStep() {
   const isEvent = watch("event");
 
   const onSubmit = (data: FormData) => {
-    // TODO: falta definir que hacer con los datos
+    saveRoomTypeData(data);
     router.navigate("./roomScopeStep");
   };
 

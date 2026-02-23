@@ -15,25 +15,29 @@ import {
 } from "react-native";
 import FormStepCard from "@/components/FormStepCard";
 import { NewStepMainIcon } from "@/modules/rooms/newSteps/components/NewStepMainIcon";
-
-type FormData = {
-  name: string;
-  description: string;
-};
+import { RoomNameData } from "@/models/Room";
+import { useNewRoomData } from "@/modules/rooms/newSteps/hooks/useNewRoomData";
+import { useEffect } from "react";
 
 export default function RoomNameStep() {
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<RoomNameData>({
     defaultValues: {
-      name: "",
+      label: "",
       description: "",
     },
   });
-  const onSubmit = (data: FormData) => {
-    // TODO: falta definir que hacer con los datos
+  const { saveRoomNameData, resetRoomData } = useNewRoomData();
+
+  useEffect(() => {
+    resetRoomData();
+  }, []);
+
+  const onSubmit = (data: RoomNameData) => {
+    saveRoomNameData(data);
     router.navigate("/(tabs)/new/newRoom/(steps)/roomTypeStep");
   };
 
@@ -70,7 +74,7 @@ export default function RoomNameStep() {
               <InputTextApp
                 inputControl={{
                   control,
-                  name: "name",
+                  name: "label",
                   rules: {
                     required: "El nombre es requerido",
                     minLength: {
@@ -83,7 +87,7 @@ export default function RoomNameStep() {
                   placeholder: "Ej: Votación familiar, Reunión trabajo...",
                 }}
                 label="📝 Nombre de la sala"
-                errorMessage={errors.name?.message}
+                errorMessage={errors.label?.message}
               />
 
               <InputTextApp

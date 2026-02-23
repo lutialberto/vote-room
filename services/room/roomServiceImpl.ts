@@ -3,6 +3,7 @@ import {
   CreateRoomData,
   PublicRoomType,
   PublicRoomTypeFilter,
+  BaseRoom,
 } from "../../models/Room";
 import { successPromiseBehavior } from "../serviceUtilsImpl";
 import { roomCoreService } from "./roomCoreService";
@@ -52,8 +53,9 @@ export class RoomServiceImpl {
 
   async createRoom(roomData: CreateRoomData): Promise<Room> {
     return successPromiseBehavior(() => {
-      const baseData = {
+      const baseData: BaseRoom = {
         ...roomData,
+        status: "active",
         code: this.generateRoomCode(),
         memberCount: 1,
         lastActivity: "ahora" as const,

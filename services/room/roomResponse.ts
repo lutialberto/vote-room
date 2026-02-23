@@ -13,6 +13,7 @@ export const roomsMockResponse: Room[] = [
     status: "active",
     hasUnreadVotes: true,
     tags: ["familia", "vacaciones"],
+    membersType: "unrestricted",
   },
   {
     code: "WORK2",
@@ -26,6 +27,7 @@ export const roomsMockResponse: Room[] = [
     status: "active",
     hasUnreadVotes: false,
     tags: ["trabajo", "proyecto"],
+    membersType: "unrestricted",
   },
   {
     code: "PARTY",
@@ -40,6 +42,7 @@ export const roomsMockResponse: Room[] = [
     hasUnreadVotes: false,
     key: "PARTY123",
     tags: ["fiesta", "cumpleaños"],
+    membersType: "authenticated",
   },
   {
     code: "TRIP",
@@ -53,6 +56,7 @@ export const roomsMockResponse: Room[] = [
     status: "active",
     hasUnreadVotes: true,
     tags: ["viaje", "amigos"],
+    membersType: "unrestricted",
   },
   {
     code: "BOOKCLUB",
@@ -67,6 +71,7 @@ export const roomsMockResponse: Room[] = [
     hasUnreadVotes: false,
     key: "BOOKCLUB123",
     tags: ["libros", "lectura"],
+    membersType: "unrestricted",
   },
   {
     code: "GAMENIGHT",
@@ -80,6 +85,7 @@ export const roomsMockResponse: Room[] = [
     status: "active",
     hasUnreadVotes: true,
     tags: ["juegos", "diversión"],
+    membersType: "unrestricted",
   },
   {
     code: "COMMUNITY",
@@ -93,5 +99,6 @@ export const roomsMockResponse: Room[] = [
     status: "active",
     hasUnreadVotes: false,
     tags: ["comunidad", "reunión"],
+    membersType: "unrestricted",
   },
 ];
