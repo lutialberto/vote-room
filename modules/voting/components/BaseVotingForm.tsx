@@ -38,6 +38,7 @@ export default function BaseVotingForm({
     watch,
     setValue,
     reset,
+    setError,
   } = useForm<BaseVotingForCreation>({
     defaultValues: {
       question: "",
@@ -75,6 +76,12 @@ export default function BaseVotingForm({
   }, [voting]);
 
   const onSubmitData = (data: BaseVotingForCreation) => {
+    if (!data.type) {
+      setError("type", {
+        message: "El campo es requerido",
+      });
+      return;
+    }
     saveBaseVotingData(data);
     onSubmit(data);
   };
@@ -132,17 +139,24 @@ export default function BaseVotingForm({
           <View>
             <ThemedText type="inputLabel">Tipo de votación</ThemedText>
             {!isReadOnly ? (
-              <RadioButtonApp
-                options={BASE_VOTING_TYPE_OPTIONS.map((option) => ({
-                  label: option.label,
-                  selected: option.value === type,
-                  value: option.value,
-                }))}
-                enabled={!isEditMode}
-                onPress={(value) =>
-                  setValue("type", value as BaseVotingForCreation["type"])
-                }
-              />
+              <>
+                <RadioButtonApp
+                  options={BASE_VOTING_TYPE_OPTIONS.map((option) => ({
+                    label: option.label,
+                    selected: option.value === type,
+                    value: option.value,
+                  }))}
+                  enabled={!isEditMode}
+                  onPress={(value) =>
+                    setValue("type", value as BaseVotingForCreation["type"])
+                  }
+                />
+                {errors.type?.message && (
+                  <ThemedText type="inputError">
+                    {errors.type.message}
+                  </ThemedText>
+                )}
+              </>
             ) : (
               <ThemedText type="default">
                 {selectedTypeOption?.label || type}
