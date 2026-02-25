@@ -15,12 +15,15 @@ export default function NewRoomScreen() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen
-          name="roomNameStep"
+          name="(steps)/roomNameStep"
           options={{ title: "Crear Sala", headerShown: false }}
         />
-        <Stack.Screen name="roomTypeStep" options={{ title: "Tipo de Sala" }} />
         <Stack.Screen
-          name="roomScopeStep"
+          name="(steps)/roomTypeStep"
+          options={{ title: "Tipo de Sala" }}
+        />
+        <Stack.Screen
+          name="(steps)/roomScopeStep"
           options={{ title: "Sala pública o privada?" }}
         />
       </Stack>
