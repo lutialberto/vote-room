@@ -36,7 +36,7 @@ export default function MyRoomsScreen() {
           options={{
             presentation: "formSheet",
             sheetCornerRadius: 16,
-            sheetAllowedDetents: "fitToContents",
+            sheetAllowedDetents: [0.6, 1],
           }}
         />
       </Stack>

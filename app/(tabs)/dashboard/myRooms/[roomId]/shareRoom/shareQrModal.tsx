@@ -41,9 +41,8 @@ export default function ShareQrModal() {
 const getStyles = (colors: ColorScheme) =>
   StyleSheet.create({
     modalContainer: {
-      maxHeight: 400,
+      flex: 1,
       backgroundColor: colors.background,
-      justifyContent: "center",
       alignItems: "center",
       padding: 20,
       gap: 10,
