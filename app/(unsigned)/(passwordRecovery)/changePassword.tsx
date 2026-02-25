@@ -20,7 +20,7 @@ export default function PasswordRecoveryChangePasswordView() {
         email: email as string,
         password: data.password,
       }),
-    success: () => router.push(`/(unsigned)/login`),
+    success: () => router.push(`/login`),
     failure: (error) =>
       alert(`Error al intentar cambiar la contraseña: ${error.message}`),
   });

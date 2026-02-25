@@ -49,7 +49,7 @@ export default function ByCodeTab() {
       joinRoom(state.room.code, currentUser.id)
         .then(() => {
           handleNewSearch();
-          router.push(`/(tabs)/dashboard/myRooms/${state.room.code}`);
+          router.push(`/dashboard/myRooms/${state.room.code}`);
         })
         .catch(() => {
           setState({ state: "error" });
@@ -67,7 +67,7 @@ export default function ByCodeTab() {
       joinRoom(state.room.code, currentUser.id, key)
         .then(() => {
           handleNewSearch();
-          router.push(`/(tabs)/dashboard/myRooms/${state.room.code}`);
+          router.push(`/dashboard/myRooms/${state.room.code}`);
         })
         .catch((error) => {
           setState((prev) => ({

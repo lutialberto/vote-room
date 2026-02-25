@@ -51,13 +51,13 @@ export default function RootLayout() {
         <Stack>
           <Stack.Protected guard={shouldShowOnboarding}>
             <Stack.Screen
-              name="(onboardings)/onBoardingWelcome"
+              name="onBoardingWelcome"
               options={{ headerShown: false }}
             />
           </Stack.Protected>
           <Stack.Protected guard={shouldShowUserCreation}>
             <Stack.Screen
-              name="(onboardings)/onBoardingUser"
+              name="onBoardingUser"
               options={{ headerShown: false }}
             />
           </Stack.Protected>

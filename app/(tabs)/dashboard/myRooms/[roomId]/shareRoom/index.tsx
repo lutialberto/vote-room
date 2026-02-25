@@ -36,7 +36,7 @@ export default function ShareRoom() {
   };
 
   const onInviteUsers = () => {
-    router.push(`/(tabs)/dashboard/myRooms/${roomId}/inviteUsers`);
+    router.push(`/dashboard/myRooms/${roomId}/inviteUsers`);
   };
 
   const inviteOptions = [
@@ -63,9 +63,7 @@ export default function ShareRoom() {
       title: "📷 Compartir QR",
       description: "Para que los usuarios se unan escaneando el código",
       onPress: () =>
-        router.push(
-          `/(tabs)/dashboard/myRooms/${roomId}/shareRoom/shareQrModal`
-        ),
+        router.push(`/dashboard/myRooms/${roomId}/shareRoom/shareQrModal`),
     },
   ];
   return (

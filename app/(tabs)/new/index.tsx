@@ -15,13 +15,13 @@ const options: {
     title: "Crear Votación",
     description: "Crea una nueva votación para que otros puedan participar",
     iconName: "bar-chart-outline",
-    onPress: () => router.push("/(tabs)/new/newVoting"),
+    onPress: () => router.push("/new/newVoting"),
   },
   {
     title: "Crear Sala",
     description: "Organiza un espacio para múltiples votaciones",
     iconName: "people",
-    onPress: () => router.push("/(tabs)/new/newRoom/(steps)/roomNameStep"),
+    onPress: () => router.push("/new/newRoom/roomNameStep"),
   },
 ];
 export default function NewBaseScreen() {

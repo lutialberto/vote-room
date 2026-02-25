@@ -31,10 +31,7 @@ export default function PasswordRecoveryEmailView() {
     { email: string }
   >({
     functionToWait: (data) => createUserCode(data.email),
-    success: (data) =>
-      router.push(
-        `/(unsigned)/(passwordRecovery)/emailValidation?email=${data.email}`
-      ),
+    success: (data) => router.push(`/emailValidation?email=${data.email}`),
     failure: (error) =>
       alert(`Error al intentar enviar el código: ${error.message}`),
   });

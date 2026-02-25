@@ -38,7 +38,7 @@ export default function RoomNameStep() {
 
   const onSubmit = (data: RoomNameData) => {
     saveRoomNameData(data);
-    router.navigate("/(tabs)/new/newRoom/(steps)/roomTypeStep");
+    router.navigate("/new/newRoom/roomTypeStep");
   };
 
   return (

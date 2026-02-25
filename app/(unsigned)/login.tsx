@@ -103,9 +103,7 @@ export default function LoginView() {
             <ButtonApp
               label="Olvidé mi Contraseña"
               type="secondary"
-              onPress={() =>
-                router.push("/(unsigned)/(passwordRecovery)/email")
-              }
+              onPress={() => router.push("/email")}
             />
             <ButtonApp
               label="Iniciar Sesión"
@@ -133,7 +131,7 @@ export default function LoginView() {
         <ButtonApp
           label="Registrarse"
           type="secondary"
-          onPress={() => router.replace("/(unsigned)/(registration)/new")}
+          onPress={() => router.replace("/new")}
         />
       </View>
     </ThemedView>

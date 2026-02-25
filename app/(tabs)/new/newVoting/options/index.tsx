@@ -29,7 +29,7 @@ export default function NewVoting() {
       functionToWait: ({ userId, baseData, options }) =>
         createOptionsVoting({ userId, baseData, options }),
       success: ({ baseVotingId }) => {
-        router.replace(`/(tabs)/dashboard/myVotings/${baseVotingId}`);
+        router.replace(`/dashboard/myVotings/${baseVotingId}`);
       },
     });
 

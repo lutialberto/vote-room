@@ -14,12 +14,12 @@ export default function TabLayout() {
 
   useEffect(() => {
     if (isAppReady && !isAuthenticated) {
-      router.replace("/(unsigned)/login");
+      router.replace("/login");
     }
   }, [isAppReady, isAuthenticated]);
 
   const handleTabPress = (tabName: string, initialRoute: Href) => {
-    const isCurrentTab = pathname.startsWith(`/(tabs)/${tabName}`);
+    const isCurrentTab = pathname.startsWith(`/${tabName}`);
     if (isCurrentTab) {
       router.navigate(initialRoute);
     } else {
@@ -58,7 +58,7 @@ export default function TabLayout() {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            handleTabPress("exploreRooms", "/(tabs)/exploreRooms/byCode");
+            handleTabPress("exploreRooms", "/exploreRooms/byCode");
           },
         }}
       />
@@ -73,7 +73,7 @@ export default function TabLayout() {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            handleTabPress("new", "/(tabs)/new");
+            handleTabPress("new", "/new");
           },
         }}
       />
@@ -88,7 +88,7 @@ export default function TabLayout() {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            handleTabPress("dashboard", "/(tabs)/dashboard");
+            handleTabPress("dashboard", "/dashboard");
           },
         }}
       />
@@ -103,7 +103,7 @@ export default function TabLayout() {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            handleTabPress("profile", "/(tabs)/profile");
+            handleTabPress("profile", "/profile");
           },
         }}
       />

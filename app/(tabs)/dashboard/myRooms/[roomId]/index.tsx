@@ -61,7 +61,7 @@ export default function RoomItemHome() {
           label="Ver Votaciones"
           onPress={() =>
             //TODO: pasar roomId por params y mostrar solo las votaciones de esa sala
-            router.push(`/(tabs)/dashboard/myVotings?roomId=${roomId}`)
+            router.push(`/dashboard/myVotings?roomId=${roomId}`)
           }
         />
       </SpinnerApp>

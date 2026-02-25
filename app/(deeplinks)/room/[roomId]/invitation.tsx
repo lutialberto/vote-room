@@ -22,11 +22,11 @@ export default function DeeplinkRoomInvitation() {
     functionToWait: ({ roomCode, userId }) => joinRoom(roomCode, userId),
     success: ({ roomCode }) => {
       removeDeeplink();
-      router.push(`/(tabs)/dashboard/myRooms/${roomCode}`);
+      router.push(`/dashboard/myRooms/${roomCode}`);
     },
     failure: (error) => {
       removeDeeplink();
-      router.push(`/(tabs)/exploreRooms/byCode`);
+      router.push(`/exploreRooms/byCode`);
     },
   });
 

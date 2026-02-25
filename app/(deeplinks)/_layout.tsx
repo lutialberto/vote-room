@@ -19,13 +19,13 @@ export default function DeeplinksLayout() {
 
     if (shouldShowOnboarding) {
       saveDeeplink(deeplink);
-      router.navigate("/(onboardings)/onBoardingWelcome");
+      router.navigate("/onBoardingWelcome");
     } else if (shouldShowUserCreation) {
       saveDeeplink(deeplink);
-      router.navigate("/(onboardings)/onBoardingUser");
+      router.navigate("/onBoardingUser");
     } else if (!isAuthenticated) {
       saveDeeplink(deeplink);
-      router.navigate("/(unsigned)/login");
+      router.navigate("/login");
     }
   }, [
     isAppReady,

@@ -35,7 +35,7 @@ export default function UserCreationNewView() {
         const email = encodeURIComponent(watch("email"));
         const userName = encodeURIComponent(watch("userName"));
         router.replace(
-          `/(unsigned)/(registration)/emailCodeValidation?email=${email}&userName=${userName}`
+          `/emailCodeValidation?email=${email}&userName=${userName}`
         );
       },
       failure: (error) =>
@@ -133,7 +133,7 @@ export default function UserCreationNewView() {
         <ButtonApp
           label="Iniciar Sesión"
           type="secondary"
-          onPress={() => router.replace("/(unsigned)/login")}
+          onPress={() => router.replace("/login")}
         />
       </View>
     </ThemedView>

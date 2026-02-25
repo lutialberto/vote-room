@@ -56,7 +56,7 @@ export default function RoomScopeStep() {
     useWaitingApp<CreateRoomData, BaseRoom>({
       functionToWait: (data: CreateRoomData) => createRoom(data),
       success: (room) => {
-        router.replace(`/(tabs)/dashboard/myRooms/${room.code}`);
+        router.replace(`/dashboard/myRooms/${room.code}`);
         resetRoomData();
       },
     });

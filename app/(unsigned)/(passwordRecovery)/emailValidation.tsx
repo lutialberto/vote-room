@@ -26,9 +26,7 @@ export default function UserCreationNewView() {
         validateEmailCode({ email: email as string, code: data.code }),
       success: (isValid) => {
         if (!isValid) {
-          router.push(
-            `/(unsigned)/(passwordRecovery)/changePassword?email=${email}`
-          );
+          router.push(`/changePassword?email=${email}`);
         } else {
           setError("code", { message: "Código de verificación inválido" });
         }

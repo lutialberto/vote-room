@@ -13,9 +13,9 @@ export default function UserCreationOnBoardingView() {
   const handleCompleteOnboarding = () => {
     completeUserCreation();
     if (isAuthenticated) {
-      router.replace("/(tabs)/exploreRooms/byCode");
+      router.replace("/exploreRooms/byCode");
     } else {
-      router.replace("/(unsigned)/login");
+      router.replace("/login");
     }
   };
 

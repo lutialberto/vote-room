@@ -36,7 +36,7 @@ export default function EditVotingOptions() {
       functionToWait: ({ userId, votingId, options }) =>
         updateOptionsVoting({ userId, votingId, options }),
       success: ({ baseVotingId }) => {
-        router.replace(`/(tabs)/dashboard/myVotings/${baseVotingId}`);
+        router.replace(`/dashboard/myVotings/${baseVotingId}`);
       },
     });
 
