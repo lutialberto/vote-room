@@ -7,9 +7,11 @@ import { useListFetcherApp } from "@/hooks/useListFetcherApp";
 import VotingCardItem from "@/modules/voting/view/components/VotingCardItem";
 import { fetchBaseVotingsByUserId } from "@/modules/voting/services/voting/votingService";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
+import { useLocalSearchParams } from "expo-router";
 
 export default function MyVotings() {
   const { currentUser } = useAuthenticatedUser();
+  const { roomId } = useLocalSearchParams<{ roomId?: string }>();
   const { data, error, isLoading, refetch } = useListFetcherApp(
     () => fetchBaseVotingsByUserId(currentUser.id),
     [currentUser.id]
@@ -23,6 +25,15 @@ export default function MyVotings() {
         <ThemedText type="subtitle" style={styles.pageSubtitle}>
           Votaciones donde eres miembro o propietario
         </ThemedText>
+        {/* TODO: implementar filtrado por sala */}
+        {roomId && (
+          <View style={styles.filterIndicator}>
+            <IconApp name="filter" size={14} colorName="primary" />
+            <ThemedText type="hint" style={styles.filterText}>
+              Filtrando por sala: {roomId}
+            </ThemedText>
+          </View>
+        )}
       </View>
 
       <FlatList
@@ -69,7 +80,21 @@ const styles = StyleSheet.create({
   },
   pageSubtitle: {
     opacity: 0.7,
-    textAlign: "center",
+  },
+  filterIndicator: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginTop: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    backgroundColor: "rgba(0, 123, 255, 0.1)",
+    borderRadius: 12,
+    alignSelf: "flex-start",
+  },
+  filterText: {
+    fontSize: 12,
+    fontStyle: "italic",
   },
   scrollContent: {
     paddingHorizontal: 10,

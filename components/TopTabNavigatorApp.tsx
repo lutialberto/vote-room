@@ -13,6 +13,7 @@ export interface TopTabNavigatorAppProps {
     icon: IconName;
     badge?: boolean;
   }[];
+  activeTab?: string;
 }
 
 export default function TopTabNavigatorApp(props: TopTabNavigatorAppProps) {
@@ -23,8 +24,12 @@ export default function TopTabNavigatorApp(props: TopTabNavigatorAppProps) {
     background: backgroundColor,
   } = useThemeColor();
 
+  const initialTab = props.activeTab || props.tabs[0]?.name;
+
   return (
     <Tab.Navigator
+      key={props.activeTab}
+      initialRouteName={initialTab}
       screenOptions={{
         tabBarActiveTintColor: primaryColor,
         tabBarInactiveTintColor: iconColor,

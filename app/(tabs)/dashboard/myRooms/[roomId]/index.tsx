@@ -42,6 +42,7 @@ export default function RoomItemHome() {
                 id: "edit",
                 name: "Editar sala",
                 icon: "create",
+                //TODO: pasar roomId por params y mostrar formulario de edición con los datos de la sala
                 onPress: () => Alert.alert("Funcionalidad no implementada"),
               },
               {
@@ -69,8 +70,7 @@ export default function RoomItemHome() {
           name: "Ver Votaciones",
           icon: "bar-chart",
           onPress: () =>
-            //TODO: pasar roomId por params y mostrar solo las votaciones de esa sala
-            router.push(`/dashboard/myVotings?roomId=${roomId}`),
+            router.push(`/dashboard?tab=myVotings&roomId=${roomId}`),
         },
       ],
     },
