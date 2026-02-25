@@ -39,6 +39,7 @@ export default function BaseVotingForm({
     setValue,
     reset,
     setError,
+    clearErrors,
   } = useForm<BaseVotingForCreation>({
     defaultValues: {
       question: "",
@@ -147,9 +148,10 @@ export default function BaseVotingForm({
                     value: option.value,
                   }))}
                   enabled={!isEditMode}
-                  onPress={(value) =>
-                    setValue("type", value as BaseVotingForCreation["type"])
-                  }
+                  onPress={(value) => {
+                    setValue("type", value as BaseVotingForCreation["type"]);
+                    clearErrors("type");
+                  }}
                 />
                 {errors.type?.message && (
                   <ThemedText type="inputError">
