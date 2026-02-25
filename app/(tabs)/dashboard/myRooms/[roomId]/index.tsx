@@ -1,7 +1,9 @@
-import { ButtonApp } from "@/components/ButtonApp";
+import { CardApp } from "@/components/CardApp";
+import { IconApp } from "@/components/IconApp";
 import { SpinnerApp } from "@/components/SpinnerApp";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import SectionsApp, { SectionProps } from "@/components/SectionsApp";
 import { ColorScheme } from "@/constants/Colors";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { useItemFetcherApp } from "@/hooks/useItemFetcherApp";
@@ -9,7 +11,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { Room } from "@/models/Room";
 import { fetchRoomByCode } from "@/services/room/roomService";
 import { useLocalSearchParams, router } from "expo-router";
-import { Alert, StyleSheet } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 
 export default function RoomItemHome() {
   const { roomId } = useLocalSearchParams<{ roomId: string }>();
@@ -20,6 +22,59 @@ export default function RoomItemHome() {
     () => fetchRoomByCode(roomId),
     [roomId]
   );
+
+  const isOwner = data?.ownerUserId === currentUser.id;
+
+  const sections: SectionProps[] = [
+    ...(isOwner
+      ? ([
+          {
+            id: "owner-actions",
+            title: "Administrar Sala",
+            items: [
+              {
+                id: "members",
+                name: "Ver miembros",
+                icon: "people",
+                onPress: () => router.push(`./${roomId}/roomMembers`),
+              },
+              {
+                id: "edit",
+                name: "Editar sala",
+                icon: "create",
+                onPress: () => Alert.alert("Funcionalidad no implementada"),
+              },
+              {
+                id: "assign-voting",
+                name: "Asignar Votación",
+                icon: "checkbox",
+                onPress: () => Alert.alert("Funcionalidad no implementada"),
+              },
+            ],
+          },
+        ] as SectionProps[])
+      : []),
+    {
+      id: "general-actions",
+      title: "Acciones",
+      items: [
+        {
+          id: "share",
+          name: "Compartir sala",
+          icon: "share",
+          onPress: () => router.push(`./${roomId}/shareRoom`),
+        },
+        {
+          id: "votings",
+          name: "Ver Votaciones",
+          icon: "bar-chart",
+          onPress: () =>
+            //TODO: pasar roomId por params y mostrar solo las votaciones de esa sala
+            router.push(`/dashboard/myVotings?roomId=${roomId}`),
+        },
+      ],
+    },
+  ];
 
   if (error) {
     return (
@@ -34,36 +89,29 @@ export default function RoomItemHome() {
   return (
     <ThemedView style={styles.container}>
       <SpinnerApp visible={isLoading}>
-        <ThemedText type="title">{data?.label}</ThemedText>
-        <ThemedText>{data?.code}</ThemedText>
-        <ThemedText type="subtitle">{data?.description}</ThemedText>
-        {data?.ownerUserId === currentUser.id && (
-          <>
-            <ButtonApp
-              label="Ver miembros"
-              onPress={() => router.push(`./${roomId}/roomMembers`)}
-            />
-            <ButtonApp
-              label="Editar sala"
-              onPress={() => Alert.alert("Funcionalidad no implementada")}
-            />
-            <ButtonApp
-              label="Asignar Votación"
-              onPress={() => Alert.alert("Funcionalidad no implementada")}
-            />
-          </>
-        )}
-        <ButtonApp
-          label="Compartir sala"
-          onPress={() => router.push(`./${roomId}/shareRoom`)}
-        />
-        <ButtonApp
-          label="Ver Votaciones"
-          onPress={() =>
-            //TODO: pasar roomId por params y mostrar solo las votaciones de esa sala
-            router.push(`/dashboard/myVotings?roomId=${roomId}`)
-          }
-        />
+        <CardApp type="withShadow" style={styles.roomInfoCard}>
+          <View style={styles.roomHeader}>
+            <View style={styles.roomIcon}>
+              <IconApp name="home" size={40} colorName="primary" />
+            </View>
+            <View style={styles.roomDetails}>
+              <ThemedText type="subtitle">{data?.label}</ThemedText>
+              <View style={styles.codeContainer}>
+                <IconApp name="key" size={16} />
+                <ThemedText type="hint" style={styles.roomCode}>
+                  {data?.code}
+                </ThemedText>
+              </View>
+              {data?.description && (
+                <ThemedText type="hint" style={styles.description}>
+                  {data.description}
+                </ThemedText>
+              )}
+            </View>
+          </View>
+        </CardApp>
+
+        <SectionsApp data={sections} />
       </SpinnerApp>
     </ThemedView>
   );
@@ -72,9 +120,43 @@ export default function RoomItemHome() {
 const getStyles = (colors: ColorScheme) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: 10,
       flex: 1,
-      justifyContent: "center",
+      paddingHorizontal: 10,
+      paddingTop: 20,
       gap: 20,
+    },
+    roomInfoCard: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 15,
+    },
+    roomHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 15,
+      flex: 1,
+    },
+    roomIcon: {
+      width: 80,
+      aspectRatio: 1,
+      borderRadius: 40,
+      backgroundColor: colors.primary + "20",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    roomDetails: {
+      flex: 1,
+      gap: 5,
+    },
+    codeContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 5,
+    },
+    roomCode: {
+      fontFamily: "monospace",
+    },
+    description: {
+      marginTop: 2,
     },
   });
