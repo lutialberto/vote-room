@@ -57,7 +57,7 @@ export class RoomMemberServiceImpl {
     if (!room) {
       throw new Error(`Room not found: ${code}`);
     }
-    if (room.isPrivate && key && room.key !== key) {
+    if (room.scope.isPrivate && key && room.scope.key !== key) {
       throw new Error(`Invalid room key ${key} for room: ${code}`);
     }
 

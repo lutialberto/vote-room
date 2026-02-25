@@ -1,4 +1,5 @@
 import { UserBase } from "@/models/User";
+import { ScopeConfig } from "@/models/ScopeConfig";
 import BooleanVoting from "../types/boolean/models/BooleanVoting";
 import OptionsVoting from "../types/options/models/OptionsVoting";
 import { VotingType } from "./VotingType";
@@ -27,6 +28,7 @@ export interface BaseVoting {
     date?: Date;
   };
   type: VotingType;
+  scope: ScopeConfig;
 }
 
 export type BaseVotingForCreation = Omit<BaseVoting, "id" | "owner" | "status">;

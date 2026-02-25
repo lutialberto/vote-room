@@ -31,7 +31,7 @@ const getStyles = (colors: ColorScheme) =>
     instructionsContainer: {
       flexDirection: "row",
       alignItems: "center",
-      marginBottom: 24,
+      marginBottom: 12,
     },
     stepIndicator: {
       borderRadius: 20,

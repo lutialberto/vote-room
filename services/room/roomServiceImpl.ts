@@ -30,7 +30,7 @@ export class RoomServiceImpl {
       const rooms = roomCoreService.getInstantRooms();
       return rooms.filter(
         (room) =>
-          !room.isPrivate &&
+          !room.scope.isPrivate &&
           !userRoomCodes.includes(room.code) &&
           (!filter.code || room.code.includes(filter.code)) &&
           (!filter.label || room.label.includes(filter.label)) &&
@@ -61,13 +61,18 @@ export class RoomServiceImpl {
         lastActivity: "ahora" as const,
       };
 
-      const newRoom: Room = roomData.isPrivate
+      const newRoom: Room = roomData.scope.isPrivate
         ? {
             ...baseData,
-            isPrivate: true,
-            key: roomData.key || this.generateKey(),
+            scope: {
+              ...roomData.scope,
+              key: roomData.scope.key || this.generateKey(),
+            },
           }
-        : { ...baseData, isPrivate: false };
+        : {
+            ...baseData,
+            scope: roomData.scope,
+          };
 
       roomCoreService.addInstantRoom(newRoom);
       return { ...newRoom };

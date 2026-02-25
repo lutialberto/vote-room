@@ -19,7 +19,7 @@ export default function ShareQrModal() {
     () => fetchRoomByCode(roomId),
     [roomId]
   );
-  const roomKey = data?.isPrivate ? data.key : undefined;
+  const roomKey = data?.scope.isPrivate ? data.key : undefined;
   const deepLink = getDeepLinkRoomDetailInvitation(roomId, roomKey);
 
   return (

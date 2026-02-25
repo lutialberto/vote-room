@@ -1,3 +1,9 @@
+import {
+  PrivateScopeConfig,
+  PublicScopeConfig,
+  ScopeConfig,
+} from "./ScopeConfig";
+
 export type BaseRoom = {
   code: string;
   label: string;
@@ -9,45 +15,40 @@ export type BaseRoom = {
   status: RoomStatus;
   hasUnreadVotes?: boolean;
   tags?: string[];
-  isPrivate: boolean;
-  membersType: MembersType;
+  scope: ScopeConfig;
 };
-export type MembersType = "unrestricted" | "authenticated" | "kyc";
 
 export type PrivateRoomType = BaseRoom & {
-  isPrivate: true;
-  key: string;
+  scope: PrivateScopeConfig;
 };
 
 export type PublicRoomType = BaseRoom & {
-  isPrivate: false;
+  scope: PublicScopeConfig;
 };
 
 export type PublicRoomTypeFilter = Partial<
-  Pick<PublicRoomType, "code" | "label" | "ownerName" | "tags">
+  Pick<BaseRoom, "code" | "label" | "ownerName" | "tags">
 >;
 
 export type Room = PrivateRoomType | PublicRoomType;
 
 export type RoomStatus = "active" | "paused" | "finished";
 
-type CreatePrivateRoomData = Omit<
+type CreateRoomBaseData = Omit<
   BaseRoom,
   "code" | "memberCount" | "lastActivity" | "status" | "hasUnreadVotes"
-> & {
-  isPrivate: true;
-  key?: string;
+>;
+
+export type CreatePrivateRoomData = CreateRoomBaseData & {
+  scope: Omit<PrivateScopeConfig, "key"> & { key?: string };
 };
 
-type CreatePublicRoomData = Omit<
-  BaseRoom,
-  "code" | "memberCount" | "lastActivity" | "status" | "hasUnreadVotes"
-> & {
-  isPrivate: false;
+export type CreatePublicRoomData = CreateRoomBaseData & {
+  scope: PublicScopeConfig;
 };
 
 export type CreateRoomData = CreatePrivateRoomData | CreatePublicRoomData;
 
 export type RoomNameData = Pick<CreateRoomData, "label" | "description">;
 export type RoomTypeData = Pick<CreateRoomData, "tags">;
-export type RoomScopeData = Pick<CreateRoomData, "isPrivate" | "membersType">;
+export type RoomScopeData = Pick<CreateRoomData, "scope">;

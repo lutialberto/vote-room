@@ -16,6 +16,14 @@ export default function MyRoomsScreen() {
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen
+          name="[roomId]/index"
+          options={{
+            headerShown: true,
+            title: "Detalles de la sala",
+            headerBackTitle: "Volver",
+          }}
+        />
+        <Stack.Screen
           name="[roomId]/inviteUsers/index"
           options={{
             headerShown: true,
@@ -28,6 +36,14 @@ export default function MyRoomsScreen() {
           options={{
             headerShown: true,
             title: "Compartir sala",
+            headerBackTitle: "Volver",
+          }}
+        />
+        <Stack.Screen
+          name="[roomId]/roomMembers"
+          options={{
+            headerShown: true,
+            title: "Miembros de la sala",
             headerBackTitle: "Volver",
           }}
         />
