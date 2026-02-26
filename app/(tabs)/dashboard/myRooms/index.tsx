@@ -33,14 +33,7 @@ export default function MyRooms() {
     : rooms;
 
   return (
-    <ThemedView style={{ flex: 1 }}>
-      <View style={styles.header}>
-        <ThemedText type="title">🏠 Mis Salas</ThemedText>
-        <ThemedText type="subtitle" style={styles.pageSubtitle}>
-          Salas donde eres miembro o propietario
-        </ThemedText>
-      </View>
-
+    <ThemedView style={{ flex: 1, paddingTop: 20 }}>
       <FlatList
         data={roomsBySelectedStat}
         contentContainerStyle={styles.scrollContent}
