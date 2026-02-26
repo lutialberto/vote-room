@@ -1,4 +1,4 @@
-import { View, Alert } from "react-native";
+import { Alert } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { ButtonApp } from "@/components/ButtonApp";
@@ -8,17 +8,12 @@ import {
   activateBaseVoting,
   closeBaseVoting,
   fetchBaseVotingById,
-  updateBaseVoting,
 } from "@/modules/voting/services/voting/votingService";
 import { useLocalSearchParams, router } from "expo-router";
 import { SpinnerApp } from "@/components/SpinnerApp";
-import BaseVotingForm from "@/modules/voting/components/baseVotingForm/BaseVotingForm";
-import {
-  BaseVoting,
-  BaseVotingAdvancedForCreation,
-  BaseVotingForCreation,
-} from "@/modules/voting/models/Voting";
+import { BaseVoting } from "@/modules/voting/models/Voting";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
+import SectionsApp, { SectionProps } from "@/components/SectionsApp";
 
 export default function VotingEditPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -29,28 +24,6 @@ export default function VotingEditPage() {
     error,
     isLoading,
   } = useItemFetcherApp(() => fetchBaseVotingById(Number(id)), [id]);
-
-  const { isWaiting: isUpdating, execPromise: handleUpdate } = useWaitingApp<
-    {
-      data: BaseVotingForCreation;
-      advancedData: BaseVotingAdvancedForCreation;
-    },
-    BaseVoting
-  >({
-    functionToWait: async ({ data, advancedData }) =>
-      updateBaseVoting({
-        data,
-        advancedData,
-        id: voting?.id!,
-        userId: currentUser.id,
-      }),
-    success: () => router.navigate(`/dashboard/myVotings/${id}`),
-    failure: () =>
-      Alert.alert(
-        "Error",
-        "No se pudo actualizar la votación. Por favor, inténtalo de nuevo."
-      ),
-  });
 
   const { isWaiting: isActivating, execPromise: handleActivate } =
     useWaitingApp<
@@ -133,6 +106,101 @@ export default function VotingEditPage() {
     );
   };
 
+  const data: SectionProps[] = [
+    {
+      id: "view",
+      title: "Visualizar",
+      items: [
+        {
+          id: "voting",
+          name: "Votación",
+          icon: "eye",
+          onPress: () => router.replace(`/dashboard/myVotings/${id}`),
+        },
+        ...(voting?.type === "options" && isReadOnly
+          ? ([
+              {
+                id: "options",
+                name: "Opciones",
+                icon: "list",
+                onPress: () =>
+                  router.push(`/dashboard/myVotings/${id}/settings/options`),
+              },
+            ] as SectionProps["items"])
+          : []),
+        ...(isReadOnly
+          ? ([
+              {
+                id: "configuration",
+                name: "Detalles",
+                icon: "settings",
+                onPress: () =>
+                  router.push(
+                    `/dashboard/myVotings/${id}/settings/configuration`
+                  ),
+              },
+            ] as SectionProps["items"])
+          : []),
+      ],
+    },
+    {
+      id: "actions",
+      title: "Acciones",
+      items: [
+        ...(!isReadOnly
+          ? ([
+              {
+                id: "configuration",
+                name: "Detalles",
+                icon: "settings",
+                onPress: () =>
+                  router.push(
+                    `/dashboard/myVotings/${id}/settings/configuration`
+                  ),
+              },
+            ] as SectionProps["items"])
+          : []),
+        ...(voting?.type === "options" && !isReadOnly
+          ? ([
+              {
+                id: "options",
+                name: "Opciones",
+                icon: "list",
+                onPress: () =>
+                  router.push(`/dashboard/myVotings/${id}/settings/options`),
+              },
+            ] as SectionProps["items"])
+          : []),
+        ...(canActivate
+          ? ([
+              {
+                id: "activate",
+                name: "Activar votación",
+                icon: "play",
+                onPress: onActivate,
+              },
+            ] as SectionProps["items"])
+          : []),
+        ...(canClose
+          ? ([
+              {
+                id: "close",
+                name: "Terminar votación",
+                icon: "stop",
+                onPress: onClose,
+              },
+            ] as SectionProps["items"])
+          : []),
+        {
+          id: "copy",
+          name: "Replicar votación",
+          icon: "copy",
+          onPress: () => router.push(`/new/newVoting/${id}/copy`),
+        },
+      ],
+    },
+  ];
+
   if (error) {
     return (
       <ThemedView
@@ -146,55 +214,8 @@ export default function VotingEditPage() {
 
   return (
     <ThemedView style={{ flex: 1, padding: 16, gap: 20 }}>
-      <SpinnerApp visible={isLoading}>
-        <View>
-          <ThemedText type="title">
-            {isReadOnly ? "Ver votación" : "Editar votación"}
-          </ThemedText>
-          <ThemedText type="subtitle">Estado: {voting?.status}</ThemedText>
-        </View>
-
-        <BaseVotingForm
-          onSubmit={handleUpdate}
-          voting={voting || null}
-          isReadOnly={isReadOnly || isUpdating}
-        />
-        {voting?.type === "options" && (
-          <ButtonApp
-            label={isReadOnly ? "Ver opciones" : "Gestionar opciones"}
-            onPress={() =>
-              router.push(`/dashboard/myVotings/${id}/edit/options`)
-            }
-          />
-        )}
-
-        <View style={{ gap: 8 }}>
-          <ButtonApp
-            label="Ver votación"
-            onPress={() => router.replace(`/dashboard/myVotings/${id}`)}
-          />
-          <ButtonApp
-            label="Replicar votación"
-            onPress={() => router.push(`/new/newVoting/${id}/copy`)}
-          />
-          {canActivate && (
-            <ButtonApp
-              label="Activar votación"
-              onPress={onActivate}
-              disabled={isActivating}
-              type="secondary"
-            />
-          )}
-
-          {canClose && (
-            <ButtonApp
-              label="Cerrar votación"
-              onPress={onClose}
-              disabled={isClosing}
-              type="cancel"
-            />
-          )}
-        </View>
+      <SpinnerApp visible={isLoading || isActivating || isClosing}>
+        <SectionsApp data={data} />
       </SpinnerApp>
     </ThemedView>
   );

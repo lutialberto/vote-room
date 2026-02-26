@@ -24,10 +24,26 @@ export default function MyVotingsScreen() {
           }}
         />
         <Stack.Screen
-          name="[id]/edit/index"
+          name="[id]/settings/index"
+          options={{
+            headerShown: true,
+            title: "Ajustes de votación",
+            headerBackTitle: "Volver",
+          }}
+        />
+        <Stack.Screen
+          name="[id]/settings/configuration"
           options={{
             headerShown: true,
             title: "Configuración de votación",
+            headerBackTitle: "Volver",
+          }}
+        />
+        <Stack.Screen
+          name="[id]/settings/options"
+          options={{
+            headerShown: true,
+            title: "Opciones de votación",
             headerBackTitle: "Volver",
           }}
         />
