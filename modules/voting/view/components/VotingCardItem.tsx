@@ -39,18 +39,6 @@ export default function VotingCardItem(props: BaseVoting) {
           <View style={styles.votingInfo}>
             <ThemedText style={styles.votingTitle}>{props.question}</ThemedText>
           </View>
-
-          <View style={styles.statusContainer}>
-            <View
-              style={[
-                styles.statusDot,
-                { backgroundColor: votingStatusConfig.color },
-              ]}
-            />
-            <ThemedText style={styles.statusText}>
-              {votingStatusConfig.text}
-            </ThemedText>
-          </View>
         </View>
 
         <ThemedText style={styles.votingDescription} numberOfLines={2}>
@@ -58,12 +46,25 @@ export default function VotingCardItem(props: BaseVoting) {
         </ThemedText>
 
         <View style={styles.cardFooter}>
-          <ThemedText
-            colorName={props.owner.id === currentUser.id ? "orange" : "text"}
-            style={styles.roleText}
-          >
-            {props.owner.id === currentUser.id ? "Propietario" : "Miembro"}
-          </ThemedText>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <ThemedText
+              colorName={props.owner.id === currentUser.id ? "orange" : "text"}
+              style={styles.roleText}
+            >
+              {props.owner.id === currentUser.id ? "Propietario" : "Miembro"}
+            </ThemedText>
+            <View style={styles.statusContainer}>
+              <View
+                style={[
+                  styles.statusDot,
+                  { backgroundColor: votingStatusConfig.color },
+                ]}
+              />
+              <ThemedText style={styles.statusText}>
+                {votingStatusConfig.text}
+              </ThemedText>
+            </View>
+          </View>
           {props.roomCode && (
             <View style={styles.row}>
               <IconApp name="people" size={14} colorName="primary" />
