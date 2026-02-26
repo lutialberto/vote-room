@@ -6,7 +6,7 @@ import MyVotings from "./myVotings";
 
 export default function DashboardHomeView() {
   const { tab } = useLocalSearchParams<{ tab?: string }>();
-  const [activeTab, setActiveTab] = useState<string>("myRooms");
+  const [activeTab, setActiveTab] = useState<string>("myVotings");
 
   useEffect(() => {
     if (!tab) return;
