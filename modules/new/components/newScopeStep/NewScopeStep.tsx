@@ -36,9 +36,13 @@ const membersTypes: {
 
 export interface NewScopeStepProps {
   stepNumber: number;
+  isReadOnly: boolean;
 }
 
-export default function NewScopeStep({ stepNumber }: NewScopeStepProps) {
+export default function NewScopeStep({
+  stepNumber,
+  isReadOnly,
+}: NewScopeStepProps) {
   const { saveIsPrivate, saveMembersType, resetScopeConfigData } =
     useNewScopeStep();
 
@@ -90,10 +94,15 @@ export default function NewScopeStep({ stepNumber }: NewScopeStepProps) {
         instructions="Configura la privacidad y acceso a tu sala de votación"
       />
 
-      <InputOptionsAdvanceApp label="🔒 Privacidad" options={scopeOptions} />
+      <InputOptionsAdvanceApp
+        label="🔒 Privacidad"
+        options={scopeOptions}
+        isReadOnly={isReadOnly}
+      />
       <InputOptionsAdvanceApp
         label="👥 Tipo de Usuarios Miembro"
         options={userTypeOptions}
+        isReadOnly={isReadOnly}
       />
     </>
   );

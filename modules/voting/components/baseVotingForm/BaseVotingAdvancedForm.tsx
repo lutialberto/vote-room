@@ -114,7 +114,7 @@ export default function BaseVotingAdvancedForm({
               />
             </TouchableOpacity>
           </View>
-          <NewScopeStep stepNumber={1} />
+          <NewScopeStep stepNumber={1} isReadOnly={isReadOnly} />
 
           <FormStepCard
             stepNumber={2}
@@ -130,6 +130,7 @@ export default function BaseVotingAdvancedForm({
                   option.code as BaseVotingAdvancedForCreation["release"]["type"]
                 ),
             }))}
+            isReadOnly={isReadOnly}
           />
           <View>
             {releaseType === "releaseScheduled" && (
@@ -194,6 +195,7 @@ export default function BaseVotingAdvancedForm({
                   option.code as BaseVotingAdvancedForCreation["close"]["type"]
                 ),
             }))}
+            isReadOnly={isReadOnly}
           />
           <View>
             {closeType === "programmedClose" && (

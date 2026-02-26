@@ -10,6 +10,7 @@ import { useState } from "react";
 export interface InputOptionsAdvanceAppProps {
   label: string;
   options: InputOptionsAdvanceAppOptionItemProps[];
+  isReadOnly: boolean;
 }
 export interface InputOptionsAdvanceAppOptionItemProps {
   code: string;
@@ -24,6 +25,7 @@ export interface InputOptionsAdvanceAppOptionItemProps {
 export default function InputOptionsAdvanceApp({
   label,
   options,
+  isReadOnly,
 }: InputOptionsAdvanceAppProps) {
   const [selectedOption, setSelectedOption] = useState(
     options.find((opt) => opt.selected) || options[0]
@@ -36,6 +38,7 @@ export default function InputOptionsAdvanceApp({
     label: option.label,
     selected: option.label === selectedOption.label,
     onPress: () => {
+      if (isReadOnly) return;
       setSelectedOption(option);
       option.onPress();
     },
