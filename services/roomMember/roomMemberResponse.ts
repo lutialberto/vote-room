@@ -57,4 +57,103 @@ export let roomMembersMockResponse: RoomMember[] = [
   { id: 40, roomCode: "COMMUNITY", userId: 6 }, // Fiona
   { id: 41, roomCode: "COMMUNITY", userId: 8 }, // Hannah
   { id: 42, roomCode: "COMMUNITY", userId: 9 }, // Ian
+
+  // STUDY: "Grupo de Estudio" - memberCount: 7 - Estudiantes
+  { id: 43, roomCode: "STUDY", userId: 2 }, // Bob (owner)
+  { id: 44, roomCode: "STUDY", userId: 1 }, // Alice
+  { id: 45, roomCode: "STUDY", userId: 5 }, // Ethan
+  { id: 46, roomCode: "STUDY", userId: 8 }, // Helena
+  { id: 47, roomCode: "STUDY", userId: 9 }, // Ivan
+  { id: 48, roomCode: "STUDY", userId: 10 }, // Julia
+  { id: 49, roomCode: "STUDY", userId: 11 }, // Kevin
+
+  // MOVIE: "Noche de Películas" - memberCount: 3 - Amigos de Helena
+  { id: 50, roomCode: "MOVIE", userId: 8 }, // Helena (owner)
+  { id: 51, roomCode: "MOVIE", userId: 3 }, // Charlie
+  { id: 52, roomCode: "MOVIE", userId: 6 }, // Fiona
+
+  // FITNESS: "Rutina de Ejercicios" - memberCount: 6 - Grupo de gimnasio
+  { id: 53, roomCode: "FITNESS", userId: 4 }, // Diana (owner)
+  { id: 54, roomCode: "FITNESS", userId: 1 }, // Alice
+  { id: 55, roomCode: "FITNESS", userId: 7 }, // George
+  { id: 56, roomCode: "FITNESS", userId: 9 }, // Ivan
+  { id: 57, roomCode: "FITNESS", userId: 10 }, // Julia
+  { id: 58, roomCode: "FITNESS", userId: 11 }, // Kevin
+
+  // MUSIC: "Festival de Música" - memberCount: 12 - Organizadores de evento
+  { id: 59, roomCode: "MUSIC", userId: 9 }, // Ivan (owner)
+  { id: 60, roomCode: "MUSIC", userId: 2 }, // Bob
+  { id: 61, roomCode: "MUSIC", userId: 3 }, // Charlie
+  { id: 62, roomCode: "MUSIC", userId: 5 }, // Ethan
+  { id: 63, roomCode: "MUSIC", userId: 6 }, // Fiona
+  { id: 64, roomCode: "MUSIC", userId: 7 }, // George
+  { id: 65, roomCode: "MUSIC", userId: 8 }, // Helena
+  { id: 66, roomCode: "MUSIC", userId: 10 }, // Julia
+  { id: 67, roomCode: "MUSIC", userId: 11 }, // Kevin
+  { id: 68, roomCode: "MUSIC", userId: 12 }, // Leo
+  { id: 69, roomCode: "MUSIC", userId: 13 }, // Maria
+  { id: 70, roomCode: "MUSIC", userId: 14 }, // Nicolas
+
+  // COOKING: "Clase de Cocina" - memberCount: 8 - Cocineros aficionados
+  { id: 71, roomCode: "COOKING", userId: 1 }, // Alice (owner)
+  { id: 72, roomCode: "COOKING", userId: 3 }, // Charlie
+  { id: 73, roomCode: "COOKING", userId: 4 }, // Diana
+  { id: 74, roomCode: "COOKING", userId: 8 }, // Helena
+  { id: 75, roomCode: "COOKING", userId: 11 }, // Kevin
+  { id: 76, roomCode: "COOKING", userId: 12 }, // Leo
+  { id: 77, roomCode: "COOKING", userId: 13 }, // Maria
+  { id: 78, roomCode: "COOKING", userId: 15 }, // Oscar
+
+  // SPORTS: "Torneo de Fútbol" - memberCount: 16 - Equipos de fútbol
+  { id: 79, roomCode: "SPORTS", userId: 10 }, // Julia (owner)
+  { id: 80, roomCode: "SPORTS", userId: 1 }, // Alice
+  { id: 81, roomCode: "SPORTS", userId: 2 }, // Bob
+  { id: 82, roomCode: "SPORTS", userId: 3 }, // Charlie
+  { id: 83, roomCode: "SPORTS", userId: 4 }, // Diana
+  { id: 84, roomCode: "SPORTS", userId: 5 }, // Ethan
+  { id: 85, roomCode: "SPORTS", userId: 6 }, // Fiona
+  { id: 86, roomCode: "SPORTS", userId: 7 }, // George
+  { id: 87, roomCode: "SPORTS", userId: 9 }, // Ivan
+  { id: 88, roomCode: "SPORTS", userId: 11 }, // Kevin
+  { id: 89, roomCode: "SPORTS", userId: 12 }, // Leo
+  { id: 90, roomCode: "SPORTS", userId: 13 }, // Maria
+  { id: 91, roomCode: "SPORTS", userId: 14 }, // Nicolas
+  { id: 92, roomCode: "SPORTS", userId: 15 }, // Oscar
+  { id: 93, roomCode: "SPORTS", userId: 16 }, // Paula
+  { id: 94, roomCode: "SPORTS", userId: 17 }, // Roberto
+
+  // TECH: "Meetup de Tecnología" - memberCount: 15 - Desarrolladores
+  { id: 95, roomCode: "TECH", userId: 5 }, // Ethan (owner)
+  { id: 96, roomCode: "TECH", userId: 2 }, // Bob
+  { id: 97, roomCode: "TECH", userId: 8 }, // Helena
+  { id: 98, roomCode: "TECH", userId: 9 }, // Ivan
+  { id: 99, roomCode: "TECH", userId: 11 }, // Kevin
+  { id: 100, roomCode: "TECH", userId: 12 }, // Leo
+  { id: 101, roomCode: "TECH", userId: 13 }, // Maria
+  { id: 102, roomCode: "TECH", userId: 14 }, // Nicolas
+  { id: 103, roomCode: "TECH", userId: 15 }, // Oscar
+  { id: 104, roomCode: "TECH", userId: 16 }, // Paula
+  { id: 105, roomCode: "TECH", userId: 17 }, // Roberto
+  { id: 106, roomCode: "TECH", userId: 18 }, // Sofia
+  { id: 107, roomCode: "TECH", userId: 19 }, // Tomás
+  { id: 108, roomCode: "TECH", userId: 20 }, // Valentina
+  { id: 109, roomCode: "TECH", userId: 21 }, // Xavier
+
+  // ART: "Taller de Arte" - memberCount: 5 - Artistas
+  { id: 110, roomCode: "ART", userId: 11 }, // Kevin (owner)
+  { id: 111, roomCode: "ART", userId: 6 }, // Fiona
+  { id: 112, roomCode: "ART", userId: 8 }, // Helena
+  { id: 113, roomCode: "ART", userId: 13 }, // Maria
+  { id: 114, roomCode: "ART", userId: 16 }, // Paula
+
+  // VOLUNTEER: "Voluntariado" - memberCount: 9 - Voluntarios
+  { id: 115, roomCode: "VOLUNTEER", userId: 3 }, // Charlie (owner)
+  { id: 116, roomCode: "VOLUNTEER", userId: 1 }, // Alice
+  { id: 117, roomCode: "VOLUNTEER", userId: 4 }, // Diana
+  { id: 118, roomCode: "VOLUNTEER", userId: 7 }, // George
+  { id: 119, roomCode: "VOLUNTEER", userId: 10 }, // Julia
+  { id: 120, roomCode: "VOLUNTEER", userId: 12 }, // Leo
+  { id: 121, roomCode: "VOLUNTEER", userId: 14 }, // Nicolas
+  { id: 122, roomCode: "VOLUNTEER", userId: 17 }, // Roberto
+  { id: 123, roomCode: "VOLUNTEER", userId: 19 }, // Tomás
 ];

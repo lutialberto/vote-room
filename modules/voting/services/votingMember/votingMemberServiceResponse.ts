@@ -33,4 +33,29 @@ export const VOTING_MEMBER_MOCK_RESPONSE: VotingMember[] = [
   { id: 21, userId: 6, votingId: 5 }, // Fiona
   { id: 22, userId: 8, votingId: 5 }, // Hannah
   { id: 23, userId: 9, votingId: 5 }, // Ian
+
+  // Voting 11: "¿Te gusta la música electrónica?" - ACTIVE - Leo con amigos de música
+  { id: 24, userId: 12, votingId: 11 }, // Leo (owner)
+  { id: 25, userId: 9, votingId: 11 }, // Ivan
+  { id: 26, userId: 8, votingId: 11 }, // Helena
+  { id: 27, userId: 6, votingId: 11 }, // Fiona
+  { id: 28, userId: 13, votingId: 11 }, // Maria
+  { id: 29, userId: 11, votingId: 11 }, // Kevin
+
+  // Voting 12: "¿Cuál es tu deporte favorito?" - CLOSED - Maria con grupo deportivo
+  { id: 30, userId: 13, votingId: 12 }, // Maria (owner)
+  { id: 31, userId: 10, votingId: 12 }, // Julia
+  { id: 32, userId: 4, votingId: 12 }, // Diana
+  { id: 33, userId: 7, votingId: 12 }, // George
+  { id: 34, userId: 14, votingId: 12 }, // Nicolas
+  { id: 35, userId: 15, votingId: 12 }, // Oscar
+  { id: 36, userId: 16, votingId: 12 }, // Paula
+  { id: 37, userId: 17, votingId: 12 }, // Roberto
+
+  // Voting 15: "¿Prefieres trabajar en equipo o individualmente?" - DRAFT - Nicolas con colegas
+  { id: 38, userId: 14, votingId: 15 }, // Nicolas (owner)
+  { id: 39, userId: 2, votingId: 15 }, // Bob
+  { id: 40, userId: 5, votingId: 15 }, // Ethan
+  { id: 41, userId: 12, votingId: 15 }, // Leo
+  { id: 42, userId: 18, votingId: 15 }, // Sofia
 ];
