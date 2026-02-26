@@ -19,12 +19,8 @@ export default function MyVotings() {
   const { primary: primaryColor } = useThemeColor();
 
   return (
-    <ThemedView style={{ flex: 1 }}>
+    <ThemedView style={{ flex: 1, paddingTop: 20 }}>
       <View style={styles.header}>
-        <ThemedText type="title">🏠 Mis Votaciones</ThemedText>
-        <ThemedText type="subtitle" style={styles.pageSubtitle}>
-          Votaciones donde eres miembro o propietario
-        </ThemedText>
         {/* TODO: implementar filtrado por sala */}
         {roomId && (
           <View style={styles.filterIndicator}>
