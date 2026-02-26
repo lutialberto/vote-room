@@ -86,7 +86,7 @@ export class OptionsVotingServiceImpl {
   }
 
   getInstantOptionsVotingById(id: number): OptionsVoting | undefined {
-    const record = this.votings.find((voting) => voting.id === id);
+    const record = this.votings.find((voting) => voting.baseVotingId === id);
     if (!record) {
       throw new Error(`Voting not found with id: ${id}`);
     }
