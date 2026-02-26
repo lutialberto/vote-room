@@ -132,7 +132,7 @@ export default function OptionsVotingView(props: { id: number; user: User }) {
           <ButtonApp
             label="Configuración"
             onPress={() =>
-              router.push(`/dashboard/myVotings/${data.id}/settings`)
+              router.push(`/dashboard/myVotings/${data.baseVotingId}/settings`)
             }
           />
         )}
