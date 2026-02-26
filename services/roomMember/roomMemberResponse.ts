@@ -58,16 +58,3 @@ export let roomMembersMockResponse: RoomMember[] = [
   { id: 41, roomCode: "COMMUNITY", userId: 8 }, // Hannah
   { id: 42, roomCode: "COMMUNITY", userId: 9 }, // Ian
 ];
-
-export function addRoomMember(roomCode: string, userId: number): void {
-  const newId =
-    roomMembersMockResponse
-      .map((i) => i.id)
-      .reduce((a, b) => Math.max(a, b), 0) + 1;
-  const newRoomMember: RoomMember = {
-    id: newId,
-    roomCode,
-    userId,
-  };
-  roomMembersMockResponse.push(newRoomMember);
-}

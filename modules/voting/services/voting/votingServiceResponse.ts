@@ -18,6 +18,11 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
       type: "releaseOnCreate",
     },
     type: "boolean",
+    scope: {
+      isPrivate: false,
+      membersType: "unrestricted",
+    },
+    roomCode: "ROOM1",
   },
   {
     id: 2,
@@ -38,6 +43,11 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
       date: new Date(Date.now() + 3600 * 1000), // 1 hour from now
     },
     type: "options",
+    scope: {
+      isPrivate: false,
+      membersType: "unrestricted",
+    },
+    roomCode: "WORK2",
   },
   {
     id: 3,
@@ -56,6 +66,11 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
       type: "manualRelease",
     },
     type: "boolean",
+    scope: {
+      isPrivate: false,
+      membersType: "unrestricted",
+    },
+    roomCode: "PARTY",
   },
   {
     id: 4,
@@ -75,6 +90,11 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
       type: "releaseOnCreate",
     },
     type: "options",
+    scope: {
+      isPrivate: false,
+      membersType: "unrestricted",
+    },
+    roomCode: "TRIP",
   },
   {
     id: 5,
@@ -94,5 +114,10 @@ export const BASE_VOTING_MOCK_RESPONSE: BaseVoting[] = [
       date: new Date(Date.now() + 7200 * 1000), // 2 hours from now
     },
     type: "boolean",
+    scope: {
+      isPrivate: false,
+      membersType: "unrestricted",
+    },
+    roomCode: "BOOKCLUB123",
   },
 ];

@@ -30,5 +30,8 @@ export const fetchRooms = (): Promise<Room[]> =>
 export const fetchRoomByCode = (code: string): Promise<Room | null> =>
   roomServiceInstance.fetchRoomByCode(code);
 
+export const fetchRoomsByOwner = (ownerId: number): Promise<Room[]> =>
+  roomServiceInstance.fetchRoomsByOwner(ownerId);
+
 export const createRoom = (roomData: CreateRoomData): Promise<Room> =>
   roomServiceInstance.createRoom(roomData);

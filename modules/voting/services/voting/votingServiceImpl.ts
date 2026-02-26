@@ -9,6 +9,7 @@ import {
 import { userServiceInstance } from "@/services/user/userServiceImpl";
 import { votingCoreService } from "./votingCoreService";
 import { votingMemberServiceInstance } from "../votingMember/votingMemberServiceImpl";
+import { roomCoreService } from "@/services/room/roomCoreService";
 
 export class VotingServiceImpl {
   createInstantBaseVoting(
@@ -20,6 +21,21 @@ export class VotingServiceImpl {
     if (!user) {
       throw new Error(`User not found with id: ${userId}`);
     }
+
+    if (baseData.roomCode?.value) {
+      const room = roomCoreService.getInstantRoomByCode(
+        baseData.roomCode.value
+      );
+      if (!room) {
+        throw new Error(`Room not found with code: ${baseData.roomCode.value}`);
+      }
+      if (room.ownerUserId !== userId) {
+        throw new Error(
+          `User is not the owner of the room ${baseData.roomCode.value}`
+        );
+      }
+    }
+
     const mapper: Record<VotingReleaseType, VotingStatus> = {
       releaseOnCreate: "active",
       releaseScheduled: "scheduled",
@@ -29,6 +45,7 @@ export class VotingServiceImpl {
     const votings = votingCoreService.getInstantBaseVotings();
     const newBaseVoting: BaseVoting = {
       ...baseData,
+      roomCode: baseData.roomCode?.value,
       ...advancedData,
       owner: {
         id: userId,
@@ -67,6 +84,19 @@ export class VotingServiceImpl {
       if (!isOwner) {
         throw new Error("User is not the owner of the voting");
       }
+
+      if (data.roomCode?.value) {
+        const room = roomCoreService.getInstantRoomByCode(data.roomCode.value);
+        if (!room) {
+          throw new Error(`Room not found with code: ${data.roomCode.value}`);
+        }
+        if (room.ownerUserId !== userId) {
+          throw new Error(
+            `User is not the owner of the room ${data.roomCode.value}`
+          );
+        }
+      }
+
       const mapper: Record<VotingReleaseType, VotingStatus> = {
         releaseOnCreate: "active",
         releaseScheduled: "scheduled",
@@ -77,6 +107,7 @@ export class VotingServiceImpl {
         ...votingToUpdate,
         ...data,
         ...advancedData,
+        roomCode: data.roomCode?.value,
         status,
       };
 
@@ -159,7 +190,10 @@ export class VotingServiceImpl {
     });
   }
 
-  async fetchBaseVotingsByUserId(userId: number): Promise<BaseVoting[]> {
+  async fetchBaseVotingsByFilter(
+    userId: number,
+    roomId?: string
+  ): Promise<BaseVoting[]> {
     return successPromiseBehavior(() => {
       const votingsMember =
         votingMemberServiceInstance.getInstantVotingMembersByUserId(userId);
@@ -167,7 +201,9 @@ export class VotingServiceImpl {
       votingsMember?.forEach((votingMember) => {
         const voting = this.getInstantBaseVotingById(votingMember.votingId);
         if (voting) {
-          votings.push(voting);
+          if (!roomId || voting.roomCode === roomId) {
+            votings.push(voting);
+          }
         }
       });
       return votings;

@@ -16,6 +16,10 @@ export class RoomCoreService {
     return this.rooms.find((room) => room.code === code);
   }
 
+  getInstantRoomsByOwner(ownerId: number): Room[] {
+    return this.rooms.filter((room) => room.ownerUserId === ownerId);
+  }
+
   addInstantRoom(room: Room): void {
     this.rooms.push(room);
   }

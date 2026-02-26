@@ -13,6 +13,11 @@ import {
 } from "@/modules/voting/models/Voting";
 import { useBaseVoting } from "../../hooks/useBaseVoting";
 import BaseVotingAdvancedForm from "./BaseVotingAdvancedForm";
+import InputSelectApp from "@/components/InputSelectApp";
+import { useListFetcherApp } from "@/hooks/useListFetcherApp";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
+import { Room } from "@/models/Room";
+import { fetchRoomsByOwner } from "@/services/room/roomService";
 
 interface BaseVotingFormProps {
   isReadOnly?: boolean;
@@ -30,6 +35,7 @@ export default function BaseVotingForm({
   onSubmit,
   isEditMode = false,
 }: BaseVotingFormProps) {
+  const { currentUser } = useAuthenticatedUser();
   const { advancedData, saveBaseVotingData, resetBaseVotingData } =
     useBaseVoting();
 
@@ -49,12 +55,34 @@ export default function BaseVotingForm({
     },
   });
 
+  const {
+    data: rooms,
+    error,
+    isLoading,
+    refetch,
+  } = useListFetcherApp<Room>(
+    () => fetchRoomsByOwner(currentUser.id),
+    [currentUser.id]
+  );
+
   useEffect(() => {
-    if (voting) {
+    if (voting && rooms) {
+      const roomCode = rooms.find((room) => room.code === voting.roomCode) ?? {
+        code: undefined,
+        description: "",
+      };
       resetBaseVotingData();
-      reset(voting);
+      reset({
+        ...voting,
+        roomCode: {
+          label: roomCode.code
+            ? `${roomCode.code} - ${roomCode.description}`
+            : "",
+          value: roomCode.code,
+        },
+      });
     }
-  }, [voting]);
+  }, [voting, rooms]);
 
   const type = watch("type");
   const selectedTypeOption = BASE_VOTING_TYPE_OPTIONS.find(
@@ -155,6 +183,20 @@ export default function BaseVotingForm({
               </ThemedText>
             )}
           </View>
+
+          <InputSelectApp
+            label="Asociar a sala"
+            formControl={{
+              control,
+              name: "roomCode",
+            }}
+            options={rooms.map((room) => ({
+              label: `${room.code} - ${room.description}`,
+              value: room.code,
+            }))}
+            enabled={!isReadOnly}
+            error={errors.roomCode?.message}
+          />
 
           <BaseVotingAdvancedForm isReadOnly={isReadOnly} />
         </View>

@@ -5,7 +5,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "@/components/IconApp";
 import { useListFetcherApp } from "@/hooks/useListFetcherApp";
 import VotingCardItem from "@/modules/voting/view/components/VotingCardItem";
-import { fetchBaseVotingsByUserId } from "@/modules/voting/services/voting/votingService";
+import { fetchBaseVotingsByFilter } from "@/modules/voting/services/voting/votingService";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { useLocalSearchParams } from "expo-router";
 
@@ -13,8 +13,8 @@ export default function MyVotings() {
   const { currentUser } = useAuthenticatedUser();
   const { roomId } = useLocalSearchParams<{ roomId?: string }>();
   const { data, error, isLoading, refetch } = useListFetcherApp(
-    () => fetchBaseVotingsByUserId(currentUser.id),
-    [currentUser.id]
+    () => fetchBaseVotingsByFilter(currentUser.id, roomId),
+    [currentUser.id, roomId]
   );
   const { primary: primaryColor } = useThemeColor();
 

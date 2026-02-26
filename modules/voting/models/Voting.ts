@@ -29,12 +29,18 @@ export interface BaseVoting {
   };
   type: VotingType;
   scope: ScopeConfig;
+  roomCode?: string;
 }
 
 export type BaseVotingForCreation = Pick<
   BaseVoting,
   "question" | "description" | "type"
->;
+> & {
+  roomCode?: {
+    value: string | undefined;
+    label: string;
+  };
+};
 export type BaseVotingAdvancedForCreation = Pick<
   BaseVoting,
   "close" | "release" | "scope"

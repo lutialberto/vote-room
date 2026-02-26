@@ -51,6 +51,12 @@ export class RoomServiceImpl {
     });
   }
 
+  async fetchRoomsByOwner(ownerId: number): Promise<Room[]> {
+    return successPromiseBehavior(() => {
+      return roomCoreService.getInstantRoomsByOwner(ownerId);
+    });
+  }
+
   async createRoom(roomData: CreateRoomData): Promise<Room> {
     return successPromiseBehavior(() => {
       const baseData: BaseRoom = {
