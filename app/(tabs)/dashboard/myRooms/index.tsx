@@ -33,7 +33,7 @@ export default function MyRooms() {
     : rooms;
 
   return (
-    <ThemedView>
+    <ThemedView style={{ flex: 1 }}>
       <View style={styles.header}>
         <ThemedText type="title">🏠 Mis Salas</ThemedText>
         <ThemedText type="subtitle" style={styles.pageSubtitle}>
