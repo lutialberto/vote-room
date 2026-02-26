@@ -30,16 +30,16 @@ export default function DashboardHomeView() {
       activeTab={activeTab}
       tabs={[
         {
-          name: "myRooms",
-          component: MyRooms,
-          icon: "people",
-          label: "Mis Salas",
-        },
-        {
           name: "myVotings",
           icon: "bar-chart-outline",
           component: MyVotings,
           label: "Mis Votaciones",
+        },
+        {
+          name: "myRooms",
+          component: MyRooms,
+          icon: "people",
+          label: "Mis Salas",
         },
       ]}
     />
