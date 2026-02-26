@@ -5,6 +5,7 @@ import { CardApp } from "@/components/CardApp";
 import { ThemedText } from "@/components/ThemedText";
 import { BaseVoting, VotingStatus } from "../../models/Voting";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
+import { IconApp } from "@/components/IconApp";
 
 export default function VotingCardItem(props: BaseVoting) {
   const {
@@ -63,6 +64,12 @@ export default function VotingCardItem(props: BaseVoting) {
           >
             {props.owner.id === currentUser.id ? "Propietario" : "Miembro"}
           </ThemedText>
+          {props.roomCode && (
+            <View style={styles.row}>
+              <IconApp name="people" size={14} colorName="primary" />
+              <ThemedText style={styles.roleText}>{props.roomCode}</ThemedText>
+            </View>
+          )}
         </View>
       </CardApp>
     </TouchableOpacity>

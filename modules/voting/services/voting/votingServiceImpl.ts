@@ -10,6 +10,7 @@ import { userServiceInstance } from "@/services/user/userServiceImpl";
 import { votingCoreService } from "./votingCoreService";
 import { votingMemberServiceInstance } from "../votingMember/votingMemberServiceImpl";
 import { roomCoreService } from "@/services/room/roomCoreService";
+import { roomMemberServiceInstance } from "@/services/roomMember/roomMemberServiceImpl";
 
 export class VotingServiceImpl {
   createInstantBaseVoting(
@@ -195,18 +196,32 @@ export class VotingServiceImpl {
     roomId?: string
   ): Promise<BaseVoting[]> {
     return successPromiseBehavior(() => {
+      const votings: Set<BaseVoting> = new Set();
+
       const votingsMember =
         votingMemberServiceInstance.getInstantVotingMembersByUserId(userId);
-      const votings: BaseVoting[] = [];
       votingsMember?.forEach((votingMember) => {
         const voting = this.getInstantBaseVotingById(votingMember.votingId);
         if (voting) {
           if (!roomId || voting.roomCode === roomId) {
-            votings.push(voting);
+            votings.add(voting);
           }
         }
       });
-      return votings;
+
+      const rooms = roomMemberServiceInstance
+        .getInstantRoomsByUser(userId)
+        .filter((r) => !roomId || r.code === roomId);
+      const allVotings = votingCoreService.getInstantBaseVotings();
+      rooms?.forEach((room) => {
+        allVotings
+          .filter((v) => v.roomCode === room.code)
+          .forEach((voting) => {
+            votings.add(voting);
+          });
+      });
+
+      return Array.from(votings);
     });
   }
 }
