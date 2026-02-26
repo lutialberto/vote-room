@@ -38,11 +38,9 @@ export default function InviteUserPendingList({
     functionToWait: (data) =>
       createPendingRoomInvitationsRequest(data.invitations, data.roomId),
     success: () => {
-      console.log("Invitaciones enviadas con éxito");
       pendingInvitations.forEach((inv) => removeInvitation(inv.id));
     },
     failure: (err) => {
-      console.log("Error al enviar invitaciones:", err);
       Alert.alert(
         "Error",
         "No se pudieron enviar las invitaciones: " + err.message

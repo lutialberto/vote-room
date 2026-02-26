@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { router } from "expo-router";
-import BaseVotingForm from "@/modules/voting/components/BaseVotingForm";
+import BaseVotingForm from "@/modules/voting/components/baseVotingForm/BaseVotingForm";
 import { BaseVotingForCreation } from "@/modules/voting/models/Voting";
 import { useBaseVoting } from "@/modules/voting/hooks/useBaseVoting";
 import { useEffect } from "react";
@@ -14,7 +14,7 @@ export default function NewVoting() {
     resetBaseVotingData();
   }, []);
 
-  const onCreateVoting = async (data: BaseVotingForCreation) => {
+  const onCreateVoting = async ({ data }: { data: BaseVotingForCreation }) => {
     saveBaseVotingData(data);
     switch (data.type) {
       case "boolean":

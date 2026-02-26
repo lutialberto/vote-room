@@ -1,3 +1,4 @@
+import { InputOptionsAdvanceAppOptionItemProps } from "@/components/InputOptionsAdvanceApp";
 import { RadioButtonAppOption } from "@/components/RadioButtonApp";
 
 export const BASE_VOTING_TYPE_OPTIONS: (RadioButtonAppOption & {
@@ -16,42 +17,49 @@ export const BASE_VOTING_TYPE_OPTIONS: (RadioButtonAppOption & {
     description: "Votación con múltiples opciones para elegir",
   },
 ];
-export const CLOSE_TYPE_OPTIONS: (RadioButtonAppOption & {
-  description: string;
-})[] = [
+export const CLOSE_TYPE_OPTIONS: InputOptionsAdvanceAppOptionItemProps[] = [
   {
-    value: "manualClose",
-    label: "Cerrar manualmente",
+    code: "manualClose",
+    icon: "timer-outline",
+    label: "Manual",
     selected: true,
-    description: "La votación se cerrará manualmente cuando decidas",
+    infoText: ["La votación se cerrará manualmente cuando decidas"],
+    onPress: () => {},
   },
   {
-    value: "programmedClose",
-    label: "Programar cierre",
+    code: "programmedClose",
+    icon: "calendar-outline",
+    label: "Programada",
     selected: false,
-    description:
-      "La votación se cerrará automáticamente después del tiempo definido",
+    infoText: [
+      "La votación se cerrará automáticamente después del tiempo configurado",
+    ],
+    onPress: () => {},
   },
 ];
-export const RELEASE_TYPE_OPTIONS: (RadioButtonAppOption & {
-  description: string;
-})[] = [
+export const RELEASE_TYPE_OPTIONS: InputOptionsAdvanceAppOptionItemProps[] = [
   {
-    value: "releaseOnCreate",
-    label: "Publicar al crear",
+    code: "releaseOnCreate",
+    icon: "rocket-outline",
+    label: "Inmediata",
     selected: true,
-    description: "La votación será visible inmediatamente después de crearla",
+    infoText: ["La votación será visible inmediatamente después de crearla"],
+    onPress: () => {},
   },
   {
-    value: "releaseScheduled",
-    label: "Programar publicación",
+    code: "releaseScheduled",
+    icon: "timer-outline",
+    label: "Programada",
     selected: false,
-    description: "La votación se publicará en una fecha y hora específicas",
+    infoText: ["La votación se publicará en una fecha y hora específicas"],
+    onPress: () => {},
   },
   {
-    value: "manualRelease",
-    label: "Publicar manualmente",
+    code: "manualRelease",
+    icon: "hand-left-outline",
+    label: "Manual",
     selected: false,
-    description: "La votación se publicará manualmente cuando decidas",
+    infoText: ["La votación se publicará manualmente cuando decidas"],
+    onPress: () => {},
   },
 ];

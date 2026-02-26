@@ -1,16 +1,22 @@
-import { BaseVoting, BaseVotingForCreation } from "../../models/Voting";
+import {
+  BaseVoting,
+  BaseVotingAdvancedForCreation,
+  BaseVotingForCreation,
+} from "../../models/Voting";
 import { votingServiceInstance } from "./votingServiceImpl";
 
 export const updateBaseVoting = ({
   data,
+  advancedData,
   id,
   userId,
 }: {
   data: BaseVotingForCreation;
+  advancedData: BaseVotingAdvancedForCreation;
   id: number;
   userId: number;
 }): Promise<BaseVoting> =>
-  votingServiceInstance.updateBaseVoting(data, id, userId);
+  votingServiceInstance.updateBaseVoting(data, advancedData, id, userId);
 
 export const activateBaseVoting = ({
   id,

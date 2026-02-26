@@ -1,4 +1,7 @@
-import { BaseVotingForCreation } from "@/modules/voting/models/Voting";
+import {
+  BaseVotingAdvancedForCreation,
+  BaseVotingForCreation,
+} from "@/modules/voting/models/Voting";
 import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
 import { votingServiceInstance } from "@/modules/voting/services/voting/votingServiceImpl";
 import { votingCoreService } from "@/modules/voting/services/voting/votingCoreService";
@@ -14,12 +17,14 @@ export class OptionsVotingServiceImpl {
 
   async createOptionsVoting(
     baseData: BaseVotingForCreation,
+    advancedData: BaseVotingAdvancedForCreation,
     userId: number,
     options: string[]
   ): Promise<OptionsVoting> {
     return successPromiseBehavior(() => {
       const baseVoting = votingServiceInstance.createInstantBaseVoting(
         baseData,
+        advancedData,
         userId
       );
       const newOptionsVoting: OptionsVotingRecord = {

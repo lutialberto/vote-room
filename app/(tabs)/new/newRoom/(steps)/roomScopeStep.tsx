@@ -10,12 +10,14 @@ import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { createRoom } from "@/services/room/roomService";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { SpinnerApp } from "@/components/SpinnerApp";
-import { ScopeConfig } from "@/models/ScopeConfig";
-import NewScopeStep from "@/modules/new/components/NewScopeStep";
+import NewScopeStep from "@/modules/new/components/newScopeStep/NewScopeStep";
+import { ButtonApp } from "@/components/ButtonApp";
+import { useNewScopeStep } from "@/modules/new/components/newScopeStep/useNewScopeStep";
 
 export default function RoomScopeStep() {
   const { currentUser } = useAuthenticatedUser();
   const colors = useThemeColor();
+  const { isPrivate, membersType } = useNewScopeStep();
   const { saveRoomScopeData, resetRoomData, roomNameData, roomTypeData } =
     useNewRoomData();
   const styles = getStyles(colors);
@@ -28,9 +30,9 @@ export default function RoomScopeStep() {
       },
     });
 
-  const onConfirm = (scope: ScopeConfig) => {
-    saveRoomScopeData({ scope });
-    if (scope.isPrivate) {
+  const onConfirm = () => {
+    saveRoomScopeData({ scope: { isPrivate, membersType } });
+    if (isPrivate) {
       const dataToCreate: CreateRoomData = {
         label: roomNameData?.label || "",
         description: roomNameData?.description || "",
@@ -38,8 +40,8 @@ export default function RoomScopeStep() {
         ownerUserId: currentUser.id,
         tags: roomTypeData?.tags || [],
         scope: {
-          isPrivate: true,
-          membersType: scope.membersType,
+          isPrivate,
+          membersType,
         },
       };
       fnCreateRoom(dataToCreate);
@@ -51,8 +53,8 @@ export default function RoomScopeStep() {
         ownerUserId: currentUser.id,
         tags: roomTypeData?.tags || [],
         scope: {
-          isPrivate: false,
-          membersType: scope.membersType,
+          isPrivate,
+          membersType,
         },
       };
       fnCreateRoom(dataToCreate);
@@ -71,7 +73,9 @@ export default function RoomScopeStep() {
           </ThemedText>
         </View>
 
-        <NewScopeStep onConfirm={onConfirm} stepNumber={3} />
+        <NewScopeStep stepNumber={3} />
+
+        <ButtonApp label="Crear Sala" onPress={() => onConfirm()} />
       </SpinnerApp>
     </ThemedView>
   );

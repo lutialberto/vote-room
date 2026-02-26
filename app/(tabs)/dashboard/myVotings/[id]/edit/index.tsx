@@ -12,9 +12,10 @@ import {
 } from "@/modules/voting/services/voting/votingService";
 import { useLocalSearchParams, router } from "expo-router";
 import { SpinnerApp } from "@/components/SpinnerApp";
-import BaseVotingForm from "@/modules/voting/components/BaseVotingForm";
+import BaseVotingForm from "@/modules/voting/components/baseVotingForm/BaseVotingForm";
 import {
   BaseVoting,
+  BaseVotingAdvancedForCreation,
   BaseVotingForCreation,
 } from "@/modules/voting/models/Voting";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
@@ -29,10 +30,17 @@ export default function VotingEditPage() {
     isLoading,
   } = useItemFetcherApp(() => fetchBaseVotingById(Number(id)), [id]);
 
-  const { isWaiting: isUpdating, execPromise: handleUpdate } = useWaitingApp({
-    functionToWait: async (data: BaseVotingForCreation) =>
+  const { isWaiting: isUpdating, execPromise: handleUpdate } = useWaitingApp<
+    {
+      data: BaseVotingForCreation;
+      advancedData: BaseVotingAdvancedForCreation;
+    },
+    BaseVoting
+  >({
+    functionToWait: async ({ data, advancedData }) =>
       updateBaseVoting({
-        data: data,
+        data,
+        advancedData,
         id: voting?.id!,
         userId: currentUser.id,
       }),

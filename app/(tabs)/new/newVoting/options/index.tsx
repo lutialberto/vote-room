@@ -4,7 +4,10 @@ import { ThemedText } from "@/components/ThemedText";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { router } from "expo-router";
 import { SpinnerApp } from "@/components/SpinnerApp";
-import { BaseVotingForCreation } from "@/modules/voting/models/Voting";
+import {
+  BaseVotingAdvancedForCreation,
+  BaseVotingForCreation,
+} from "@/modules/voting/models/Voting";
 import OptionsVotingForm from "@/modules/voting/types/options/components/OptionsVotingForm";
 import OptionsVoting, {
   OptionsVotingForCreation,
@@ -15,19 +18,20 @@ import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
 export default function NewVoting() {
   const { currentUser } = useAuthenticatedUser();
-  const { data: baseData } = useBaseVoting();
+  const { data: baseData, advancedData } = useBaseVoting();
 
   const { isWaiting: isWaitingCreate, execPromise: handleCreate } =
     useWaitingApp<
       {
         userId: number;
         baseData: BaseVotingForCreation;
+        advancedData: BaseVotingAdvancedForCreation;
         options: string[];
       },
       OptionsVoting
     >({
-      functionToWait: ({ userId, baseData, options }) =>
-        createOptionsVoting({ userId, baseData, options }),
+      functionToWait: ({ userId, baseData, advancedData, options }) =>
+        createOptionsVoting({ userId, baseData, advancedData, options }),
       success: ({ baseVotingId }) => {
         router.replace(`/dashboard/myVotings/${baseVotingId}`);
       },
@@ -37,6 +41,7 @@ export default function NewVoting() {
     handleCreate({
       userId: currentUser.id,
       baseData: baseData!,
+      advancedData: advancedData!,
       options: data.options,
     });
   };

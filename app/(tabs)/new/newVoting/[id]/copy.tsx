@@ -3,9 +3,12 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useItemFetcherApp } from "@/hooks/useItemFetcherApp";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
-import BaseVotingForm from "@/modules/voting/components/BaseVotingForm";
+import BaseVotingForm from "@/modules/voting/components/baseVotingForm/BaseVotingForm";
 import { router, useLocalSearchParams } from "expo-router";
-import { BaseVotingForCreation } from "@/modules/voting/models/Voting";
+import {
+  BaseVotingAdvancedForCreation,
+  BaseVotingForCreation,
+} from "@/modules/voting/models/Voting";
 import {
   createBooleanVoting,
   fetchBooleanVotingById,
@@ -27,20 +30,25 @@ export default function CopyVoting() {
       {
         userId: number;
         data: BaseVotingForCreation;
+        advancedData: BaseVotingAdvancedForCreation;
       },
       BooleanVoting
     >({
-      functionToWait: ({ userId, data }) =>
-        createBooleanVoting({ userId, data }),
+      functionToWait: ({ userId, data, advancedData }) =>
+        createBooleanVoting({ userId, data, advancedData }),
       success: ({ baseVotingId }) => {
         router.replace(`/dashboard/myVotings/${baseVotingId}`);
       },
     });
 
-  const onCreateVoting = async (data: BaseVotingForCreation) => {
+  const onCreateVoting = async (props: {
+    data: BaseVotingForCreation;
+    advancedData: BaseVotingAdvancedForCreation;
+  }) => {
     handleCreate({
       userId: currentUser.id,
-      data: data,
+      data: props.data,
+      advancedData: props.advancedData,
     });
   };
 

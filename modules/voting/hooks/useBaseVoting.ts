@@ -1,16 +1,37 @@
 import { create } from "zustand";
-import { BaseVotingForCreation } from "../models/Voting";
-
-const INIT: BaseVotingForCreation | null = null;
+import {
+  BaseVotingAdvancedForCreation,
+  BaseVotingForCreation,
+} from "../models/Voting";
 
 type BaseVotingState = {
   data: BaseVotingForCreation | null;
+  advancedData: BaseVotingAdvancedForCreation;
   saveBaseVotingData: (data: BaseVotingForCreation) => void;
+  saveBaseVotingAdvancedData: (data: BaseVotingAdvancedForCreation) => void;
   resetBaseVotingData: () => void;
 };
 
+const ADVANCED_DEFAULT_DATA: BaseVotingAdvancedForCreation = {
+  close: {
+    type: "manualClose",
+    durationMinutes: undefined,
+  },
+  release: {
+    type: "releaseOnCreate",
+  },
+  scope: {
+    isPrivate: false,
+    membersType: "unrestricted",
+  },
+};
+
 export const useBaseVoting = create<BaseVotingState>((set) => ({
-  data: INIT,
+  data: null,
+  advancedData: ADVANCED_DEFAULT_DATA,
   saveBaseVotingData: (data: BaseVotingForCreation) => set({ data }),
-  resetBaseVotingData: () => set({ data: INIT }),
+  saveBaseVotingAdvancedData: (advancedData: BaseVotingAdvancedForCreation) =>
+    set({ advancedData }),
+  resetBaseVotingData: () =>
+    set({ data: null, advancedData: ADVANCED_DEFAULT_DATA }),
 }));

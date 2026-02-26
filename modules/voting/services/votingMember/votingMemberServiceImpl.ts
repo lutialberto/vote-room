@@ -25,34 +25,37 @@ export class VotingServiceImpl {
       this.getInstantVotingMembersByUserId(userId)
     );
   }
+  addInstantVotingMember(votingId: number, userId: number): VotingMember {
+    const user = userServiceInstance.getInstantUserById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const voting = votingCoreService.getInstantBaseVotingById(votingId);
+    if (!voting) {
+      throw new Error("Voting not found");
+    }
+
+    const existingMember = this.votingMembers.find(
+      (member) => member.userId === userId && member.votingId === votingId
+    );
+    if (existingMember) {
+      throw new Error("User is already a member of this voting");
+    }
+    const newMember: VotingMember = {
+      id: Math.max(...this.votingMembers.map((e) => e.id)) + 1,
+      votingId,
+      userId,
+    };
+    this.votingMembers.push(newMember);
+    return { ...newMember };
+  }
   async addVotingMember(
     votingId: number,
     userId: number
   ): Promise<VotingMember> {
-    return successPromiseBehavior(() => {
-      const user = userServiceInstance.getInstantUserById(userId);
-      if (!user) {
-        throw new Error("User not found");
-      }
-      const voting = votingCoreService.getInstantBaseVotingById(votingId);
-      if (!voting) {
-        throw new Error("Voting not found");
-      }
-
-      const existingMember = this.votingMembers.find(
-        (member) => member.userId === userId && member.votingId === votingId
-      );
-      if (existingMember) {
-        throw new Error("User is already a member of this voting");
-      }
-      const newMember: VotingMember = {
-        id: Math.max(...this.votingMembers.map((e) => e.id)) + 1,
-        votingId,
-        userId,
-      };
-      this.votingMembers.push(newMember);
-      return { ...newMember };
-    });
+    return successPromiseBehavior(() =>
+      this.addInstantVotingMember(votingId, userId)
+    );
   }
 }
 

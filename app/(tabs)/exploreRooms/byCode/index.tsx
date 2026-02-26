@@ -29,7 +29,6 @@ export default function ByCodeTab() {
     }));
     fetchRoomByCode(roomCode.toUpperCase())
       .then((room) => {
-        console.log({ room, roomCode });
         if (room) {
           setState({ state: "found", room });
         } else {
@@ -43,7 +42,7 @@ export default function ByCodeTab() {
 
   const handleJoinRoom = () => {
     if (state.state !== "found") return;
-    if (state.room.isPrivate) {
+    if (state.room.scope.isPrivate) {
       setState({ ...state, state: "request-key" });
     } else {
       joinRoom(state.room.code, currentUser.id)
@@ -62,8 +61,9 @@ export default function ByCodeTab() {
   };
 
   const handleSubmitKey = (key: string) => {
-    if (state.state !== "request-key" || state.room.isPrivate === false) return;
-    if (state.room.key === key) {
+    if (state.state !== "request-key" || state.room.scope.isPrivate === false)
+      return;
+    if (state.room.scope.key === key) {
       joinRoom(state.room.code, currentUser.id, key)
         .then(() => {
           handleNewSearch();

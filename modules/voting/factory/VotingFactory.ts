@@ -1,4 +1,4 @@
-import BaseVotingForm from "../components/BaseVotingForm";
+import BaseVotingForm from "../components/baseVotingForm/BaseVotingForm";
 import { VotingType } from "../models/VotingType";
 
 const VotingFormComponents = {

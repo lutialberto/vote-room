@@ -31,6 +31,13 @@ export interface BaseVoting {
   scope: ScopeConfig;
 }
 
-export type BaseVotingForCreation = Omit<BaseVoting, "id" | "owner" | "status">;
+export type BaseVotingForCreation = Pick<
+  BaseVoting,
+  "question" | "description" | "type"
+>;
+export type BaseVotingAdvancedForCreation = Pick<
+  BaseVoting,
+  "close" | "release" | "scope"
+>;
 
 export type Voting = BooleanVoting | OptionsVoting;

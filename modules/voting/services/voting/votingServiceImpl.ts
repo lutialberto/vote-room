@@ -1,6 +1,7 @@
 import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
 import {
   BaseVoting,
+  BaseVotingAdvancedForCreation,
   BaseVotingForCreation,
   VotingReleaseType,
   VotingStatus,
@@ -12,6 +13,7 @@ import { votingMemberServiceInstance } from "../votingMember/votingMemberService
 export class VotingServiceImpl {
   createInstantBaseVoting(
     baseData: BaseVotingForCreation,
+    advancedData: BaseVotingAdvancedForCreation,
     userId: number
   ): BaseVoting {
     const user = userServiceInstance.getInstantUserById(userId);
@@ -23,10 +25,11 @@ export class VotingServiceImpl {
       releaseScheduled: "scheduled",
       manualRelease: "draft",
     };
-    const status: VotingStatus = mapper[baseData.release.type];
+    const status: VotingStatus = mapper[advancedData.release.type];
     const votings = votingCoreService.getInstantBaseVotings();
     const newBaseVoting: BaseVoting = {
       ...baseData,
+      ...advancedData,
       owner: {
         id: userId,
         userName: user.userName,
@@ -37,11 +40,17 @@ export class VotingServiceImpl {
     };
 
     votingCoreService.addInstantBaseVoting(newBaseVoting);
+
+    votingMemberServiceInstance.addInstantVotingMember(
+      newBaseVoting.id,
+      userId
+    );
     return { ...newBaseVoting };
   }
 
   async updateBaseVoting(
     data: BaseVotingForCreation,
+    advancedData: BaseVotingAdvancedForCreation,
     id: number,
     userId: number
   ): Promise<BaseVoting> {
@@ -63,10 +72,11 @@ export class VotingServiceImpl {
         releaseScheduled: "scheduled",
         manualRelease: "draft",
       };
-      const status: VotingStatus = mapper[data.release.type];
+      const status: VotingStatus = mapper[advancedData.release.type];
       const updatedVoting: BaseVoting = {
         ...votingToUpdate,
         ...data,
+        ...advancedData,
         status,
       };
 

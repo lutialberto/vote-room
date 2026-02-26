@@ -1,6 +1,9 @@
 import BooleanVoting, { BooleanVotingRecord } from "../../models/BooleanVoting";
 import { BOOLEAN_VOTING_SERVICE_RESPONSE_MOCK } from "./booleanVotingServiceResponse";
-import { BaseVotingForCreation } from "@/modules/voting/models/Voting";
+import {
+  BaseVotingAdvancedForCreation,
+  BaseVotingForCreation,
+} from "@/modules/voting/models/Voting";
 import { successPromiseBehavior } from "@/services/serviceUtilsImpl";
 import { votingServiceInstance } from "@/modules/voting/services/voting/votingServiceImpl";
 import { votingCoreService } from "@/modules/voting/services/voting/votingCoreService";
@@ -12,11 +15,13 @@ export class BooleanVotingServiceImpl {
 
   async createBooleanVoting(
     data: BaseVotingForCreation,
+    advancedData: BaseVotingAdvancedForCreation,
     userId: number
   ): Promise<BooleanVoting> {
     return successPromiseBehavior(() => {
       const baseVoting = votingServiceInstance.createInstantBaseVoting(
         data,
+        advancedData,
         userId
       );
       const newBooleanVoting: BooleanVotingRecord = {
