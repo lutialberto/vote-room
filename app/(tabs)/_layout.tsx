@@ -21,7 +21,7 @@ export default function TabLayout() {
   const handleTabPress = (tabName: string, initialRoute: Href) => {
     const isCurrentTab = pathname.startsWith(`/${tabName}`);
     if (isCurrentTab) {
-      router.navigate(initialRoute);
+      router.dismiss();
     } else {
       router.navigate(initialRoute);
     }
