@@ -11,11 +11,13 @@ const labels: Record<VotingStatus, string> = {
 export default function BaseVotingStatus(props: {
   status: VotingStatus;
   releaseDate?: Date;
+  isFinished: boolean;
 }) {
-  const label = labels[props.status as keyof typeof labels];
+  const key = props.isFinished ? "closed" : props.status;
+  const label = labels[key as keyof typeof labels];
   return (
     <ThemedText>
-      {props.status === "scheduled"
+      {key === "scheduled"
         ? label.replace("{{date}}", props.releaseDate?.toLocaleString() ?? "")
         : label}
     </ThemedText>

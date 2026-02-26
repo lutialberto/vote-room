@@ -19,8 +19,10 @@ import OptionsVotingOptions from "./OptionsVotingOptions";
 import OptionsVotingResults from "./OptionsVotingResults";
 import { CardApp } from "@/components/CardApp";
 import { User } from "@/models/User";
+import { useState } from "react";
 
 export default function OptionsVotingView(props: { id: number; user: User }) {
+  const [isFinished, setIsFinished] = useState(false);
   const {
     data,
     error,
@@ -79,13 +81,15 @@ export default function OptionsVotingView(props: { id: number; user: User }) {
           <BaseVotingStatus
             status={data.baseVoting.status}
             releaseDate={data?.baseVoting.release.date}
+            isFinished={isFinished}
           />
         )}
         {data?.baseVoting.close.type === "programmedClose" &&
-          data.baseVoting.status === "active" && (
+          data.baseVoting.status === "active" &&
+          !isFinished && (
             <CountDownApp
               seconds={(data.baseVoting.close.durationMinutes || 0) * 60}
-              onFinish={refetchVoting}
+              onFinish={() => setIsFinished(true)}
             />
           )}
         <CardApp style={{ padding: 16, width: "100%" }}>
@@ -94,7 +98,9 @@ export default function OptionsVotingView(props: { id: number; user: User }) {
               ✅ Ya has votado en esta encuesta
             </ThemedText>
           )}
-          {!alreadyVoted && data?.baseVoting.status === "active" ? (
+          {!alreadyVoted &&
+          data?.baseVoting.status === "active" &&
+          !isFinished ? (
             <SpinnerApp visible={isWaitingVote}>
               <OptionsVotingOptions
                 options={data?.options}
@@ -113,7 +119,7 @@ export default function OptionsVotingView(props: { id: number; user: User }) {
         </CardApp>
       </SpinnerApp>
       <ThemedView style={{ gap: 8 }}>
-        {data?.baseVoting.status !== "closed" && (
+        {data?.baseVoting.status !== "closed" && !isFinished && (
           <ButtonApp
             label="Actualizar resultados"
             onPress={() => {
