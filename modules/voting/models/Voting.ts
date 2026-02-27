@@ -1,5 +1,9 @@
 import { UserBase } from "@/models/User";
-import { ScopeConfig } from "@/models/ScopeConfig";
+import {
+  PrivateScopeConfig,
+  PublicScopeConfig,
+  ScopeConfig,
+} from "@/models/ScopeConfig";
 import BooleanVoting from "../types/boolean/models/BooleanVoting";
 import OptionsVoting from "../types/options/models/OptionsVoting";
 import { VotingType } from "./VotingType";
@@ -31,6 +35,22 @@ export interface BaseVoting {
   scope: ScopeConfig;
   roomCode?: string;
 }
+
+export type PrivateVotingType = BaseVoting & {
+  scope: PrivateScopeConfig;
+};
+
+export type PublicVotingType = BaseVoting & {
+  scope: PublicScopeConfig;
+};
+
+export type Voting2 = PrivateVotingType | PublicVotingType;
+
+export type PublicVotingTypeFilter = Partial<
+  Pick<BaseVoting, "roomCode" | "question"> & {
+    ownerName?: string;
+  }
+>;
 
 export type BaseVotingForCreation = Pick<
   BaseVoting,

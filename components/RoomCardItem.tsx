@@ -6,6 +6,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "./IconApp";
 import { CardApp } from "./CardApp";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
+import RoomCodeLabel from "@/modules/rooms/components/RoomCodeLabel";
 
 export default function RoomCardItem({ room }: { room: Room }) {
   const {
@@ -42,9 +43,7 @@ export default function RoomCardItem({ room }: { room: Room }) {
         <View style={styles.cardHeader}>
           <View style={styles.roomInfo}>
             <ThemedText style={styles.roomTitle}>{room.label}</ThemedText>
-            <ThemedText colorName="primary" style={styles.roomCode}>
-              #{room.code}
-            </ThemedText>
+            <RoomCodeLabel code={room.code} />
           </View>
 
           <View style={styles.statusContainer}>
@@ -126,10 +125,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     flex: 1,
-  },
-  roomCode: {
-    fontSize: 14,
-    fontWeight: "500",
   },
   statusContainer: {
     flexDirection: "row",

@@ -2,6 +2,8 @@ import {
   BaseVoting,
   BaseVotingAdvancedForCreation,
   BaseVotingForCreation,
+  PublicVotingType,
+  PublicVotingTypeFilter,
 } from "../../models/Voting";
 import { votingServiceInstance } from "./votingServiceImpl";
 
@@ -42,3 +44,9 @@ export const fetchBaseVotingsByFilter = (
   roomId?: string
 ): Promise<BaseVoting[]> =>
   votingServiceInstance.fetchBaseVotingsByFilter(userId, roomId);
+
+export const fetchPublicVotings = (
+  userId: number,
+  filter: PublicVotingTypeFilter
+): Promise<PublicVotingType[]> =>
+  votingServiceInstance.fetchPublicVotings(userId, filter);

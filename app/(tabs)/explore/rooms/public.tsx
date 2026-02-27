@@ -6,24 +6,40 @@ import { useListFetcherApp } from "@/hooks/useListFetcherApp";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { PublicRoomType, PublicRoomTypeFilter } from "@/models/Room";
 import PublicRoomCard from "@/modules/explore/public/public/components/PublicRoomCard";
-import PublicRoomSearchBar from "@/modules/explore/public/public/components/PublicRoomSearchBar";
+import SearchBarApp from "@/components/SearchBarApp";
 import PublicRoomFilterModal from "@/modules/explore/public/public/components/PublicRoomFilterModal";
 import { fetchPublicRooms } from "@/services/room/roomService";
 import { joinRoom } from "@/services/roomMember/roomMemberService";
 import { useState } from "react";
 import { FlatList, View } from "react-native";
-import PublicRoomFilterChips from "@/modules/explore/public/public/components/PublicRoomFilterChips";
+import FilterChips, { FilterItem } from "@/components/FilterChips";
 import { router } from "expo-router";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 
+const filterLabels: Record<keyof PublicRoomTypeFilter, string> = {
+  label: "Nombre",
+  code: "Código",
+  ownerName: "Creador",
+  tags: "tag",
+};
+
 export default function PublicRoomsTab() {
-  const [filter, setFilter] = useState<PublicRoomTypeFilter>({});
+  const [appliedFilters, setAppliedFilters] = useState<
+    FilterItem<PublicRoomTypeFilter>[]
+  >([]);
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const { currentUser } = useAuthenticatedUser();
-  const { data, error, isLoading, refetch } = useListFetcherApp<PublicRoomType>(
-    () => fetchPublicRooms(currentUser.id, filter),
-    [currentUser.id, filter]
-  );
+  const { data, error, isLoading, refetch } =
+    useListFetcherApp<PublicRoomType>(() => {
+      const formattedFilter: PublicRoomTypeFilter = appliedFilters.reduce(
+        (acc, item) => ({
+          ...acc,
+          [item.key]: item.value,
+        }),
+        {} as PublicRoomTypeFilter
+      );
+      return fetchPublicRooms(currentUser.id, formattedFilter);
+    }, [currentUser.id, appliedFilters]);
   const { isWaiting, execPromise: handleJoinRoom } = useWaitingApp<
     {
       roomCode: string;
@@ -51,8 +67,13 @@ export default function PublicRoomsTab() {
             marginHorizontal: 4,
           }}
         >
-          <PublicRoomSearchBar
-            onSearch={(label) => setFilter((prev) => ({ ...prev, label }))}
+          <SearchBarApp
+            onSearch={(value) =>
+              setAppliedFilters((prev) => [
+                ...prev,
+                { key: "label", label: filterLabels.label, value },
+              ])
+            }
           />
           <ButtonApp
             icon="filter"
@@ -64,22 +85,19 @@ export default function PublicRoomsTab() {
             onPress={() => setIsFilterModalVisible(true)}
           />
         </View>
-        <PublicRoomFilterChips
-          filter={filter}
+        <FilterChips
+          filters={appliedFilters}
           onRemoveFilter={(key) =>
-            setFilter((prev) => {
-              const updatedFilter = { ...prev };
-              delete updatedFilter[key];
-              return updatedFilter;
-            })
+            setAppliedFilters((prev) => prev.filter((f) => f.key !== key))
           }
-          onClearAll={() => setFilter({})}
+          onClearAll={() => setAppliedFilters([])}
         />
         <FlatList
           data={data}
           refreshing={isLoading}
           onRefresh={refetch}
           keyExtractor={(_, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <PublicRoomCard
               roomName={item.label}
@@ -106,7 +124,14 @@ export default function PublicRoomsTab() {
           visible={isFilterModalVisible}
           onClose={() => setIsFilterModalVisible(false)}
           onApply={(filter) => {
-            setFilter(filter);
+            const formattedFilter: FilterItem<PublicRoomTypeFilter>[] = (
+              Object.keys(filter) as (keyof PublicRoomTypeFilter)[]
+            ).map((key) => ({
+              key,
+              label: filterLabels[key],
+              value: filter[key] as string | string[],
+            }));
+            setAppliedFilters(formattedFilter);
             setIsFilterModalVisible(false);
           }}
         />

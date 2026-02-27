@@ -3,6 +3,8 @@ import {
   BaseVoting,
   BaseVotingAdvancedForCreation,
   BaseVotingForCreation,
+  PublicVotingType,
+  PublicVotingTypeFilter,
   VotingReleaseType,
   VotingStatus,
 } from "../../models/Voting";
@@ -190,6 +192,42 @@ export class VotingServiceImpl {
       return { ...voting };
     });
   }
+
+  fetchPublicVotings = async (
+    userId: number,
+    filter: PublicVotingTypeFilter
+  ): Promise<PublicVotingType[]> =>
+    successPromiseBehavior<PublicVotingType[]>(() => {
+      const userRooms = roomMemberServiceInstance.getInstantRoomsByUser(userId);
+      const userRoomCodes = userRooms?.map((room) => room.code) ?? [];
+
+      const userVotings =
+        votingMemberServiceInstance.getInstantVotingMembersByUserId(userId);
+      const userVotingCodes =
+        userVotings?.map((voting) => voting.votingId) ?? [];
+
+      const votings = votingCoreService.getInstantBaseVotings();
+      const validStatus: VotingStatus[] = ["active", "scheduled"];
+      return votings.filter(
+        (voting) =>
+          !voting.scope.isPrivate &&
+          validStatus.includes(voting.status) &&
+          !userVotingCodes.includes(voting.id) &&
+          !userRoomCodes.includes(voting.roomCode ?? "") &&
+          (!filter.roomCode ||
+            voting.roomCode
+              ?.toLocaleLowerCase()
+              .includes(filter.roomCode.toLocaleLowerCase())) &&
+          (!filter.question ||
+            voting.question
+              .toLocaleLowerCase()
+              .includes(filter.question.toLocaleLowerCase())) &&
+          (!filter.ownerName ||
+            voting.owner.userName
+              .toLocaleLowerCase()
+              .includes(filter.ownerName.toLocaleLowerCase()))
+      ) as PublicVotingType[];
+    });
 
   async fetchBaseVotingsByFilter(
     userId: number,

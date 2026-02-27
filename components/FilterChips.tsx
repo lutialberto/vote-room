@@ -1,53 +1,32 @@
 import { View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { IconApp } from "@/components/IconApp";
-import { PublicRoomTypeFilter } from "@/models/Room";
 import { ColorScheme } from "@/constants/Colors";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
-export interface PublicRoomFilterChipsProps {
-  filter: PublicRoomTypeFilter;
-  onRemoveFilter: (filterKey: keyof PublicRoomTypeFilter) => void;
+export interface FilterChipsProps<T> {
+  filters: FilterItem<T>[];
+  onRemoveFilter: (filterKey: keyof T) => void;
   onClearAll: () => void;
 }
 
-export default function PublicRoomFilterChips({
-  filter,
+export interface FilterItem<T> {
+  key: keyof T;
+  label: string;
+  value: string | string[];
+}
+
+export default function FilterChips<T>({
+  filters,
   onRemoveFilter,
   onClearAll,
-}: PublicRoomFilterChipsProps) {
+}: FilterChipsProps<T>) {
   const colors = useThemeColor();
   const styles = getStyles(colors);
-  const activeFilters: Array<{
-    key: keyof PublicRoomTypeFilter;
-    label: string;
-    value: string;
-  }> = [];
 
-  if (filter.label) {
-    activeFilters.push({
-      key: "label",
-      label: "Nombre",
-      value: filter.label,
-    });
-  }
-  if (filter.code) {
-    activeFilters.push({ key: "code", label: "Código", value: filter.code });
-  }
-  if (filter.ownerName) {
-    activeFilters.push({
-      key: "ownerName",
-      label: "Propietario",
-      value: filter.ownerName,
-    });
-  }
-  if (filter.tags && filter.tags.length > 0) {
-    activeFilters.push({
-      key: "tags",
-      label: "Tags",
-      value: filter.tags.join(", "),
-    });
-  }
+  const activeFilters = filters.filter(
+    (f) => f.value && (Array.isArray(f.value) ? f.value.length > 0 : true)
+  );
 
   if (activeFilters.length === 0) {
     return null;
@@ -62,12 +41,15 @@ export default function PublicRoomFilterChips({
       >
         {activeFilters.map((filterItem) => (
           <TouchableOpacity
-            key={filterItem.key}
+            key={filterItem.key as string}
             style={styles.chip}
             onPress={() => onRemoveFilter(filterItem.key)}
           >
             <ThemedText style={styles.chipText}>
-              {filterItem.label}: {filterItem.value}
+              {filterItem.label}:
+              {Array.isArray(filterItem.value)
+                ? filterItem.value.join(", ")
+                : filterItem.value}
             </ThemedText>
             <IconApp name="close" size={16} colorName="primary" />
           </TouchableOpacity>

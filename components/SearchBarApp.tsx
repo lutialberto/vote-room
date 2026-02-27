@@ -3,13 +3,11 @@ import InputTextApp from "@/components/InputTextApp";
 import { useForm } from "react-hook-form";
 import { ButtonApp } from "@/components/ButtonApp";
 
-export interface PublicRoomSearchBarProps {
+export interface SearchBarAppProps {
   onSearch: (name: string) => void;
 }
 
-export default function PublicRoomSearchBar({
-  onSearch,
-}: PublicRoomSearchBarProps) {
+export default function SearchBarApp({ onSearch }: SearchBarAppProps) {
   const { handleSubmit, control } = useForm<{ label: string }>();
 
   return (

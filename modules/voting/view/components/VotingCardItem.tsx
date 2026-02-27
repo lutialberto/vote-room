@@ -6,24 +6,11 @@ import { ThemedText } from "@/components/ThemedText";
 import { BaseVoting, VotingStatus } from "../../models/Voting";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { IconApp } from "@/components/IconApp";
+import VotingStatusLabel from "../../components/VotingStatusLabel";
 
 export default function VotingCardItem(props: BaseVoting) {
-  const {
-    green: greenColor,
-    orange: orangeColor,
-    gray: grayColor,
-    red: redColor,
-  } = useThemeColor();
-
   const { currentUser } = useAuthenticatedUser();
 
-  const statusConfig: Record<VotingStatus, { color: string; text: string }> = {
-    closed: { color: redColor, text: "Cerrada" },
-    draft: { color: grayColor, text: "Borrador" },
-    scheduled: { color: orangeColor, text: "Programada" },
-    active: { color: greenColor, text: "Activa" },
-  };
-  const votingStatusConfig = statusConfig[props.status];
   const navigateToVoting = () => {
     router.push(`/dashboard/myVotings/${props.id}`);
   };
@@ -53,17 +40,7 @@ export default function VotingCardItem(props: BaseVoting) {
             >
               {props.owner.id === currentUser.id ? "Propietario" : "Miembro"}
             </ThemedText>
-            <View style={styles.statusContainer}>
-              <View
-                style={[
-                  styles.statusDot,
-                  { backgroundColor: votingStatusConfig.color },
-                ]}
-              />
-              <ThemedText style={styles.statusText}>
-                {votingStatusConfig.text}
-              </ThemedText>
-            </View>
+            <VotingStatusLabel status={props.status} />
           </View>
           {props.roomCode && (
             <View style={styles.row}>
@@ -97,20 +74,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     flex: 1,
-  },
-  statusContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  statusDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: "500",
   },
   votingDescription: {
     fontSize: 14,

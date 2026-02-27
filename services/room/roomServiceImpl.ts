@@ -32,11 +32,24 @@ export class RoomServiceImpl {
         (room) =>
           !room.scope.isPrivate &&
           !userRoomCodes.includes(room.code) &&
-          (!filter.code || room.code.includes(filter.code)) &&
-          (!filter.label || room.label.includes(filter.label)) &&
-          (!filter.ownerName || room.ownerName.includes(filter.ownerName)) &&
+          (!filter.code ||
+            room.code
+              .toLocaleLowerCase()
+              .includes(filter.code.toLocaleLowerCase())) &&
+          (!filter.label ||
+            room.label
+              .toLocaleLowerCase()
+              .includes(filter.label.toLocaleLowerCase())) &&
+          (!filter.ownerName ||
+            room.ownerName
+              .toLocaleLowerCase()
+              .includes(filter.ownerName.toLocaleLowerCase())) &&
           ((filter.tags?.length ?? 0) === 0 ||
-            filter.tags?.some((tag) => (room.tags ?? []).includes(tag)))
+            filter.tags?.some((tag) =>
+              (room.tags ?? [])
+                .map((t) => t.toLocaleLowerCase())
+                .includes(tag.toLocaleLowerCase())
+            ))
       ) as PublicRoomType[];
     });
 
