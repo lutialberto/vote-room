@@ -3,12 +3,12 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
-import { PendingRoomInvitationRequestCard } from "@/modules/rooms/exploreRooms/invitations/components/PendingRoomInvitationRequestCard";
-import { usePendingRoomInvitationRequest } from "@/modules/rooms/exploreRooms/invitations/hooks/usePendingRoomInvitationRequest";
+import { PendingRoomInvitationRequestCard } from "@/modules/explore/invitations/invitations/components/PendingRoomInvitationRequestCard";
+import { usePendingRoomInvitationRequest } from "@/modules/explore/invitations/invitations/hooks/usePendingRoomInvitationRequest";
 import {
   acceptPendingRoomInvitationRequest,
   rejectPendingRoomInvitationRequest,
-} from "@/modules/rooms/exploreRooms/invitations/services/pendingRoomInvitationRequestService";
+} from "@/modules/explore/invitations/invitations/services/pendingRoomInvitationRequestService";
 import { router } from "expo-router";
 import { Alert, FlatList, StyleSheet } from "react-native";
 

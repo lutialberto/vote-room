@@ -8,7 +8,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (isAppReady && isAuthenticated) {
-      router.replace("/exploreRooms/byCode");
+      router.replace("/explore/byCode");
     }
   }, [isAppReady, isAuthenticated]);
 

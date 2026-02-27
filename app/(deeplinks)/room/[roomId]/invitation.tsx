@@ -26,7 +26,7 @@ export default function DeeplinkRoomInvitation() {
     },
     failure: (error) => {
       removeDeeplink();
-      router.push(`/exploreRooms/byCode`);
+      router.push(`/explore/byCode`);
     },
   });
 

@@ -30,7 +30,7 @@ app/                    # Expo Router - rutas principales
     ├── dashboard/     # Hub principal con sub-rutas
     │   ├── myRooms/   # Gestión de salas del usuario
     │   └── myVotings/ # Gestión de votaciones del usuario
-    ├── exploreRooms/  # Exploración y búsqueda
+    ├── explore/  # Exploración y búsqueda
     │   ├── byCode/    # Búsqueda por código
     │   ├── invitations/ # Invitaciones recibidas
     │   └── public/    # Salas públicas
@@ -60,7 +60,7 @@ modules/               # Módulos de dominio
 │   ├── models/       # Tipos del dominio
 │   └── types/        # Tipos específicos (boolean, options)
 ├── rooms/             # Lógica de salas
-│   ├── exploreRooms/ # Exploración de salas
+│   ├── explore/ # Exploración de salas
 │   ├── inviteUsers/  # Invitación de usuarios
 │   └── newSteps/     # Pasos de creación
 ├── users/             # Lógica de usuarios
@@ -230,7 +230,7 @@ app/
 │   │   └── myVotings/
 │   │       ├── index.tsx   # /dashboard/myVotings
 │   │       └── [id]/       # /dashboard/myVotings/[id]
-│   ├── exploreRooms/       # Explore hub
+│   ├── explore/       # Explore hub
 │   │   ├── _layout.tsx
 │   │   ├── byCode/
 │   │   ├── invitations/

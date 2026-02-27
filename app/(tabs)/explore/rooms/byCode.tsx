@@ -1,10 +1,10 @@
 import { router } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
-import SearchRoomByCodeForm from "@/modules/rooms/exploreRooms/components/SearchRoomByCodeForm";
-import SearchRoomByCodeFormKey from "@/modules/rooms/exploreRooms/components/SearchRoomByCodeFormKey";
-import SearchInstructions from "@/modules/rooms/exploreRooms/components/SearchRoomByCodeInstructions";
-import SearchRoomByCodeResults from "@/modules/rooms/exploreRooms/components/SearchRoomByCodeResults";
-import { SearchRoomByCodeState } from "@/modules/rooms/exploreRooms/models/SearchRoomByCodeState";
+import SearchRoomByCodeForm from "@/modules/explore/components/components/SearchRoomByCodeForm";
+import SearchRoomByCodeFormKey from "@/modules/explore/components/components/SearchRoomByCodeFormKey";
+import SearchRoomByCodeInstructions from "@/modules/explore/components/components/SearchRoomByCodeInstructions";
+import SearchRoomByCodeResults from "@/modules/explore/components/components/SearchRoomByCodeResults";
+import { SearchRoomByCodeState } from "@/modules/explore/models/models/SearchRoomByCodeState";
 import { fetchRoomByCode } from "@/services/room/roomService";
 import { useState } from "react";
 import {
@@ -100,7 +100,7 @@ export default function ByCodeTab() {
             onNewSearch={handleNewSearch}
           />
 
-          {state.state === "idle" && <SearchInstructions />}
+          {state.state === "idle" && <SearchRoomByCodeInstructions />}
           {!["found", "request-key"].includes(state.state) && (
             <SearchRoomByCodeForm
               isSearching={state.state === "searching"}

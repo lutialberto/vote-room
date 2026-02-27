@@ -14,7 +14,7 @@ import { CardApp } from "@/components/CardApp";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ColorScheme } from "@/constants/Colors";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
-import { createPendingRoomInvitationsRequest } from "../../exploreRooms/invitations/services/pendingRoomInvitationRequestService";
+import { createPendingRoomInvitationsRequest } from "../../../explore/invitations/invitations/services/pendingRoomInvitationRequestService";
 
 export default function InviteUserPendingList({
   roomId,

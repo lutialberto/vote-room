@@ -11,6 +11,7 @@ export interface SectionProps {
     name: string;
     icon: IconName;
     onPress: () => void;
+    badge?: boolean;
   }[];
 }
 
@@ -28,7 +29,10 @@ export default function SectionsApp(props: { data: SectionProps[] }) {
                 style={styles.settingItem}
                 onPress={subItem.onPress}
               >
-                <IconApp name={subItem.icon} size={24} colorName="text" />
+                <View>
+                  <IconApp name={subItem.icon} size={24} colorName="text" />
+                  {subItem.badge && <View style={styles.badge} />}
+                </View>
                 <ThemedText style={styles.settingText}>
                   {subItem.name}
                 </ThemedText>
@@ -54,5 +58,14 @@ const styles = StyleSheet.create({
   settingText: {
     flex: 1,
     fontSize: 16,
+  },
+  badge: {
+    width: 10,
+    aspectRatio: 1,
+    borderRadius: 5,
+    backgroundColor: "red",
+    position: "absolute",
+    top: -2,
+    right: -2,
   },
 });

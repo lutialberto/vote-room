@@ -13,7 +13,7 @@ export default function UserCreationOnBoardingView() {
   const handleCompleteOnboarding = () => {
     completeUserCreation();
     if (isAuthenticated) {
-      router.replace("/exploreRooms/byCode");
+      router.replace("/explore/byCode");
     } else {
       router.replace("/login");
     }

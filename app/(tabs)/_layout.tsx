@@ -54,7 +54,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="exploreRooms"
+        name="explore"
         options={{
           title: "Explorar",
           tabBarIcon: ({ color }) => (
@@ -64,7 +64,7 @@ export default function TabLayout() {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            handleTabPress("exploreRooms", "/exploreRooms/byCode");
+            handleTabPress("explore", "/explore");
           },
         }}
       />

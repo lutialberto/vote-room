@@ -5,14 +5,14 @@ import { ThemedView } from "@/components/ThemedView";
 import { useListFetcherApp } from "@/hooks/useListFetcherApp";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import { PublicRoomType, PublicRoomTypeFilter } from "@/models/Room";
-import PublicRoomCard from "@/modules/rooms/exploreRooms/public/components/PublicRoomCard";
-import PublicRoomSearchBar from "@/modules/rooms/exploreRooms/public/components/PublicRoomSearchBar";
-import PublicRoomFilterModal from "@/modules/rooms/exploreRooms/public/components/PublicRoomFilterModal";
+import PublicRoomCard from "@/modules/explore/public/public/components/PublicRoomCard";
+import PublicRoomSearchBar from "@/modules/explore/public/public/components/PublicRoomSearchBar";
+import PublicRoomFilterModal from "@/modules/explore/public/public/components/PublicRoomFilterModal";
 import { fetchPublicRooms } from "@/services/room/roomService";
 import { joinRoom } from "@/services/roomMember/roomMemberService";
 import { useState } from "react";
 import { FlatList, View } from "react-native";
-import PublicRoomFilterChips from "@/modules/rooms/exploreRooms/public/components/PublicRoomFilterChips";
+import PublicRoomFilterChips from "@/modules/explore/public/public/components/PublicRoomFilterChips";
 import { router } from "expo-router";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 

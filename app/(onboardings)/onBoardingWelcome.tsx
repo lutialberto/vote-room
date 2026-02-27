@@ -16,7 +16,7 @@ export default function OnBoardingView() {
   const handleCompleteOnboarding = () => {
     completeOnboarding();
     if (isAuthenticated) {
-      router.replace("/exploreRooms/byCode");
+      router.replace("/explore/byCode");
     } else {
       router.replace("/login");
     }
