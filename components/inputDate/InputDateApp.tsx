@@ -76,7 +76,7 @@ function InputDateApp<T extends FieldValues>({
     <ThemedView style={containerStyle}>
       <ThemedText type="inputLabel">{label}</ThemedText>
       <Pressable style={styles.textContainer} onPress={() => setVisible(true)}>
-        <ThemedText>{formatDate(field.value ?? new Date())}</ThemedText>
+        <ThemedText>{formatDate(field.value)}</ThemedText>
       </Pressable>
       <InputDateImpDefault
         visible={visible}
