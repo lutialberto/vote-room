@@ -12,6 +12,11 @@ export const awardServiceMockResponse: Award[] = [
       startDate: new Date("2024-12-01"),
       endDate: new Date("2024-12-10"),
     },
+    owner: {
+      id: 1,
+      userName: "Alice",
+      type: "email",
+    },
   },
   {
     id: 2,
@@ -23,6 +28,11 @@ export const awardServiceMockResponse: Award[] = [
     votingStage: {
       startDate: new Date("2024-12-01"),
       endDate: new Date("2024-12-10"),
+    },
+    owner: {
+      id: 2,
+      userName: "Bob",
+      type: "email",
     },
   },
   {
@@ -37,6 +47,11 @@ export const awardServiceMockResponse: Award[] = [
       startDate: new Date("2024-12-01"),
       endDate: new Date("2024-12-10"),
     },
+    owner: {
+      id: 12,
+      userName: "Laura",
+      type: "email",
+    },
   },
   {
     id: 4,
@@ -50,6 +65,11 @@ export const awardServiceMockResponse: Award[] = [
       startDate: new Date("2024-12-01"),
       endDate: new Date("2024-12-10"),
     },
+    owner: {
+      id: 9,
+      userName: "Ian",
+      type: "email",
+    },
   },
   {
     id: 5,
@@ -62,6 +82,11 @@ export const awardServiceMockResponse: Award[] = [
     votingStage: {
       startDate: new Date("2024-12-01"),
       endDate: new Date("2024-12-10"),
+    },
+    owner: {
+      id: 19,
+      userName: "Steve",
+      type: "email",
     },
   },
 ];
