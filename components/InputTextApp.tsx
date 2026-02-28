@@ -3,6 +3,7 @@ import {
   TextInput,
   TextInputProps,
   TouchableOpacity,
+  View,
   ViewStyle,
 } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
@@ -67,8 +68,8 @@ export default function InputTextApp<T extends FieldValues>({
   };
 
   return (
-    <ThemedView style={containerStyle}>
-      <ThemedView
+    <View style={containerStyle}>
+      <View
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -86,7 +87,7 @@ export default function InputTextApp<T extends FieldValues>({
             {field.value.length}/{maxMultivalue}
           </ThemedText>
         )}
-      </ThemedView>
+      </View>
       <TextInput
         {...textInputProps}
         value={isMultiValue ? value : field.value}
@@ -136,7 +137,7 @@ export default function InputTextApp<T extends FieldValues>({
         ]}
       />
       {isMultiValue && field.value.length > 0 && (
-        <ThemedView
+        <View
           style={{
             flexDirection: "row",
             gap: 5,
@@ -163,7 +164,7 @@ export default function InputTextApp<T extends FieldValues>({
               <IconApp name="close" size={16} colorName="primary" />
             </TouchableOpacity>
           ))}
-        </ThemedView>
+        </View>
       )}
       {errorMessage && (
         <ThemedText type="inputError">{errorMessage}</ThemedText>
@@ -171,6 +172,6 @@ export default function InputTextApp<T extends FieldValues>({
       {isMultiValue && focus && isMaxLength && (
         <ThemedText type="inputError">{multiValueErrorMessage}</ThemedText>
       )}
-    </ThemedView>
+    </View>
   );
 }
