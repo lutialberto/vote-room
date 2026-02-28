@@ -2,7 +2,7 @@ import { CardApp } from "@/components/CardApp";
 import { IconApp } from "@/components/IconApp";
 import { ThemedText } from "@/components/ThemedText";
 import { FlatList, Pressable, View } from "react-native";
-import { TriadItemData } from "../hooks/useNewAwardSteps";
+import { TriadItemData } from "../../models/award";
 
 export interface AwardTriadsCarruselProps {
   triads: TriadItemData[];

@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
-import { TriadItemData } from "../hooks/useNewAwardSteps";
 import InputTextApp from "@/components/InputTextApp";
 import { ButtonApp } from "@/components/ButtonApp";
 import { CardApp } from "@/components/CardApp";
+import { TriadItemData } from "../../models/award";
 
 export interface AwardTriadFormProps {
   onSubmit: (data: TriadItemData) => void;

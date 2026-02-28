@@ -1,29 +1,35 @@
 import { ButtonApp } from "@/components/ButtonApp";
 import { SpinnerApp } from "@/components/SpinnerApp";
 import { ThemedView } from "@/components/ThemedView";
+import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
+import { AwardBaseData, TriadItemData } from "@/modules/awards/models/award";
 import AwardTriadForm from "@/modules/awards/newSteps/components/AwardTriadForm";
 import AwardTriadsCarrusel from "@/modules/awards/newSteps/components/AwardTriadsCarrusel";
-import {
-  TriadItemData,
-  useNewAwardSteps,
-} from "@/modules/awards/newSteps/hooks/useNewAwardSteps";
+import { useNewAwardSteps } from "@/modules/awards/newSteps/hooks/useNewAwardSteps";
+import { createAward } from "@/modules/awards/services/award/awardService";
 import { router } from "expo-router";
 import { useState } from "react";
 
 export default function TriadCreation() {
   const [triads, setTriads] = useState<TriadItemData[]>([]);
-  const { saveTriadsData } = useNewAwardSteps();
+  const { currentUser } = useAuthenticatedUser();
+  const { saveTriadsData, awardBaseData } = useNewAwardSteps();
 
-  const { isWaiting, execPromise: fnCreateAward } = useWaitingApp<void, string>(
+  const { isWaiting, execPromise: fnCreateAward } = useWaitingApp<
     {
-      functionToWait: async () => "",
-      success: (id) => {
-        //TODO: Redirigir a la pantalla de detalles del premio creado
-        // router.push(`/dashboard/myAwards/${id}`);
-      },
-    }
-  );
+      userId: number;
+      baseData: AwardBaseData;
+      triads: TriadItemData[];
+    },
+    number
+  >({
+    functionToWait: ({ userId, baseData, triads }) =>
+      createAward(userId, baseData, triads),
+    success: (id) => {
+      router.push(`/dashboard/myAwards/${id}`);
+    },
+  });
 
   const onSubmitTriad = (data: TriadItemData) => {
     if (triads.some((triad) => triad.name === data.name)) {
@@ -40,7 +46,7 @@ export default function TriadCreation() {
       return;
     }
     saveTriadsData(triads);
-    fnCreateAward();
+    fnCreateAward({ userId: currentUser.id, baseData: awardBaseData!, triads });
   };
 
   return (

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { AwardBaseData, TriadItemData } from "../../models/award";
 
 export interface NewAwardStepState {
   awardBaseData: AwardBaseData | undefined;
@@ -6,23 +7,6 @@ export interface NewAwardStepState {
   saveBaseData: (data: AwardBaseData) => void;
   saveTriadsData: (data: TriadItemData[]) => void;
   resetAwardData: () => void;
-}
-
-export interface AwardBaseData {
-  name: string;
-  description: string;
-  tags: string[];
-  votingStage: {
-    startDate: Date;
-    endDate: Date;
-  };
-  awardDate: Date;
-  releaseDate: Date;
-}
-
-export interface TriadItemData {
-  name: string;
-  nominees: string[];
 }
 
 export const useNewAwardSteps = create<NewAwardStepState>((set) => ({

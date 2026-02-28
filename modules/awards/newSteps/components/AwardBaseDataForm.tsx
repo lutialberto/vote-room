@@ -2,9 +2,10 @@ import { ButtonApp } from "@/components/ButtonApp";
 import InputDateApp from "@/components/inputDate/InputDateApp";
 import InputTextApp from "@/components/InputTextApp";
 import { useEffect } from "react";
-import { AwardBaseData, useNewAwardSteps } from "../hooks/useNewAwardSteps";
+import { useNewAwardSteps } from "../hooks/useNewAwardSteps";
 import { router } from "expo-router";
 import { useForm } from "react-hook-form";
+import { AwardBaseData } from "../../models/award";
 
 export default function AwardBaseDataForm() {
   const {
