@@ -1,12 +1,12 @@
 import { ThemedText } from "@/components/ThemedText";
 import { RadioButtonApp } from "@/components/RadioButtonApp";
 import { View, StyleSheet } from "react-native";
-import { USER_INVITATIONS } from "../constants/userInvitations";
-import { UserInvitationType } from "../models/UserInvitationType";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "@/components/IconApp";
 import { CardApp } from "@/components/CardApp";
 import { ColorScheme } from "@/constants/Colors";
+import { UserInvitationType } from "@/modules/explore/invitations/models/UserInvitationType";
+import { USER_INVITATIONS } from "@/modules/explore/invitations/constants/userInvitations";
 
 export default function InviteUserTypeSelector({
   selectedInvitationType,

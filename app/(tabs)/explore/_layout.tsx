@@ -25,7 +25,7 @@ export default function ExploreLayout() {
         }}
       />
       <Stack.Screen
-        name="rooms/invitations"
+        name="invitations"
         options={{
           headerShown: true,
           headerTitle: "Invitaciones Pendientes",
@@ -36,20 +36,6 @@ export default function ExploreLayout() {
         options={{
           headerShown: true,
           headerTitle: "Votaciones Públicas",
-        }}
-      />
-      <Stack.Screen
-        name="votings/byCode"
-        options={{
-          headerShown: true,
-          headerTitle: "Buscar por Código",
-        }}
-      />
-      <Stack.Screen
-        name="votings/invitations"
-        options={{
-          headerShown: true,
-          headerTitle: "Invitaciones Pendientes",
         }}
       />
     </Stack>

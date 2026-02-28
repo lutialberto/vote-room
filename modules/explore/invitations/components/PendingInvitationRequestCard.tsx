@@ -2,36 +2,41 @@ import { StyleSheet, View } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { ButtonApp } from "@/components/ButtonApp";
+import { PendingInvitationRequest } from "../models/PendingInvitationRequest";
+import { IconApp } from "@/components/IconApp";
 
-export interface PendingRoomInvitationRequestCardProps {
-  roomName: string;
-  roomDescription: string;
-  invitationDate: Date;
+export interface PendingInvitationRequestCardProps {
+  item: PendingInvitationRequest;
   onAccept: () => void;
   onReject: () => void;
 }
 
-export function PendingRoomInvitationRequestCard({
-  roomName,
-  roomDescription,
-  invitationDate,
+export function PendingInvitationRequestCard({
+  item,
   onAccept,
   onReject,
-}: PendingRoomInvitationRequestCardProps) {
+}: PendingInvitationRequestCardProps) {
+  const { name, description, invitationDate, entityType } = item;
   return (
     <ThemedView style={styles.card}>
       <View>
-        <ThemedText type="subtitle">{roomName}</ThemedText>
-        <ThemedText>{roomDescription}</ThemedText>
+        <ThemedText type="subtitle">{name}</ThemedText>
+        <ThemedText>{description}</ThemedText>
       </View>
-      <ThemedText type="hint">
-        Invitado el{" "}
-        {invitationDate.toLocaleDateString("es-ES", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        })}
-      </ThemedText>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+        <IconApp
+          name={entityType === "room" ? "stats-chart" : "people"}
+          size={16}
+        />
+        <ThemedText type="hint">
+          Invitado el{" "}
+          {invitationDate.toLocaleDateString("es-ES", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })}
+        </ThemedText>
+      </View>
 
       <View style={styles.actions}>
         <ButtonApp

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { PendingRoomInvitationRequest } from "../models/PendingRoomInvitationRequest";
-import { fetchPendingRoomInvitations } from "../services/pendingRoomInvitationRequestService";
+import { fetchPendingInvitations } from "../services/pendingInvitationRequestService";
+import { PendingInvitationRequest } from "../models/PendingInvitationRequest";
 
-export function usePendingRoomInvitationRequest(userId: number) {
+export function usePendingInvitationRequest(userId: number) {
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [invitations, setInvitations] = useState<
-    PendingRoomInvitationRequest[]
-  >([]);
+  const [invitations, setInvitations] = useState<PendingInvitationRequest[]>(
+    []
+  );
 
   useEffect(() => {
     fetchInvitations();
@@ -16,7 +16,7 @@ export function usePendingRoomInvitationRequest(userId: number) {
   function fetchInvitations() {
     setIsLoading(true);
     setError(null);
-    fetchPendingRoomInvitations(userId)
+    fetchPendingInvitations(userId)
       .then((data) => {
         setInvitations(data);
         setIsLoading(false);

@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import InputTextApp from "@/components/InputTextApp";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
-import { UserInvitation } from "../models/UserInvitation";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IconApp } from "@/components/IconApp";
 import { ColorScheme } from "@/constants/Colors";
+import { UserInvitation } from "@/modules/explore/invitations/models/UserInvitation";
 
 export default function InviteUserForm({
   handleSubmitForm,

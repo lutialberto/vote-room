@@ -1,4 +1,5 @@
 import { Alert } from "react-native";
+import { useEffect } from "react";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { ButtonApp } from "@/components/ButtonApp";
@@ -60,9 +61,11 @@ export default function VotingEditPage() {
       ),
   });
 
-  if (voting && voting.owner.id !== currentUser.id) {
-    router.back();
-  }
+  useEffect(() => {
+    if (voting && voting.owner.id !== currentUser.id) {
+      router.back();
+    }
+  }, [voting, currentUser.id]);
 
   const canEdit = voting?.status === "draft" || voting?.status === "scheduled";
   const canActivate = canEdit && voting?.release.type === "manualRelease";
@@ -188,6 +191,19 @@ export default function VotingEditPage() {
                 name: "Terminar votación",
                 icon: "stop",
                 onPress: onClose,
+              },
+            ] as SectionProps["items"])
+          : []),
+        ...(voting?.roomCode
+          ? ([
+              {
+                id: "invite",
+                name: "Invitar usuarios",
+                icon: "mail",
+                onPress: () =>
+                  router.push(
+                    `/dashboard/myVotings/${id}/settings/inviteUsers`
+                  ),
               },
             ] as SectionProps["items"])
           : []),

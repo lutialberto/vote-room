@@ -40,6 +40,14 @@ export default function MyVotingsScreen() {
           }}
         />
         <Stack.Screen
+          name="[id]/settings/inviteUsers"
+          options={{
+            headerShown: true,
+            title: "Invitar usuarios",
+            headerBackTitle: "Volver",
+          }}
+        />
+        <Stack.Screen
           name="[id]/settings/options"
           options={{
             headerShown: true,

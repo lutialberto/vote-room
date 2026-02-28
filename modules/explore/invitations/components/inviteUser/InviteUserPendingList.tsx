@@ -6,22 +6,25 @@ import {
   FlatList,
   Alert,
 } from "react-native";
-import { PendingInvitation } from "../models/PendingInvitation";
-import { USER_INVITATIONS } from "../constants/userInvitations";
 import { ButtonApp } from "@/components/ButtonApp";
 import { IconApp } from "@/components/IconApp";
 import { CardApp } from "@/components/CardApp";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ColorScheme } from "@/constants/Colors";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
-import { createPendingRoomInvitationsRequest } from "../../../explore/invitations/invitations/services/pendingRoomInvitationRequestService";
+import { PendingInvitation } from "@/modules/explore/invitations/models/PendingInvitation";
+import { USER_INVITATIONS } from "@/modules/explore/invitations/constants/userInvitations";
+import { createPendingInvitationsRequest } from "@/modules/explore/invitations/services/pendingInvitationRequestService";
+import { PendingInvitationRequest } from "@/modules/explore/invitations/models/PendingInvitationRequest";
 
 export default function InviteUserPendingList({
-  roomId,
+  entityId,
+  entityType,
   pendingInvitations,
   removeInvitation,
 }: {
-  roomId: string;
+  entityId: string;
+  entityType: PendingInvitationRequest["entityType"];
   pendingInvitations: PendingInvitation[];
   removeInvitation: (id: string) => void;
 }) {
@@ -31,12 +34,16 @@ export default function InviteUserPendingList({
   const { execPromise: fnCreatePendingInvitations, isWaiting } = useWaitingApp<
     {
       invitations: PendingInvitation[];
-      roomId: string;
+      entityId: string;
     },
     boolean
   >({
     functionToWait: (data) =>
-      createPendingRoomInvitationsRequest(data.invitations, data.roomId),
+      createPendingInvitationsRequest(
+        data.invitations,
+        data.entityId,
+        entityType
+      ),
     success: () => {
       pendingInvitations.forEach((inv) => removeInvitation(inv.id));
     },
@@ -57,7 +64,7 @@ export default function InviteUserPendingList({
             onPress={() =>
               fnCreatePendingInvitations({
                 invitations: pendingInvitations,
-                roomId,
+                entityId: entityId,
               })
             }
           />

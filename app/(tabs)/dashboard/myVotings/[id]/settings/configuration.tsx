@@ -17,6 +17,7 @@ import {
   BaseVotingForCreation,
 } from "@/modules/voting/models/Voting";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
+import { useEffect } from "react";
 
 export default function VotingEditPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -50,9 +51,11 @@ export default function VotingEditPage() {
       ),
   });
 
-  if (voting && voting.owner.id !== currentUser.id) {
-    router.back();
-  }
+  useEffect(() => {
+    if (voting && voting.owner.id !== currentUser.id) {
+      router.back();
+    }
+  }, [voting, currentUser.id]);
 
   const canEdit = voting?.status === "draft" || voting?.status === "scheduled";
   const isReadOnly = !canEdit;
