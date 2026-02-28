@@ -23,6 +23,12 @@ const options: {
     iconName: "people",
     onPress: () => router.push("/new/newRoom/roomNameStep"),
   },
+  {
+    title: "Crear Premiación",
+    description: "Crea una premiación y elige a los jueces que votarán",
+    iconName: "trophy",
+    onPress: () => router.push("/new/newAward"),
+  },
 ];
 export default function NewBaseScreen() {
   return (

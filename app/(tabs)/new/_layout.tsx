@@ -10,6 +10,7 @@ export default function NewLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="newRoom" options={{ headerShown: false }} />
       <Stack.Screen name="newVoting" options={{ headerShown: false }} />
+      <Stack.Screen name="newAward" options={{ headerShown: false }} />
     </Stack>
   );
 }
