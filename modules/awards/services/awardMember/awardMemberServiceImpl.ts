@@ -3,6 +3,7 @@ import { userServiceInstance } from "@/services/user/userServiceImpl";
 import { awardServiceInstance } from "../award/awardServiceImpl";
 import { AwardMember } from "../../models/awardMember";
 import { AWARD_MEMBER_MOCK_RESPONSE } from "./awardMemberServiceResponse";
+import { Award } from "../../models/award";
 
 export class AwardMemberServiceImpl {
   private awardMembers: AwardMember[] = [...AWARD_MEMBER_MOCK_RESPONSE];
@@ -18,10 +19,13 @@ export class AwardMemberServiceImpl {
       this.getInstantAwardMembersByAwardId(awardId)
     );
   }
-  async fetchAwardMembersByUserId(userId: number): Promise<AwardMember[]> {
-    return successPromiseBehavior(() =>
-      this.getInstantAwardMembersByUserId(userId)
-    );
+  async fetchAwardsByUserId(userId: number): Promise<Award[]> {
+    return successPromiseBehavior(() => {
+      const awardMembers = this.getInstantAwardMembersByUserId(userId);
+      return awardMembers.map((member) =>
+        awardServiceInstance.getInstantAwardById(member.awardId)
+      );
+    });
   }
   addInstantAwardMember(awardId: number, userId: number): AwardMember {
     const user = userServiceInstance.getInstantUserById(userId);

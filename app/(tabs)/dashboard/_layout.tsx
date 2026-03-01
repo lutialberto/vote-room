@@ -10,6 +10,7 @@ export default function DashboardLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="myVotings" options={{ headerShown: false }} />
       <Stack.Screen name="myRooms" options={{ headerShown: false }} />
+      <Stack.Screen name="myAwards" options={{ headerShown: false }} />
     </Stack>
   );
 }

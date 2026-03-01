@@ -1,3 +1,4 @@
+import { Award } from "../../models/award";
 import { AwardMember } from "../../models/awardMember";
 import { awardMemberServiceInstance } from "./awardMemberServiceImpl";
 
@@ -11,10 +12,10 @@ export function addAwardMember({
   return awardMemberServiceInstance.addAwardMember(awardId, userId);
 }
 
-export function fetchAwardMembersByUserId({
+export function fetchAwardsByUserId({
   userId,
 }: {
   userId: number;
-}): Promise<AwardMember[]> {
-  return awardMemberServiceInstance.fetchAwardMembersByUserId(userId);
+}): Promise<Award[]> {
+  return awardMemberServiceInstance.fetchAwardsByUserId(userId);
 }

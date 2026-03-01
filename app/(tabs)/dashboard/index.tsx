@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import MyRooms from "./myRooms";
 import MyVotings from "./myVotings";
 import { ENTITY_TYPE_DATA } from "@/modules/entities/contants";
+import MyAwards from "./myAwards";
 
 export default function DashboardHomeView() {
   const { tab } = useLocalSearchParams<{ tab?: string }>();
@@ -18,6 +19,8 @@ export default function DashboardHomeView() {
           return "myVotings";
         case "myRooms":
           return "myRooms";
+        case "myAwards":
+          return "myAwards";
         default:
           throw new Error("Tab no válido");
       }
@@ -41,6 +44,12 @@ export default function DashboardHomeView() {
           component: MyRooms,
           icon: ENTITY_TYPE_DATA.room.icon,
           label: "Mis Salas",
+        },
+        {
+          name: "myAwards",
+          component: MyAwards,
+          icon: ENTITY_TYPE_DATA.award.icon,
+          label: "Mis Premiaciones",
         },
       ]}
     />
