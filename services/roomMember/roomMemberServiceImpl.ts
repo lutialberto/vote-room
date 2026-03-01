@@ -16,23 +16,25 @@ export class RoomMemberServiceImpl {
     roomCode: string
   ): Promise<RoomMemberWithUser[]> {
     return successPromiseBehavior(() =>
-      this.roomMembers
-        .filter((roomMember) => roomMember.roomCode === roomCode)
-        .map((roomMember) => {
-          const user = userServiceInstance.getInstantUserById(
-            roomMember.userId
-          );
-          if (!user) {
-            throw new Error(
-              `User ${roomMember.userId} not found as room member for room ${roomMember.roomCode}`
-            );
-          }
-          return {
-            ...roomMember,
-            user,
-          } as RoomMemberWithUser;
-        })
+      this.getInstantRoomMembersByRoom(roomCode)
     );
+  }
+
+  getInstantRoomMembersByRoom(roomCode: string): RoomMemberWithUser[] {
+    return this.roomMembers
+      .filter((roomMember) => roomMember.roomCode === roomCode)
+      .map((roomMember) => {
+        const user = userServiceInstance.getInstantUserById(roomMember.userId);
+        if (!user) {
+          throw new Error(
+            `User ${roomMember.userId} not found as room member for room ${roomMember.roomCode}`
+          );
+        }
+        return {
+          ...roomMember,
+          user,
+        } as RoomMemberWithUser;
+      });
   }
 
   getInstantRoomsByUser(userId: number) {

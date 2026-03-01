@@ -105,44 +105,6 @@ export class PendingInvitationRequestServiceImpl {
   ): Promise<boolean> {
     return successPromiseBehavior(async () => {
       let entityData: { description: string; name: string };
-      switch (type) {
-        case "room":
-          const room = roomServiceInstance.getInstantRoomByCode(entityId);
-          if (!room) {
-            throw new Error("Room not found: " + entityId);
-          }
-          entityData = {
-            description: room.description,
-            name: room.label,
-          };
-          break;
-        case "voting":
-          const voting = votingServiceInstance.getInstantBaseVotingById(
-            Number(entityId)
-          );
-          if (!voting) {
-            throw new Error("Voting not found: " + entityId);
-          }
-          entityData = {
-            description: voting.description || "",
-            name: voting.question,
-          };
-          break;
-        case "award":
-          const award = awardServiceInstance.getInstantAwardById(
-            Number(entityId)
-          );
-          if (!award) {
-            throw new Error("Award not found: " + entityId);
-          }
-          entityData = {
-            name: award.name,
-            description: award.description,
-          };
-          break;
-        default:
-          throw new Error("Tipo de entidad no soportado en invitación");
-      }
 
       let invitedUserId: number;
       let user: User | undefined;
@@ -183,6 +145,68 @@ export class PendingInvitationRequestServiceImpl {
         //TODO: Implementar lógica para listas de invitación
         default:
           throw new Error("Tipo de invitación no soportado");
+      }
+
+      switch (type) {
+        case "room":
+          const room = roomServiceInstance.getInstantRoomByCode(entityId);
+          if (!room) {
+            throw new Error("Room not found: " + entityId);
+          }
+          entityData = {
+            description: room.description,
+            name: room.label,
+          };
+
+          const existingRoomMember = roomMemberServiceInstance
+            .getInstantRoomMembersByRoom(room.code)
+            .find((member) => member.userId === invitedUserId);
+          if (existingRoomMember) {
+            throw new Error("User is already a member of this room");
+          }
+
+          break;
+        case "voting":
+          const voting = votingServiceInstance.getInstantBaseVotingById(
+            Number(entityId)
+          );
+          if (!voting) {
+            throw new Error("Voting not found: " + entityId);
+          }
+          entityData = {
+            description: voting.description || "",
+            name: voting.question,
+          };
+
+          const existingVotingMember = votingMemberServiceInstance
+            .getInstantVotingMembersByVotingId(voting.id)
+            .find((member) => member.userId === invitedUserId);
+          if (existingVotingMember) {
+            throw new Error("User is already a member of this voting");
+          }
+          break;
+        case "award":
+          const award = awardServiceInstance.getInstantAwardById(
+            Number(entityId)
+          );
+          if (!award) {
+            throw new Error("Award not found: " + entityId);
+          }
+          entityData = {
+            name: award.name,
+            description: award.description,
+          };
+
+          const existingAwardMember = awardMemberServiceInstance
+            .getInstantAwardMembersByAwardId(award.id)
+            .find((member) => member.userId === invitedUserId);
+          if (existingAwardMember) {
+            throw new Error("User is already a member of this award");
+          }
+
+          break;
+        default:
+          throw new Error("Tipo de entidad no soportado en invitación");
       }
 
       const invitation = this.pendingInvitationRequests.find(
