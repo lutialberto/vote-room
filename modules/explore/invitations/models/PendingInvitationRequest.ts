@@ -1,7 +1,9 @@
+import { EntityType } from "@/modules/entities/models/entityType";
+
 export interface PendingInvitationRequest {
   id: number;
   entityId: string;
-  entityType: "room" | "voting";
+  entityType: EntityType;
   name: string;
   description: string;
   invitationDate: Date;

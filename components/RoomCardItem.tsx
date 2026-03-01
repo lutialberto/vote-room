@@ -7,6 +7,7 @@ import { IconApp } from "./IconApp";
 import { CardApp } from "./CardApp";
 import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import RoomCodeLabel from "@/modules/rooms/components/RoomCodeLabel";
+import { ENTITY_TYPE_DATA } from "@/modules/entities/contants";
 
 export default function RoomCardItem({ room }: { room: Room }) {
   const {
@@ -66,7 +67,7 @@ export default function RoomCardItem({ room }: { room: Room }) {
         <View style={styles.cardFooter}>
           <View style={[styles.row, { gap: 12 }]}>
             <View style={styles.memberInfo}>
-              <IconApp name="people" size={16} />
+              <IconApp name={ENTITY_TYPE_DATA.room.icon} size={16} />
               <ThemedText style={styles.memberCount}>
                 {room.memberCount} miembros
               </ThemedText>

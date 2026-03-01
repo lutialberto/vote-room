@@ -4,6 +4,7 @@ import { CardApp } from "@/components/CardApp";
 import { IconApp, IconName } from "@/components/IconApp";
 import { TouchableOpacity, ScrollView, StyleSheet, View } from "react-native";
 import { router } from "expo-router";
+import { ENTITY_TYPE_DATA } from "@/modules/entities/contants";
 
 const options: {
   title: string;
@@ -14,19 +15,19 @@ const options: {
   {
     title: "Crear Votación",
     description: "Crea una nueva votación para que otros puedan participar",
-    iconName: "bar-chart-outline",
+    iconName: ENTITY_TYPE_DATA.voting.icon,
     onPress: () => router.push("/new/newVoting"),
   },
   {
     title: "Crear Sala",
     description: "Organiza un espacio para múltiples votaciones",
-    iconName: "people",
+    iconName: ENTITY_TYPE_DATA.room.icon,
     onPress: () => router.push("/new/newRoom/roomNameStep"),
   },
   {
     title: "Crear Premiación",
     description: "Crea una premiación y elige a los jueces que votarán",
-    iconName: "trophy",
+    iconName: ENTITY_TYPE_DATA.award.icon,
     onPress: () => router.push("/new/newAward"),
   },
 ];

@@ -8,6 +8,8 @@ import { roomServiceInstance } from "@/services/room/roomServiceImpl";
 import { PendingInvitationRequest } from "../models/PendingInvitationRequest";
 import { votingMemberServiceInstance } from "@/modules/voting/services/votingMember/votingMemberServiceImpl";
 import { votingServiceInstance } from "@/modules/voting/services/voting/votingServiceImpl";
+import { awardMemberServiceInstance } from "@/modules/awards/services/awardMember/awardMemberServiceImpl";
+import { awardServiceInstance } from "@/modules/awards/services/award/awardServiceImpl";
 
 export class PendingInvitationRequestServiceImpl {
   private pendingInvitationRequests: PendingInvitationRequest[] = [
@@ -59,6 +61,12 @@ export class PendingInvitationRequestServiceImpl {
             invitation.invitedUserId
           );
           break;
+        case "award":
+          awardMemberServiceInstance.addInstantAwardMember(
+            Number(invitation.entityId),
+            invitation.invitedUserId
+          );
+          break;
         default:
           throw new Error("Tipo de entidad no soportado en invitación");
       }
@@ -93,6 +101,18 @@ export class PendingInvitationRequestServiceImpl {
           entityData = {
             description: voting.description || "",
             name: voting.question,
+          };
+          break;
+        case "award":
+          const award = awardServiceInstance.getInstantAwardById(
+            Number(entityId)
+          );
+          if (!award) {
+            throw new Error("Award not found: " + entityId);
+          }
+          entityData = {
+            name: award.name,
+            description: award.description,
           };
           break;
         default:

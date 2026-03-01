@@ -1,3 +1,4 @@
+import { ButtonApp } from "@/components/ButtonApp";
 import { SpinnerApp } from "@/components/SpinnerApp";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -5,7 +6,7 @@ import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { useItemFetcherApp } from "@/hooks/useItemFetcherApp";
 import { AwardDetail } from "@/modules/awards/models/award";
 import { fetchAwardDetailById } from "@/modules/awards/services/award/awardService";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
 export default function AwardDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -30,7 +31,7 @@ export default function AwardDetailScreen() {
   const isOwner = currentUser.id === data?.owner.id;
 
   return (
-    <ThemedView>
+    <ThemedView style={{ paddingHorizontal: 10, flex: 1 }}>
       <ThemedText>{data?.id}</ThemedText>
       <ThemedText>{data?.name}</ThemedText>
       <ThemedText>{data?.description}</ThemedText>
@@ -51,6 +52,12 @@ export default function AwardDetailScreen() {
           ))}
         </ThemedView>
       ))}
+      {isOwner && (
+        <ButtonApp
+          label="Configuracion"
+          onPress={() => router.push(`/dashboard/myAwards/${id}/settings`)}
+        />
+      )}
     </ThemedView>
   );
 }

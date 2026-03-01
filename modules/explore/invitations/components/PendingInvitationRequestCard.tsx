@@ -4,6 +4,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ButtonApp } from "@/components/ButtonApp";
 import { PendingInvitationRequest } from "../models/PendingInvitationRequest";
 import { IconApp } from "@/components/IconApp";
+import { ENTITY_TYPE_DATA } from "@/modules/entities/contants";
 
 export interface PendingInvitationRequestCardProps {
   item: PendingInvitationRequest;
@@ -24,10 +25,7 @@ export function PendingInvitationRequestCard({
         <ThemedText>{description}</ThemedText>
       </View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-        <IconApp
-          name={entityType === "room" ? "stats-chart" : "people"}
-          size={16}
-        />
+        <IconApp name={ENTITY_TYPE_DATA[entityType].icon} size={16} />
         <ThemedText type="hint">
           Invitado el{" "}
           {invitationDate.toLocaleDateString("es-ES", {

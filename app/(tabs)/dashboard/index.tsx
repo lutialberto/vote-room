@@ -3,6 +3,7 @@ import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import MyRooms from "./myRooms";
 import MyVotings from "./myVotings";
+import { ENTITY_TYPE_DATA } from "@/modules/entities/contants";
 
 export default function DashboardHomeView() {
   const { tab } = useLocalSearchParams<{ tab?: string }>();
@@ -31,14 +32,14 @@ export default function DashboardHomeView() {
       tabs={[
         {
           name: "myVotings",
-          icon: "bar-chart-outline",
+          icon: ENTITY_TYPE_DATA.voting.icon,
           component: MyVotings,
           label: "Mis Votaciones",
         },
         {
           name: "myRooms",
           component: MyRooms,
-          icon: "people",
+          icon: ENTITY_TYPE_DATA.room.icon,
           label: "Mis Salas",
         },
       ]}
