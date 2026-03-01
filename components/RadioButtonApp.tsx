@@ -55,6 +55,7 @@ export function RadioButtonApp({
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    gap: 4,
   },
   optionContainer: {
     flexDirection: "row",
@@ -64,8 +65,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     aspectRatio: 1,
-    width: 15,
+    width: 25,
     borderRadius: "100%",
-    borderWidth: 2,
+    borderWidth: 3,
   },
 });
