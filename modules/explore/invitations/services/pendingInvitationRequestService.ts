@@ -20,7 +20,7 @@ export function rejectPendingInvitationRequest(
 
 export function acceptPendingInvitationRequest(
   id: number
-): Promise<{ id: number }> {
+): Promise<PendingInvitationRequest> {
   return pendingInvitationRequestServiceInstance.acceptPendingInvitationRequest(
     id
   );

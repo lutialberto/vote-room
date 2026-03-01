@@ -2,6 +2,7 @@ import { useAuthenticatedUser } from "@/hooks/useAuthenticatedUser";
 import { useWaitingApp } from "@/hooks/useWaitingApp";
 import PendingInvitationsList from "@/modules/explore/invitations/components/PendingInvitationsList";
 import { usePendingInvitationRequest } from "@/modules/explore/invitations/hooks/usePendingInvitationRequest";
+import { PendingInvitationRequest } from "@/modules/explore/invitations/models/PendingInvitationRequest";
 import {
   acceptPendingInvitationRequest,
   rejectPendingInvitationRequest,
@@ -23,15 +24,25 @@ export default function InvitationsTab() {
       {
         id: number;
       },
-      {
-        id: number;
-      }
+      PendingInvitationRequest
     >({
       functionToWait: ({ id }) => acceptPendingInvitationRequest(id),
-      success: ({ id }) => {
+      success: ({ id, entityType, entityId }) => {
         removeDataItem(id);
         const item = data.find((invitation) => invitation.id === id);
-        router.push(`/dashboard/myRooms/${item?.entityId}`);
+        switch (entityType) {
+          case "room":
+            router.push(`/dashboard/myRooms/${item?.entityId}`);
+            break;
+          case "voting":
+            router.push(`/dashboard/myVotings/${item?.entityId}`);
+            break;
+          case "award":
+            router.push(`/dashboard/myAwards/${item?.entityId}`);
+            break;
+          default:
+            throw new Error("Tipo de entidad no soportado en invitación");
+        }
       },
     });
   const { isWaiting: isWaitingReject, execPromise: handleRejectConfirmed } =

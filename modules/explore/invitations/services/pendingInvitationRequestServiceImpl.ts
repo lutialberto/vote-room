@@ -35,7 +35,9 @@ export class PendingInvitationRequestServiceImpl {
     }).then(() => ({ id }));
   }
 
-  async acceptPendingInvitationRequest(id: number): Promise<{ id: number }> {
+  async acceptPendingInvitationRequest(
+    id: number
+  ): Promise<PendingInvitationRequest> {
     return successPromiseBehavior(async () => {
       const invitation = this.pendingInvitationRequests.find(
         (inv) => inv.id === id
@@ -70,7 +72,8 @@ export class PendingInvitationRequestServiceImpl {
         default:
           throw new Error("Tipo de entidad no soportado en invitación");
       }
-    }).then(() => ({ id }));
+      return { ...invitation };
+    });
   }
 
   async createPendingInvitationsRequest(
