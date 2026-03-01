@@ -1,12 +1,23 @@
 import { PendingInvitation } from "@/modules/explore/invitations/models/PendingInvitation";
 import { pendingInvitationRequestServiceInstance } from "./pendingInvitationRequestServiceImpl";
-import { PendingInvitationRequest } from "../models/PendingInvitationRequest";
+import {
+  PendingInvitationRequest,
+  PendingInvitationRequestDetail,
+} from "../models/PendingInvitationRequest";
 
 export function fetchPendingInvitations(
   userId: number
 ): Promise<PendingInvitationRequest[]> {
   return pendingInvitationRequestServiceInstance.fetchPendingInvitationRequests(
     userId
+  );
+}
+
+export function fetchPendingInvitationRequestDetailsByEntityId(
+  entityId: string
+): Promise<PendingInvitationRequestDetail[]> {
+  return pendingInvitationRequestServiceInstance.fetchPendingInvitationRequestDetailsByEntityId(
+    entityId
   );
 }
 
@@ -26,13 +37,13 @@ export function acceptPendingInvitationRequest(
   );
 }
 
-export function createPendingInvitationsRequest(
-  pendingInvitations: PendingInvitation[],
+export function createPendingInvitationRequest(
+  pendingInvitation: PendingInvitation,
   entityId: string,
   type: PendingInvitationRequest["entityType"]
 ): Promise<boolean> {
-  return pendingInvitationRequestServiceInstance.createPendingInvitationsRequest(
-    pendingInvitations,
+  return pendingInvitationRequestServiceInstance.createPendingInvitationRequest(
+    pendingInvitation,
     entityId,
     type
   );

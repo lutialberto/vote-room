@@ -40,7 +40,7 @@ export default function AwardDetailScreen() {
       <ThemedText>{data?.awardDate.toDateString()}</ThemedText>
       <ThemedText>{data?.votingStage.startDate.toDateString()}</ThemedText>
       <ThemedText>{data?.votingStage.endDate.toDateString()}</ThemedText>
-      {data?.triads.map((triad) => (
+      {/* {data?.triads.map((triad) => (
         <ThemedView key={triad.id}>
           <ThemedText>{triad.id}</ThemedText>
           <ThemedText>{triad.name}</ThemedText>
@@ -51,7 +51,7 @@ export default function AwardDetailScreen() {
             </ThemedView>
           ))}
         </ThemedView>
-      ))}
+      ))} */}
       {isOwner && (
         <ButtonApp
           label="Configuracion"

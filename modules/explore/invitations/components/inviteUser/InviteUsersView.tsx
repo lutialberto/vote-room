@@ -1,14 +1,30 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useState } from "react";
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+} from "react-native";
 import InviteUserTypeSelector from "@/modules/explore/invitations/components/inviteUser/InviteUserTypeSelector";
 import InviteUserForm from "@/modules/explore/invitations/components/inviteUser/InviteUserForm";
 import InviteUserPendingList from "@/modules/explore/invitations/components/inviteUser/InviteUserPendingList";
 import { PendingInvitation } from "@/modules/explore/invitations/models/PendingInvitation";
 import { UserInvitationType } from "@/modules/explore/invitations/models/UserInvitationType";
 import { UserInvitation } from "@/modules/explore/invitations/models/UserInvitation";
-import { PendingInvitationRequest } from "../../models/PendingInvitationRequest";
+import {
+  PendingInvitationRequest,
+  PendingInvitationRequestDetail,
+} from "../../models/PendingInvitationRequest";
+import {
+  createPendingInvitationRequest,
+  fetchPendingInvitationRequestDetailsByEntityId,
+} from "../../services/pendingInvitationRequestService";
+import { useWaitingApp } from "@/hooks/useWaitingApp";
+import { SpinnerApp } from "@/components/SpinnerApp";
+import { useListFetcherApp } from "@/hooks/useListFetcherApp";
 
 export interface InviteUsersViewProps {
   entityId: string;
@@ -19,11 +35,39 @@ export default function InviteUsersView({
   entityId,
   entityType,
 }: InviteUsersViewProps) {
-  const [pendingInvitations, setPendingInvitations] = useState<
-    PendingInvitation[]
-  >([]);
+  const {
+    data: pendingInvitations,
+    error,
+    isLoading,
+    refetch,
+  } = useListFetcherApp<PendingInvitationRequestDetail>(
+    () => fetchPendingInvitationRequestDetailsByEntityId(entityId),
+    [entityId]
+  );
   const [selectedType, setSelectedType] =
     useState<UserInvitationType>("userId");
+
+  const { execPromise: fnCreatePendingInvitation, isWaiting } = useWaitingApp<
+    {
+      invitation: PendingInvitation;
+      entityId: string;
+    },
+    boolean
+  >({
+    functionToWait: (data) =>
+      createPendingInvitationRequest(
+        data.invitation,
+        data.entityId,
+        entityType
+      ),
+    success: () => refetch(),
+    failure: (err) => {
+      Alert.alert(
+        "Error",
+        "No se pudieron enviar las invitaciones: " + err.message
+      );
+    },
+  });
 
   const onSubmit = (data: UserInvitation) => {
     if (data.value) {
@@ -33,16 +77,12 @@ export default function InviteUsersView({
         value: data.value,
         timestamp: new Date(),
       };
-      setPendingInvitations((prev) => [...prev, newInvitation]);
+      fnCreatePendingInvitation({ invitation: newInvitation, entityId });
     }
   };
 
   const onInvitationTypeChange = (type: UserInvitationType) => {
     setSelectedType(type);
-  };
-
-  const removeInvitation = (id: string) => {
-    setPendingInvitations((prev) => prev.filter((inv) => inv.id !== id));
   };
 
   return (
@@ -66,13 +106,17 @@ export default function InviteUsersView({
           handleSelectedOption={onInvitationTypeChange}
         />
 
-        <InviteUserForm handleSubmitForm={onSubmit} />
-        <InviteUserPendingList
-          pendingInvitations={pendingInvitations}
-          removeInvitation={removeInvitation}
-          entityId={entityId}
-          entityType={entityType}
-        />
+        <SpinnerApp visible={isWaiting}>
+          <InviteUserForm handleSubmitForm={onSubmit} />
+        </SpinnerApp>
+
+        <SpinnerApp visible={isLoading}>
+          <InviteUserPendingList
+            pendingInvitations={pendingInvitations}
+            entityId={entityId}
+            entityType={entityType}
+          />
+        </SpinnerApp>
       </KeyboardAvoidingView>
     </ThemedView>
   );

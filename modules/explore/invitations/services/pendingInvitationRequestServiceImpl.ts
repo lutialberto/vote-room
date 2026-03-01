@@ -5,7 +5,10 @@ import { PendingInvitation } from "@/modules/explore/invitations/models/PendingI
 import { userServiceInstance } from "@/services/user/userServiceImpl";
 import { User } from "@/models/User";
 import { roomServiceInstance } from "@/services/room/roomServiceImpl";
-import { PendingInvitationRequest } from "../models/PendingInvitationRequest";
+import {
+  PendingInvitationRequest,
+  PendingInvitationRequestDetail,
+} from "../models/PendingInvitationRequest";
 import { votingMemberServiceInstance } from "@/modules/voting/services/votingMember/votingMemberServiceImpl";
 import { votingServiceInstance } from "@/modules/voting/services/voting/votingServiceImpl";
 import { awardMemberServiceInstance } from "@/modules/awards/services/awardMember/awardMemberServiceImpl";
@@ -15,6 +18,25 @@ export class PendingInvitationRequestServiceImpl {
   private pendingInvitationRequests: PendingInvitationRequest[] = [
     ...pendingInvitationRequestMockResponse,
   ];
+
+  async fetchPendingInvitationRequestDetailsByEntityId(
+    entityId: string
+  ): Promise<PendingInvitationRequestDetail[]> {
+    return successPromiseBehavior(() =>
+      this.pendingInvitationRequests
+        .filter((invitation) => invitation.entityId === entityId)
+        .map((invitation) => {
+          const invitedUser = userServiceInstance.getInstantUserById(
+            invitation.invitedUserId
+          );
+          return {
+            ...invitation,
+            invitedUser,
+          } as PendingInvitationRequestDetail;
+        })
+        .sort((a, b) => b.invitationDate.getTime() - a.invitationDate.getTime())
+    );
+  }
 
   async fetchPendingInvitationRequests(
     userId: number
@@ -76,8 +98,8 @@ export class PendingInvitationRequestServiceImpl {
     });
   }
 
-  async createPendingInvitationsRequest(
-    pendingInvitations: PendingInvitation[],
+  async createPendingInvitationRequest(
+    pendingInvitation: PendingInvitation,
     entityId: string,
     type: PendingInvitationRequest["entityType"]
   ): Promise<boolean> {
@@ -122,69 +144,65 @@ export class PendingInvitationRequestServiceImpl {
           throw new Error("Tipo de entidad no soportado en invitación");
       }
 
-      pendingInvitations.forEach((pendingInvitation) => {
-        let invitedUserId: number;
-        let user: User | undefined;
-        switch (pendingInvitation.type) {
-          case "userEmail":
-            user = userServiceInstance.getInstantUserByEmail(
-              pendingInvitation.value
+      let invitedUserId: number;
+      let user: User | undefined;
+      switch (pendingInvitation.type) {
+        case "userEmail":
+          user = userServiceInstance.getInstantUserByEmail(
+            pendingInvitation.value
+          );
+          if (!user) {
+            throw new Error(
+              "User with this email not found: " + pendingInvitation.value
             );
-            if (!user) {
-              throw new Error(
-                "User with this email not found: " + pendingInvitation.value
-              );
-            }
-            invitedUserId = user.id;
-            break;
-          case "userName":
-            user = userServiceInstance.getInstantUserByUserName(
-              pendingInvitation.value
+          }
+          invitedUserId = user.id;
+          break;
+        case "userName":
+          user = userServiceInstance.getInstantUserByUserName(
+            pendingInvitation.value
+          );
+          if (!user) {
+            throw new Error(
+              "User with this name not found: " + pendingInvitation.value
             );
-            if (!user) {
-              throw new Error(
-                "User with this name not found: " + pendingInvitation.value
-              );
-            }
-            invitedUserId = user.id;
-            break;
-          case "userId":
-            invitedUserId = parseInt(pendingInvitation.value, 10);
-            user = userServiceInstance.getInstantUserById(invitedUserId);
-            if (!user) {
-              throw new Error(
-                "User with this ID not found: " + pendingInvitation.value
-              );
-            }
-            break;
-          case "invitationListName":
-          case "invitationListId":
-          //TODO: Implementar lógica para listas de invitación
-          default:
-            throw new Error("Tipo de invitación no soportado");
-        }
+          }
+          invitedUserId = user.id;
+          break;
+        case "userId":
+          invitedUserId = parseInt(pendingInvitation.value, 10);
+          user = userServiceInstance.getInstantUserById(invitedUserId);
+          if (!user) {
+            throw new Error(
+              "User with this ID not found: " + pendingInvitation.value
+            );
+          }
+          break;
+        case "invitationListName":
+        case "invitationListId":
+        //TODO: Implementar lógica para listas de invitación
+        default:
+          throw new Error("Tipo de invitación no soportado");
+      }
 
-        const invitation = this.pendingInvitationRequests.find(
-          (inv) => inv.invitedUserId === user.id && inv.entityId === entityId
-        );
-        if (!invitation) {
-          const newInvitationEmail: PendingInvitationRequest = {
-            invitationDate: new Date(),
-            invitedUserId,
-            confirmed: false,
-            id:
-              this.pendingInvitationRequests
-                .map((inv) => inv.id)
-                .reduce((maxId, currentId) => Math.max(maxId, currentId), 0) +
-              1,
-            entityId,
-            description: entityData.description,
-            name: entityData.name,
-            entityType: type,
-          };
-          this.pendingInvitationRequests.push(newInvitationEmail);
-        }
-      });
+      const invitation = this.pendingInvitationRequests.find(
+        (inv) => inv.invitedUserId === user.id && inv.entityId === entityId
+      );
+      if (!invitation) {
+        const newInvitationEmail: PendingInvitationRequest = {
+          invitationDate: new Date(),
+          invitedUserId,
+          id:
+            this.pendingInvitationRequests
+              .map((inv) => inv.id)
+              .reduce((maxId, currentId) => Math.max(maxId, currentId), 0) + 1,
+          entityId,
+          description: entityData.description,
+          name: entityData.name,
+          entityType: type,
+        };
+        this.pendingInvitationRequests.push(newInvitationEmail);
+      }
     }).then(() => true);
   }
 }

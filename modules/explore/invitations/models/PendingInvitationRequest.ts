@@ -1,3 +1,4 @@
+import { UserBase } from "@/models/User";
 import { EntityType } from "@/modules/entities/models/entityType";
 
 export interface PendingInvitationRequest {
@@ -9,4 +10,8 @@ export interface PendingInvitationRequest {
   invitationDate: Date;
   invitedUserId: number;
   confirmed?: boolean;
+}
+
+export interface PendingInvitationRequestDetail extends PendingInvitationRequest {
+  invitedUser: UserBase;
 }
