@@ -147,7 +147,7 @@ export function CarouselApp({
                 {
                   backgroundColor:
                     index === currentIndex
-                      ? colors.tint
+                      ? colors.primary
                       : colors.tabIconDefault,
                 },
               ]}
@@ -162,12 +162,9 @@ export function CarouselApp({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: "100%",
   },
-  carouselContainer: {
-    flex: 1,
-  },
+  carouselContainer: {},
   slide: {
     flex: 1,
   },
