@@ -1,35 +1,84 @@
 import { useEffect, useState } from "react";
 
+interface ResponseState<T> {
+  data: T | undefined;
+  isLoading: boolean;
+  error: Error | undefined;
+}
+
+type ResponseWithData<T> = ResponseState<T> & {
+  data: T;
+  isLoading: false;
+  error: undefined;
+};
+
+type ResponseWithError<T> = ResponseState<T> & {
+  data: undefined;
+  isLoading: false;
+  error: Error;
+};
+
+type ResponseLoading<T> = ResponseState<T> & {
+  data: undefined;
+  isLoading: true;
+  error: undefined;
+};
+
+type UseItemFetcherAppResponse<T> =
+  | ResponseWithData<T>
+  | ResponseWithError<T>
+  | ResponseLoading<T>;
+
+type Response<T> = UseItemFetcherAppResponse<T> & {
+  refetch: () => void;
+};
 export function useItemFetcherApp<T>(
   fetchFn: () => Promise<T>,
   deps: any[] = []
-) {
-  const [data, setData] = useState<T | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
+): Response<T> {
+  const [response, setResponse] = useState<UseItemFetcherAppResponse<T>>({
+    data: undefined,
+    isLoading: true,
+    error: undefined,
+  });
 
   useEffect(() => {
     fetchWrapper();
   }, deps);
 
   function fetchWrapper() {
-    setIsLoading(true);
-    setError(null);
+    setResponse({
+      data: undefined,
+      isLoading: true,
+      error: undefined,
+    });
     try {
       fetchFn()
         .then((data) => {
-          setData(data);
-          setIsLoading(false);
+          setResponse({
+            data,
+            isLoading: false,
+            error: undefined,
+          });
         })
         .catch((error) => {
-          setIsLoading(false);
-          setError(error);
+          setResponse({
+            data: undefined,
+            isLoading: false,
+            error,
+          });
         });
     } catch (error) {
-      setIsLoading(false);
-      setError(error as Error);
+      setResponse({
+        data: undefined,
+        isLoading: false,
+        error: error as Error,
+      });
     }
   }
 
-  return { data, isLoading, error, refetch: fetchWrapper };
+  return {
+    ...response,
+    refetch: fetchWrapper,
+  };
 }
